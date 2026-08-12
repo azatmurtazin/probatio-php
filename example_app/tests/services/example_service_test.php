@@ -3,6 +3,8 @@
 declare(strict_types=1);
 require_once __DIR__."/../tests.php";
 
+use Epreuve\TestCase;
+use Epreuve\TestSuite;
 use ExampleApp\Services\ExampleService;
 
 $ts = TestSuite::getInstance();
