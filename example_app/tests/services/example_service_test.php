@@ -28,6 +28,16 @@ $ts->register("tests of ExampleService", function(TestCase $tc) {
         $tc->assertEq($expected, $actual);
     });
 
+    $tc->test("test anon", function(TestCase $tc) {
+        /** @var ExampleService */
+        $service = $tc->get("service");
+
+        $expected = "Hello, world!";
+        $actual = $service->greet();
+
+        $tc->assertEq($expected, $actual);
+    });
+
     $tc->test("test Sam", function(TestCase $tc) {
         /** @var ExampleService */
         $service = $tc->get("service");

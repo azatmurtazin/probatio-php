@@ -6,17 +6,7 @@ namespace ExampleApp\Services;
 
 class ExampleService
 {
-    public function __construct()
-    {
-        echo "# run constructor of ExampleService\n";
-    }
-
-    public function __destruct()
-    {
-        echo "# run destructor of ExampleService\n";
-    }
-
-    public function greet(string $name): string
+    public function greet(string $name = "world"): string
     {
         return "Hello, $name!";
     }
