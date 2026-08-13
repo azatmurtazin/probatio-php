@@ -8,16 +8,22 @@ class TestCase
 {
     use Assertions;
 
-    protected array $opts = [];
-    protected array $assigns = [];
+    /** @var array */
+    protected $opts = [];
+    /** @var array */
+    protected $assigns = [];
     /** @var TestItem[] */
-    protected array $testItems = [];
-    protected mixed $beforeFun = null;
-    protected mixed $afterFun = null;
-    protected int $counter = 0;
-    protected int $okCounter = 0;
+    protected $testItems = [];
+    /** @var callable|null */
+    protected $beforeFun = null;
+    /** @var callable|null */
+    protected $afterFun = null;
+    /** @var int */
+    protected $counter = 0;
+    /** @var int */
+    protected $okCounter = 0;
     /** @var TestItem[] */
-    protected array $failures = [];
+    protected $failures = [];
 
     public function __construct(array $opts = [])
     {
@@ -110,12 +116,12 @@ class TestCase
         return $this;
     }
 
-    public function get(string $key): mixed
+    public function get(string $key)
     {
         return $this->assigns[$key];
     }
 
-    public function set(string $key, mixed $value): self
+    public function set(string $key, $value): self
     {
         $this->assigns[$key] = $value;
         return $this;

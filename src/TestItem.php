@@ -6,10 +6,14 @@ namespace Epreuve;
 
 class TestItem
 {
-    protected TestCase $tc;
-    protected mixed $fun;
-    protected array $opts = [];
-    protected \Exception|null $error = null;
+    /** @var TestCase */
+    protected $tc;
+    /** @var callable */
+    protected $fun;
+    /** @var array */
+    protected $opts = [];
+    /** @var \Exception|null */
+    protected $error = null;
 
     public function __construct(TestCase $tc, callable $fun, array $opts = [])
     {

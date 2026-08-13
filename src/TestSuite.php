@@ -6,15 +6,21 @@ namespace Epreuve;
 
 class TestSuite
 {
+    /** @var self|null */
     protected static $instance = null;
 
-    protected string $mainFile = "";
-    protected array $cliArgs = [];
-    protected string $path = "";
+    /** @var string */
+    protected $mainFile = "";
+    /** @var string[] */
+    protected $cliArgs = [];
+    /** @var string */
+    protected $path = "";
     /** @var TestCase[] */
-    protected array $testCases = [];
-    protected array $oks = [];
-    protected array $errors = [];
+    protected $testCases = [];
+    /** @var array */
+    protected $oks = [];
+    /** @var array */
+    protected $errors = [];
 
     public static function getInstance(): self
     {
@@ -84,8 +90,11 @@ class TestSuite
             $this->testCases[$tcKey]->run();
         }
 
-        $oks = array_sum(array_map(fn(TestCase $tc) => $tc->getOkCounter(), $this->testCases));
-        $all = array_sum(array_map(fn(TestCase $tc) => $tc->getCounter(), $this->testCases));
+        $okCntFun = function(TestCase $tc) { return $tc->getOkCounter(); };
+        $cntFun = function(TestCase $tc) { return $tc->getCounter(); };
+
+        $oks = array_sum(array_map($okCntFun, $this->testCases));
+        $all = array_sum(array_map($cntFun, $this->testCases));
 
         if ($oks === $all) {
             echo "✅ summary: [$oks / $all] - all tests are ok\n";

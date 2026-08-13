@@ -15,5 +15,10 @@
         }
     ],
     "minimum-stability": "dev",
+    "config": {
+        "platform": {
+            "php": "7.2.5"
+        }
+    },
     "require": {}
 }
