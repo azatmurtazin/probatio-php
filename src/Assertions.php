@@ -7,10 +7,13 @@ namespace Probatio;
 trait Assertions
 {
     public function assertEq($expected, $actual) {
-        if ($expected === $actual) {
+        if ($expected == $actual) {
             echo "    * assertion is ok\n";
-        } else {
-            throw new \RuntimeException("assertion failed, not equal");
+            return;
         }
+
+        $ac = var_export($actual, true);
+        $ex = var_export($expected, true);
+        throw new \RuntimeException("assertion failed: $ac is not equal to $ex");
     }
 }

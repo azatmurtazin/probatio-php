@@ -46,8 +46,14 @@ class TestSuite
 
     public function maybeRunAllTests(): void
     {
+        $ts = $this;
+        \register_shutdown_function(function() use ($ts) {
+            $ts->runRegisteredTests()->printSummary();
+        });
+
         if ($this->path === $this->mainFile) {
-            $this->runAllTests();
+            echo "run all tests\n\n";
+            $this->registerAllTests();
         }
     }
 
@@ -67,13 +73,6 @@ class TestSuite
 
     public function registerAllTests(): self
     {
-        return $this;
-    }
-
-    public function runAllTests(): self
-    {
-        echo "run all tests\n\n";
-
         $dir = \dirname($this->mainFile);
         $testFiles = $this->getFilesRecursive($dir);
 
@@ -83,6 +82,11 @@ class TestSuite
             })();
         }
 
+        return $this;
+    }
+
+    public function runRegisteredTests(): self
+    {
         $tcKeys = array_keys($this->testCases);
         shuffle($tcKeys);
 
@@ -90,6 +94,11 @@ class TestSuite
             $this->testCases[$tcKey]->run();
         }
 
+        return $this;
+    }
+
+    public function printSummary(): self
+    {
         $okCntFun = function(TestCase $tc) { return $tc->getOkCounter(); };
         $cntFun = function(TestCase $tc) { return $tc->getCounter(); };
 
@@ -133,13 +142,5 @@ class TestSuite
             }
         }
         return $this;
-    }
-
-    public function maybeRunOneTest(): void
-    {
-        [$file, $_line] = Utils::getCaller();
-        if ($this->path === $file) {
-            $this->runIndividualTest($file);
-        }
     }
 }
