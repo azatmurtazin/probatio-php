@@ -1,10 +1,10 @@
 {
-    "name": "azatmurtazin/epreuve",
-    "description": "It's a simple testing framework",
+    "name": "azatmurtazin/probatio-php",
+    "description": "Probatio-php is a simple testing framework",
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "Epreuve\\": "src/",
+            "Probatio\\": "src/",
             "ExampleApp\\": "example_app/src/"
         }
     },
@@ -15,10 +15,7 @@
         }
     ],
     "minimum-stability": "dev",
-    "config": {
-        "platform": {
-            "php": "7.2.5"
-        }
-    },
-    "require": {}
+    "require": {
+        "php": ">=7.2"
+    }
 }

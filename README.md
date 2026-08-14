@@ -1,1 +1,1 @@
-# l'épreuve is a simple testing framework in PHP
+# Probatio-php is a simple testing framework
