@@ -21,6 +21,7 @@ class TestSuite
     protected $oks = [];
     /** @var array */
     protected $errors = [];
+    protected $ok = true;
 
     public static function getInstance(): self
     {
@@ -44,11 +45,35 @@ class TestSuite
         return $this;
     }
 
+    public function isOk()
+    {
+        return $this->ok;
+    }
+
+    public function defineGlobalFunctions(): self
+    {
+        if (!function_exists("test")) {
+            function test(?string $name = null, callable $fun)
+            {
+                [$file, $line] = Utils::getCaller();
+                $ts = TestSuite::getInstance();
+                $ts->describe("$file:$line", function(TestCase $tc) use ($name, $fun) {
+                    $tc->test($name, $fun);
+                });
+            }
+        }
+
+        return $this;
+    }
+
     public function maybeRunAllTests(): void
     {
         $ts = $this;
         \register_shutdown_function(function() use ($ts) {
             $ts->runRegisteredTests()->printSummary();
+            if (!$ts->isOk()) {
+                exit(1);
+            }
         });
 
         if ($this->path === $this->mainFile) {
@@ -57,7 +82,7 @@ class TestSuite
         }
     }
 
-    public function register(?string $name, callable $fun): self
+    public function describe(?string $name, callable $fun): self
     {
         [$file, $line] = Utils::getCaller();
         $opts = ["file" => $file, "line" => $line];
@@ -108,6 +133,7 @@ class TestSuite
         if ($oks === $all) {
             echo "✅ summary: [$oks / $all] - all tests are ok\n";
         } else {
+            $this->ok = false;
             echo "❌ summary: [ $oks / $all ] - some tests failed \n";
         }
 

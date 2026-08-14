@@ -104,9 +104,9 @@ class TestCase
         return $this;
     }
 
-    public function test(?string $name, callable $fun): self
+    public function test(?string $name, callable $fun, $lvl = 1): self
     {
-        [$file, $line] = Utils::getCaller();
+        [$file, $line] = Utils::getCaller($lvl);
         $opts = ["file" => $file, "line" => $line];
         if ($name !== null) {
             $opts["name"] = $name;

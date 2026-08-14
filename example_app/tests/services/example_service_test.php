@@ -10,7 +10,7 @@ use ExampleApp\Services\ExampleService;
 
 $ts = TestSuite::getInstance();
 
-$ts->register("tests of ExampleService", function(TestCase $tc) {
+$ts->describe("tests of ExampleService", function(TestCase $tc) {
     $tc->before(function(TestCase $tc) {
         $tc->set("service", new ExampleService());
     });

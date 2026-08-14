@@ -6,4 +6,5 @@ require_once __DIR__."/../../vendor/autoload.php";
 
 Probatio\TestSuite::getInstance()
     ->setMainFile(__FILE__)
+    ->defineGlobalFunctions()
     ->maybeRunAllTests();

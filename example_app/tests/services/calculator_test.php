@@ -9,10 +9,11 @@ require_once __DIR__."/../tests.php";
 use Probatio\TestCase;
 use Probatio\TestSuite;
 use ExampleApp\Services\Calculator;
+use function Probatio\test;
 
 $ts = TestSuite::getInstance();
 
-$ts->register("tests of add and sub", function(TestCase $tc) {
+$ts->describe("tests of add and sub", function(TestCase $tc) {
     $tc->test("add", function(TestCase $tc) {
         $expected = 12;
         $actual = Calculator::add(5, 7);
@@ -26,7 +27,7 @@ $ts->register("tests of add and sub", function(TestCase $tc) {
     });
 });
 
-$ts->register("tests of mul and div", function(TestCase $tc) {
+$ts->describe("tests of mul and div", function(TestCase $tc) {
     $tc->test("mul", function(TestCase $tc) {
         $expected = 21;
         $actual = Calculator::mul(3, 7);
@@ -38,10 +39,10 @@ $ts->register("tests of mul and div", function(TestCase $tc) {
         $actual = Calculator::div(7, 5);
         $tc->assertEq($expected, $actual);
     });
+});
 
-    $tc->test("div to zero", function(TestCase $tc) {
-        $expected = INF;
-        $actual = Calculator::div(42, 0);
-        $tc->assertEq($expected, $actual);
-    });
+test("div to zero", function(TestCase $tc) {
+    $expected = INF;
+    $actual = Calculator::div(42, 0);
+    $tc->assertEq($expected, $actual);
 });
