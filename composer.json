@@ -4,8 +4,7 @@
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "Probatio\\": "src/",
-            "ExampleApp\\": "example_app/src/"
+            "Probatio\\": "src/"
         }
     },
     "authors": [
