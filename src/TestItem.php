@@ -35,10 +35,10 @@ class TestItem
             $fun($this->tc);
             echo "  ✅ ok\n";
             $this->tc->okCounterInc();
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             $this->error = $e;
             $this->tc->registerFailure($this);
-            echo "  ❌ error: ".$e->getMessage()."\n";
+            echo "  ❌ error: " . $e->getMessage() . "\n";
         }
     }
 }

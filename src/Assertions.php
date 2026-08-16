@@ -6,7 +6,8 @@ namespace Probatio;
 
 trait Assertions
 {
-    public function assertEq($expected, $actual) {
+    public function assertEq($expected, $actual)
+    {
         if ($expected == $actual) {
             echo "    * assertion is ok\n";
             return;

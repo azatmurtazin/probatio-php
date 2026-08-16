@@ -31,7 +31,8 @@ class TestSuite
         return self::$instance;
     }
 
-    protected function __construct() {
+    protected function __construct()
+    {
         global $argv;
         $this->cliArgs = $argv;
 
@@ -52,14 +53,14 @@ class TestSuite
 
     public function defineGlobalFunctions(): self
     {
-        require_once __DIR__."/helpers.php";
+        require_once __DIR__ . "/helpers.php";
         return $this;
     }
 
     public function maybeRunAllTests(): void
     {
         $ts = $this;
-        \register_shutdown_function(function() use ($ts) {
+        \register_shutdown_function(function () use ($ts) {
             $ts->runRegisteredTests()->printSummary();
             if (!$ts->isOk()) {
                 exit(1);
@@ -90,7 +91,7 @@ class TestSuite
         $testFiles = $this->getFilesRecursive($dir);
 
         foreach ($testFiles as $testFile) {
-            (function() use ($testFile) {
+            (function () use ($testFile) {
                 require_once $testFile;
             })();
         }
@@ -112,8 +113,12 @@ class TestSuite
 
     public function printSummary(): self
     {
-        $okCntFun = function(TestCase $tc) { return $tc->getOkCounter(); };
-        $cntFun = function(TestCase $tc) { return $tc->getCounter(); };
+        $okCntFun = function (TestCase $tc) {
+            return $tc->getOkCounter();
+        };
+        $cntFun = function (TestCase $tc) {
+            return $tc->getCounter();
+        };
 
         $oks = array_sum(array_map($okCntFun, $this->testCases));
         $all = array_sum(array_map($cntFun, $this->testCases));

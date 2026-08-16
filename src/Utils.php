@@ -61,7 +61,7 @@ class Utils
 
     public static function maybeRemoveCwd(?string $path): ?string
     {
-        $cwd = getcwd().'/';
+        $cwd = getcwd() . '/';
         if ($path !== null && self::startsWith($path, $cwd)) {
             $path = \substr($path, \strlen($cwd));
         }
