@@ -4,12 +4,17 @@ list:
 
 example_app_dir := "example_app"
 
+# Example app: install deps
+[working-directory(example_app_dir)]
+example-app-install:
+  composer install
+
 # Example app: run tests
 [working-directory(example_app_dir)]
 example-app-tests:
   php tests/tests.php
 
-# Example app: install deps
+# Example app: calculator tests
 [working-directory(example_app_dir)]
-example-app-install:
-  composer install
+example-app-calc-tests:
+  php tests/services/calculator_test.php

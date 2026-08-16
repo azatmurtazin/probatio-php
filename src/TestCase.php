@@ -80,7 +80,8 @@ class TestCase
         $name = $this->getName();
         $file = $this->getFile();
         $line = $this->getLine();
-        echo "* $name ($file:$line) ...\n";
+        $title = Utils::getTitle($name, $file, $line);
+        echo "* $title ...\n";
         $this->execBefore();
         $tiKeys = array_keys($this->testItems);
         shuffle($tiKeys);
@@ -104,13 +105,11 @@ class TestCase
         return $this;
     }
 
-    public function test(?string $name, callable $fun, $lvl = 1): self
+    public function test(?string $name, callable $fun, $caller = null): self
     {
-        [$file, $line] = Utils::getCaller($lvl);
-        $opts = ["file" => $file, "line" => $line];
-        if ($name !== null) {
-            $opts["name"] = $name;
-        }
+        $caller = $caller ?? Utils::getCaller();
+        [$file, $line] = $caller;
+        $opts = ["name" => $name, "file" => $file, "line" => $line];
         $ti = new TestItem($this, $fun, $opts);
         $this->testItems[] = $ti;
         return $this;

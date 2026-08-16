@@ -27,7 +27,8 @@ class TestItem
         $name = $this->opts["name"] ?? null;
         $file = $this->opts["file"] ?? null;
         $line = $this->opts["line"] ?? null;
-        echo "  * $name ($file:$line)\n";
+        $title = Utils::getTitle($name, $file, $line);
+        echo "  * $title\n";
         $this->tc->counterInc();
         try {
             $fun = $this->fun;

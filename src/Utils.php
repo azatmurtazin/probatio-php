@@ -61,10 +61,15 @@ class Utils
 
     public static function maybeRemoveCwd(?string $path): ?string
     {
-        $cwd = getcwd();
+        $cwd = getcwd().'/';
         if ($path !== null && self::startsWith($path, $cwd)) {
-            $path = ".".\substr($path, \strlen($cwd));
+            $path = \substr($path, \strlen($cwd));
         }
         return $path;
+    }
+
+    public static function getTitle($name, $file, $line): string
+    {
+        return $name !== null ? "$name ($file:$line)" : "$file:$line";
     }
 }

@@ -52,17 +52,7 @@ class TestSuite
 
     public function defineGlobalFunctions(): self
     {
-        if (!function_exists("test")) {
-            function test(?string $name = null, callable $fun)
-            {
-                [$file, $line] = Utils::getCaller();
-                $ts = TestSuite::getInstance();
-                $ts->describe("$file:$line", function(TestCase $tc) use ($name, $fun) {
-                    $tc->test($name, $fun);
-                });
-            }
-        }
-
+        require_once __DIR__."/helpers.php";
         return $this;
     }
 
@@ -82,13 +72,11 @@ class TestSuite
         }
     }
 
-    public function describe(?string $name, callable $fun): self
+    public function describe(?string $name, callable $fun, $caller = null): self
     {
-        [$file, $line] = Utils::getCaller();
-        $opts = ["file" => $file, "line" => $line];
-        if ($name !== null) {
-            $opts["name"] = $name;
-        }
+        $caller = $caller ?? Utils::getCaller();
+        [$file, $line] = $caller;
+        $opts = ["name" => $name, "file" => $file, "line" => $line];
         $tc = new TestCase($opts);
         $fun($tc);
         $this->testCases[] = $tc;

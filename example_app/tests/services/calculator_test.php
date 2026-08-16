@@ -9,7 +9,7 @@ require_once __DIR__."/../tests.php";
 use Probatio\TestCase;
 use Probatio\TestSuite;
 use ExampleApp\Services\Calculator;
-use function Probatio\test;
+// use function Probatio\test;
 
 $ts = TestSuite::getInstance();
 
