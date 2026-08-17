@@ -12,7 +12,7 @@ example-app-install:
 # Example app: run tests
 [working-directory(example_app_dir)]
 example-app-tests:
-  php tests/tests.php
+  ./run_all_tests.sh
 
 # Example app: calculator tests
 [working-directory(example_app_dir)]

@@ -5,7 +5,11 @@
     "autoload": {
         "psr-4": {
             "Probatio\\": "src/"
-        }
+        },
+        "files": [
+            "src/global_helpers.php",
+            "src/Helpers.php"
+        ]
     },
     "authors": [
         {

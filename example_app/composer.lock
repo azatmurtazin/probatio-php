@@ -12,7 +12,7 @@
             "dist": {
                 "type": "path",
                 "url": "..",
-                "reference": "740c94e1dc80f640fea12aefb84c991990f85688"
+                "reference": "59e17f967df62accc0f61624a99725df331bc73a"
             },
             "require": {
                 "php": ">=7.2"
@@ -21,7 +21,11 @@
             "autoload": {
                 "psr-4": {
                     "Probatio\\": "src/"
-                }
+                },
+                "files": [
+                    "src/global_helpers.php",
+                    "src/Helpers.php"
+                ]
             },
             "license": [
                 "MIT"

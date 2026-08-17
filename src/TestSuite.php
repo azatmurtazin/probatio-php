@@ -51,12 +51,6 @@ class TestSuite
         return $this->ok;
     }
 
-    public function defineGlobalFunctions(): self
-    {
-        require_once __DIR__ . "/helpers.php";
-        return $this;
-    }
-
     public function maybeRunAllTests(): void
     {
         $ts = $this;

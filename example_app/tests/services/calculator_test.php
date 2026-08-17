@@ -2,14 +2,11 @@
 
 declare(strict_types=1);
 
-declare(strict_types=1);
-
 require_once __DIR__."/../tests.php";
 
 use Probatio\TestCase;
 use Probatio\TestSuite;
 use ExampleApp\Services\Calculator;
-// use function Probatio\test;
 
 $ts = TestSuite::getInstance();
 
@@ -39,10 +36,10 @@ $ts->describe("tests of mul and div", function(TestCase $tc) {
         $actual = Calculator::div(7, 5);
         $tc->assertEq($expected, $actual);
     });
-});
 
-test("div to zero", function(TestCase $tc) {
-    $expected = INF;
-    $actual = Calculator::div(42, 0);
-    $tc->assertEq($expected, $actual);
+    $tc->test("div to zero", function(TestCase $tc) {
+        $expected = INF;
+        $actual = Calculator::div(42, 0);
+        $tc->assertEq($expected, $actual);
+    });
 });

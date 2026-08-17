@@ -7,7 +7,7 @@ use Probatio\TestSuite;
 use Probatio\Utils;
 
 if (!function_exists("test")) {
-    function test(?string $name = null, callable $fun)
+    function test(?string $name, callable $fun)
     {
         $caller = Utils::getCaller();
         $ts = TestSuite::getInstance();
@@ -16,6 +16,4 @@ if (!function_exists("test")) {
         };
         $ts->describe(null, $fun, $caller);
     }
-} else {
-    throw new \RuntimeException("helper test() is already defined");
 }
