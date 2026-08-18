@@ -4,22 +4,30 @@ declare(strict_types=1);
 
 namespace Probatio;
 
+use Closure;
+
 class TestItem
 {
     /** @var TestCase */
     protected $tc;
-    /** @var callable */
+    /** @var \Closure */
     protected $fun;
     /** @var array */
     protected $opts = [];
     /** @var \Exception|null */
     protected $error = null;
 
-    public function __construct(TestCase $tc, callable $fun, array $opts = [])
+    /**
+     * __construct
+     * @param TestCase $tc
+     * @param \Closure $fun
+     * @param array $opts
+     */
+    public function __construct(TestCase $tc, \Closure $fun, array $opts = [])
     {
         $this->tc = $tc;
-        $this->fun = $fun;
         $this->opts = $opts;
+        $this->fun = $fun->bindTo($this, __CLASS__);
     }
 
     public function run()
@@ -31,8 +39,7 @@ class TestItem
         echo "  * $title\n";
         $this->tc->counterInc();
         try {
-            $fun = $this->fun;
-            $fun($this->tc);
+            ($this->fun)($this->tc);
             echo "  ✅ ok\n";
             $this->tc->okCounterInc();
         } catch (\Exception $e) {

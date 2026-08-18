@@ -7,7 +7,7 @@ use Probatio\TestSuite;
 use Probatio\Utils;
 
 if (!function_exists("test")) {
-    function test(?string $name, callable $fun)
+    function test(?string $name, \Closure $fun)
     {
         $caller = Utils::getCaller();
         $ts = TestSuite::getInstance();

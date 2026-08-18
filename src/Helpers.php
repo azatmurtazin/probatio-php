@@ -9,7 +9,7 @@ use Probatio\TestSuite;
 use Probatio\Utils;
 
 
-function test(?string $name, callable $fun)
+function test(?string $name, \Closure $fun)
 {
     $caller = Utils::getCaller();
     $ts = TestSuite::getInstance();

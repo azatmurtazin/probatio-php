@@ -14,9 +14,9 @@ class TestCase
     protected $assigns = [];
     /** @var TestItem[] */
     protected $testItems = [];
-    /** @var callable|null */
+    /** @var \Closure|null */
     protected $beforeFun = null;
-    /** @var callable|null */
+    /** @var \Closure|null */
     protected $afterFun = null;
     /** @var int */
     protected $counter = 0;
@@ -93,19 +93,19 @@ class TestCase
         return $this;
     }
 
-    public function before(callable $fun): self
+    public function before(\Closure $fun): self
     {
         $this->beforeFun = $fun;
         return $this;
     }
 
-    public function after(callable $fun): self
+    public function after(\Closure $fun): self
     {
         $this->afterFun = $fun;
         return $this;
     }
 
-    public function test(?string $name, callable $fun, $caller = null): self
+    public function test(?string $name, \Closure $fun, $caller = null): self
     {
         $caller = $caller ?? Utils::getCaller();
         [$file, $line] = $caller;
@@ -134,7 +134,7 @@ class TestCase
 
     public function execBefore()
     {
-        if (is_callable($this->beforeFun)) {
+        if ($this->beforeFun instanceof \Closure) {
             $beforeFun = $this->beforeFun;
             $beforeFun($this);
         }
@@ -143,7 +143,7 @@ class TestCase
 
     public function execAfter()
     {
-        if (is_callable($this->afterFun)) {
+        if ($this->afterFun instanceof \Closure) {
             $afterFun = $this->afterFun;
             $afterFun($this);
         }

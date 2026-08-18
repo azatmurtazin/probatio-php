@@ -67,7 +67,7 @@ class TestSuite
         }
     }
 
-    public function describe(?string $name, callable $fun, $caller = null): self
+    public function describe(?string $name, \Closure $fun, $caller = null): self
     {
         $caller = $caller ?? Utils::getCaller();
         [$file, $line] = $caller;
