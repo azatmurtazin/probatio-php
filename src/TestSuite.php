@@ -67,10 +67,10 @@ class TestSuite
         }
     }
 
-    public function describe(?string $name, \Closure $fun, $caller = null): self
+    public function describe(?string $name, \Closure $fun, ?Caller $caller = null): self
     {
-        $caller = $caller ?? Utils::getCaller();
-        [$file, $line] = $caller;
+        $caller = $caller ?? new Caller();
+        [$file, $line] = $caller->fl();
         $opts = ["name" => $name, "file" => $file, "line" => $line];
         $tc = new TestCase($opts);
         $fun($tc);

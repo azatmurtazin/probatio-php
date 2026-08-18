@@ -105,10 +105,17 @@ class TestCase
         return $this;
     }
 
-    public function test(?string $name, \Closure $fun, $caller = null): self
+    /**
+     * Summary of test
+     * @param mixed $name
+     * @param \Closure $fun
+     * @param ?Caller $caller
+     * @return TestCase
+     */
+    public function test(?string $name, \Closure $fun, ?Caller $caller = null): self
     {
-        $caller = $caller ?? Utils::getCaller();
-        [$file, $line] = $caller;
+        $caller = $caller ?? new Caller();
+        [$file, $line] = $caller->fl();
         $opts = ["name" => $name, "file" => $file, "line" => $line];
         $ti = new TestItem($this, $fun, $opts);
         $this->testItems[] = $ti;

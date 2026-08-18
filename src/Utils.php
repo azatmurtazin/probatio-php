@@ -42,23 +42,6 @@ class Utils
         return substr_compare($haystack, $needle, -$needleLength, $needleLength) === 0;
     }
 
-    /**
-     * getCaller
-     * @return array{string|null, string|null, int}
-     */
-    public static function getCaller($lvl = 1): array
-    {
-        $caller = [null, null];
-        $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, $lvl + 1);
-        if (isset($trace[$lvl])) {
-            $file = $trace[$lvl]["file"] ?? null;
-            $file = self::maybeRemoveCwd($file);
-            $line = $trace[$lvl]["line"] ?? null;
-            $caller = [$file, $line];
-        }
-        return $caller;
-    }
-
     public static function maybeRemoveCwd(?string $path): ?string
     {
         $cwd = getcwd() . '/';

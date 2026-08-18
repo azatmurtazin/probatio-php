@@ -17,6 +17,8 @@ class TestItem
     /** @var \Exception|null */
     protected $error = null;
 
+    use Assertions;
+
     /**
      * __construct
      * @param TestCase $tc
