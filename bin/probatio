@@ -1,0 +1,19 @@
+#!/usr/bin/env php
+<?php
+
+use Probatio\ProbatioCli;
+
+// Robust autoload detection (checks local vs vendor installation)
+$autoloadPaths = [
+    __DIR__ . '/../vendor/autoload.php',       // Standalone project
+    __DIR__ . '/../../../autoload.php'         // Installed as dependency inside vendor/bin/
+];
+
+foreach ($autoloadPaths as $path) {
+    if (file_exists($path)) {
+        require_once $path;
+        break;
+    }
+}
+
+(new ProbatioCli())->run();

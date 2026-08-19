@@ -12,11 +12,14 @@
             "dist": {
                 "type": "path",
                 "url": "..",
-                "reference": "59e17f967df62accc0f61624a99725df331bc73a"
+                "reference": "ee75f4bda758dff91c0e612679b6e8942f20b0d7"
             },
             "require": {
                 "php": ">=7.2"
             },
+            "bin": [
+                "bin/probatio"
+            ],
             "type": "library",
             "autoload": {
                 "psr-4": {
