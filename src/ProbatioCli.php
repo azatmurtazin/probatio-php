@@ -8,7 +8,11 @@ class ProbatioCli
 {
     public function run()
     {
-        echo "ProbatioCli::run()\n";
+        $cwd = getcwd();
+        $mainFile = "$cwd/tests/tests.php";
+        TestSuite::getInstance()
+            ->setMainFile($mainFile)
+            ->registerTests()
+            ->run();
     }
-
 }

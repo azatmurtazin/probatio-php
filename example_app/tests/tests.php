@@ -4,6 +4,4 @@ declare(strict_types=1);
 
 require_once __DIR__."/../vendor/autoload.php";
 
-Probatio\TestSuite::getInstance()
-    ->setMainFile(__FILE__)
-    ->maybeRunAllTests();
+echo "### Probatio configs will be here\n";

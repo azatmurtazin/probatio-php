@@ -6,6 +6,8 @@ namespace Probatio;
 
 class TestSuite
 {
+    public const BIN_PATH = "vendor/bin/probatio";
+
     /** @var self|null */
     protected static $instance = null;
 
@@ -13,8 +15,8 @@ class TestSuite
     protected $mainFile = "";
     /** @var string[] */
     protected $cliArgs = [];
-    /** @var string */
-    protected $path = "";
+    /** @var string[] */
+    protected $tcFiles = [];
     /** @var TestCase[] */
     protected $testCases = [];
     /** @var array */
@@ -35,9 +37,12 @@ class TestSuite
     {
         global $argv;
         $this->cliArgs = $argv;
-
-        $this->path = realpath($this->cliArgs[0]);
-        $this->path = Utils::maybeRemoveCwd($this->path);
+        \array_shift($this->cliArgs);
+        foreach ($this->cliArgs as $cliArg) {
+            if (Utils::isTestCaseFile($cliArg)) {
+                $this->tcFiles[] = $cliArg;
+            }
+        }
     }
 
     public function setMainFile(string $mainFile): self
@@ -51,19 +56,26 @@ class TestSuite
         return $this->ok;
     }
 
-    public function maybeRunAllTests(): void
+    public function registerTests(): self
     {
-        $ts = $this;
-        \register_shutdown_function(function () use ($ts) {
-            $ts->runRegisteredTests()->printSummary();
-            if (!$ts->isOk()) {
-                exit(1);
-            }
-        });
-
-        if ($this->path === $this->mainFile) {
+        if (empty($this->tcFiles)) {
             echo "run all tests\n\n";
             $this->registerAllTests();
+        } else {
+            echo "run test cases: ".implode(", ", $this->tcFiles)."\n\n";
+            foreach ($this->tcFiles as $tcFile) {
+                $this->registerTestCase($tcFile);
+            };
+        }
+
+        return $this;
+    }
+
+    public function run()
+    {
+        $this->runRegisteredTests()->printSummary();
+        if (!$this->isOk()) {
+            exit(1);
         }
     }
 
@@ -89,6 +101,15 @@ class TestSuite
                 require_once $testFile;
             })();
         }
+
+        return $this;
+    }
+
+    public function registerTestCase(string $path): self
+    {
+        (function () use ($path) {
+            require_once $path;
+        })();
 
         return $this;
     }
@@ -135,7 +156,7 @@ class TestSuite
         foreach ($iterator as $file) {
             if (!$file->isDir()) {
                 $filePath = $file->getPathname();
-                if (Utils::endsWith($filePath, "_test.php") || Utils::endsWith($filePath, "_tests.php")) {
+                if (Utils::isTestCaseFile($filePath)) {
                     $fileList[] = $file->getPathname();
                 }
             }

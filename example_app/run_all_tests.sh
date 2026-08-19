@@ -1,6 +1,6 @@
 #!/bin/bash
 
-output=$(php ./tests/tests.php)
+output=$(./vendor/bin/probatio)
 exit_code=$?
 last_line=$(echo "$output" | tail -n 1)
 search_string="some tests failed"

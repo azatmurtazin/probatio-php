@@ -17,4 +17,4 @@ example-app-tests:
 # Example app: calculator tests
 [working-directory(example_app_dir)]
 example-app-calc-tests:
-  php tests/services/calculator_test.php
+  ./vendor/bin/probatio tests/services/calculator_test.php

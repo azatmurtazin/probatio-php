@@ -55,4 +55,9 @@ class Utils
     {
         return $name !== null ? "$name ($file:$line)" : "$file:$line";
     }
+
+    public static function isTestCaseFile(string $path): bool
+    {
+        return is_file($path) && preg_match("/(\w+(_test|Test)(s?))\.php$/", $path);
+    }
 }
