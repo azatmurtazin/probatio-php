@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace ExampleApp\Services;
+namespace ExampleApp;
 
 class Calculator
 {

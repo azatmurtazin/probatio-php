@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace ExampleApp\Services;
+namespace ExampleApp;
 
-class ExampleService
+class Greeter
 {
     public function greet(string $name = "world"): string
     {

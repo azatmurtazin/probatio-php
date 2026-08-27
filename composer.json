@@ -13,8 +13,8 @@
             "Probatio\\": "src/"
         },
         "files": [
-            "src/global_helpers.php",
-            "src/Helpers.php"
+            "src/GlobalFunctions.php",
+            "src/Functions.php"
         ]
     },
     "bin": [

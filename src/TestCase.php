@@ -8,9 +8,13 @@ class TestCase
 {
     use Assertions;
 
-    /** @var array */
-    protected $opts = [];
-    /** @var array */
+    /** @var ?TestCase */
+    protected $parent = null;
+    /** @var ?string */
+    protected $name = null;
+    /** @var Caller */
+    protected $caller;
+    /** @var array<string, mixed> */
     protected $assigns = [];
     /** @var TestItem[] */
     protected $testItems = [];
@@ -25,24 +29,17 @@ class TestCase
     /** @var TestItem[] */
     protected $failures = [];
 
-    public function __construct(array $opts = [])
+    public function __construct(?string $name, Caller $caller, ?TestCase $parent = null)
     {
-        $this->opts = $opts;
-    }
-
-    public function getName(): ?string
-    {
-        return $this->opts["name"] ?? null;
+        $this->name = $name;
+        $this->caller = $caller;
+        $this->parent = $parent;
     }
 
     public function getFile(): ?string
     {
-        return $this->opts["file"] ?? null;
-    }
-
-    public function getLine(): ?int
-    {
-        return $this->opts["line"] ?? null;
+        [$file] = $this->caller->fl();
+        return $file;
     }
 
     public function isOk(): bool
@@ -77,16 +74,14 @@ class TestCase
 
     public function run(): self
     {
-        $name = $this->getName();
-        $file = $this->getFile();
-        $line = $this->getLine();
-        $title = Utils::getTitle($name, $file, $line);
+        [$file, $line] = $this->caller->fl();
+        $title = Utils::getTitle($this->name, $file, $line);
         echo "* $title ...\n";
         $this->execBefore();
         $tiKeys = array_keys($this->testItems);
         shuffle($tiKeys);
         foreach ($tiKeys as $tiKey) {
-            $this->testItems[$tiKey]->run();
+            $this->testItems[$tiKey]->run($this);
         }
         $this->execAfter();
         echo "\n";
@@ -102,23 +97,6 @@ class TestCase
     public function after(\Closure $fun): self
     {
         $this->afterFun = $fun;
-        return $this;
-    }
-
-    /**
-     * Summary of test
-     * @param mixed $name
-     * @param \Closure $fun
-     * @param ?Caller $caller
-     * @return TestCase
-     */
-    public function test(?string $name, \Closure $fun, ?Caller $caller = null): self
-    {
-        $caller = $caller ?? new Caller();
-        [$file, $line] = $caller->fl();
-        $opts = ["name" => $name, "file" => $file, "line" => $line];
-        $ti = new TestItem($this, $fun, $opts);
-        $this->testItems[] = $ti;
         return $this;
     }
 

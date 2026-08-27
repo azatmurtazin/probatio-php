@@ -12,7 +12,7 @@ class ProbatioCli
         $mainFile = "$cwd/tests/tests.php";
         TestSuite::getInstance()
             ->setMainFile($mainFile)
-            ->registerTests()
+            ->registerTestFiles()
             ->run();
     }
 }

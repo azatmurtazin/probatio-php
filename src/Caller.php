@@ -6,7 +6,7 @@ namespace Probatio;
 
 class Caller
 {
-    public const GLOBAL_HELPERS_FILE = "src/global_helpers.php";
+    public const GLOBAL_FUNCTIONS_FILE = "src/GlobalFunctions.php";
 
     protected $lvl;
     protected $file;
@@ -21,7 +21,7 @@ class Caller
                 $file = Utils::maybeRemoveCwd($file);
                 $line = $trace[$lvl]["line"] ?? null;
 
-                if (Utils::endsWith($file, self::GLOBAL_HELPERS_FILE)) {
+                if (Utils::endsWith($file, self::GLOBAL_FUNCTIONS_FILE)) {
                     $lvl++;
                     if (isset($trace[$lvl])) {
                         $file = $trace[$lvl]["file"] ?? null;

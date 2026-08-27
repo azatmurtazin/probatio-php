@@ -4,49 +4,40 @@ declare(strict_types=1);
 
 namespace Probatio;
 
-use Closure;
-
-class TestItem
+class TestItem implements ITestNode
 {
-    /** @var TestCase */
-    protected $tc;
+    /** @var ?string */
+    protected $name = null;
     /** @var \Closure */
     protected $fun;
-    /** @var array */
-    protected $opts = [];
+    /** @var Caller */
+    protected $caller;
     /** @var \Exception|null */
     protected $error = null;
 
-    use Assertions;
-
-    /**
-     * __construct
-     * @param TestCase $tc
-     * @param \Closure $fun
-     * @param array $opts
-     */
-    public function __construct(TestCase $tc, \Closure $fun, array $opts = [])
+    public function __construct(?string $name, \Closure $fun, Caller $caller)
     {
-        $this->tc = $tc;
-        $this->opts = $opts;
-        $this->fun = $fun->bindTo($this, __CLASS__);
+        $this->name = $name;
+        $this->caller = $caller;
+        $this->fun = $fun;
     }
 
-    public function run()
+    public function run(TestCase $tc)
     {
-        $name = $this->opts["name"] ?? null;
-        $file = $this->opts["file"] ?? null;
-        $line = $this->opts["line"] ?? null;
-        $title = Utils::getTitle($name, $file, $line);
+        [$file, $line] = $this->caller->fl();
+        $title = Utils::getTitle($this->name, $file, $line);
         echo "  * $title\n";
-        $this->tc->counterInc();
+
+        $fun = $this->fun->bindTo($tc, $tc);
+        $tc->counterInc();
+
         try {
-            ($this->fun)($this->tc);
+            $fun();
             echo "  ✅ ok\n";
-            $this->tc->okCounterInc();
+            $tc->okCounterInc();
         } catch (\Exception $e) {
             $this->error = $e;
-            $this->tc->registerFailure($this);
+            $tc->registerFailure($this);
             echo "  ❌ error: " . $e->getMessage() . "\n";
         }
     }

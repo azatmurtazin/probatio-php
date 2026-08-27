@@ -1,0 +1,66 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Probatio;
+
+class TestRegistry
+{
+    /** @var array<string, TestFile> */
+    protected $testFiles = [];
+
+    /** @var ?TestFile */
+    protected $currentTestFile;
+
+    public function registerTestFile(string $path): self
+    {
+        $this->currentTestFile = new TestFile($path);
+
+        (function () use ($path) {
+            require_once $path;
+        })();
+
+        $this->currentTestFile->finalize();
+        $this->testFiles[$path] = $this->currentTestFile;
+        $this->currentTestFile = null;
+
+        return $this;
+    }
+
+    public function getCurrentFile(): TestFile
+    {
+        if ($this->currentTestFile === null) {
+            throw new \RuntimeException("Current test file not found");
+        }
+        return $this->currentTestFile;
+    }
+
+
+    public function registerGroup(?string $name, \Closure $fun, Caller $caller): self
+    {
+        $this->getCurrentFile()->registerGroup($name, $fun, $caller);
+        return $this;
+    }
+
+    public function registerTestItem(?string $name, \Closure $fun, Caller $caller): self
+    {
+        $this->getCurrentFile()->registerTestItem($name, $fun, $caller);
+        return $this;
+    }
+
+    public function registerHook(TestHook $hook): self
+    {
+        $this->getCurrentFile()->registerHook($hook);
+        return $this;
+    }
+
+    public function runRegisteredTests()
+    {
+        $keys = array_keys($this->testFiles);
+        shuffle($keys);
+
+        foreach ($keys as $key) {
+            $this->testFiles[$key]->runWithTc();
+        }
+    }
+}

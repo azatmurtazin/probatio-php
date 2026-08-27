@@ -13,16 +13,22 @@ class TestSuite
 
     /** @var string */
     protected $mainFile = "";
+
     /** @var string[] */
     protected $cliArgs = [];
+
     /** @var string[] */
     protected $tcFiles = [];
-    /** @var TestCase[] */
-    protected $testCases = [];
+
+    /** @var TestRegistry */
+    protected $registry;
+
     /** @var array */
     protected $oks = [];
+
     /** @var array */
     protected $errors = [];
+
     protected $ok = true;
 
     public static function getInstance(): self
@@ -43,6 +49,7 @@ class TestSuite
                 $this->tcFiles[] = $cliArg;
             }
         }
+        $this->registry = new TestRegistry();
     }
 
     public function setMainFile(string $mainFile): self
@@ -56,15 +63,15 @@ class TestSuite
         return $this->ok;
     }
 
-    public function registerTests(): self
+    public function registerTestFiles(): self
     {
         if (empty($this->tcFiles)) {
             echo "run all tests\n\n";
-            $this->registerAllTests();
+            $this->registerAllTestFiles();
         } else {
             echo "run test cases: ".implode(", ", $this->tcFiles)."\n\n";
             foreach ($this->tcFiles as $tcFile) {
-                $this->registerTestCase($tcFile);
+                $this->registerTestFile($tcFile);
             };
         }
 
@@ -79,50 +86,45 @@ class TestSuite
         }
     }
 
-    public function describe(?string $name, \Closure $fun, ?Caller $caller = null): self
+    public function registerGroup(?string $name, \Closure $fun, Caller $caller): self
     {
-        $caller = $caller ?? new Caller();
-        [$file, $line] = $caller->fl();
-        $opts = ["name" => $name, "file" => $file, "line" => $line];
-        $tc = new TestCase($opts);
-        $fun($tc);
-        $this->testCases[] = $tc;
-
+        $this->registry->registerGroup($name, $fun, $caller);
         return $this;
     }
 
-    public function registerAllTests(): self
+    public function registerTestItem(?string $name, \Closure $fun, Caller $caller): self
+    {
+        $this->registry->registerTestItem($name, $fun, $caller);
+        return $this;
+    }
+
+    public function registerHook(TestHook $hook): self
+    {
+        $this->registry->registerHook($hook);
+        return $this;
+    }
+
+    public function registerAllTestFiles(): self
     {
         $dir = \dirname($this->mainFile);
         $testFiles = $this->getFilesRecursive($dir);
 
         foreach ($testFiles as $testFile) {
-            (function () use ($testFile) {
-                require_once $testFile;
-            })();
+            $this->registerTestFile($testFile);
         }
 
         return $this;
     }
 
-    public function registerTestCase(string $path): self
+    public function registerTestFile(string $path): self
     {
-        (function () use ($path) {
-            require_once $path;
-        })();
-
+        $this->registry->registerTestFile($path);
         return $this;
     }
 
     public function runRegisteredTests(): self
     {
-        $tcKeys = array_keys($this->testCases);
-        shuffle($tcKeys);
-
-        foreach ($tcKeys as $tcKey) {
-            $this->testCases[$tcKey]->run();
-        }
-
+        $this->registry->runRegisteredTests();
         return $this;
     }
 
@@ -135,8 +137,8 @@ class TestSuite
             return $tc->getCounter();
         };
 
-        $oks = array_sum(array_map($okCntFun, $this->testCases));
-        $all = array_sum(array_map($cntFun, $this->testCases));
+        $oks = 0; // array_sum(array_map($okCntFun, $this->testCases));
+        $all = 0; // array_sum(array_map($cntFun, $this->testCases));
 
         if ($oks === $all) {
             echo "✅ summary: [$oks / $all] - all tests are ok\n";
@@ -167,14 +169,15 @@ class TestSuite
     public function runIndividualTest(string $path): self
     {
         echo "run test file: $path\n";
-        $tcKeys = array_keys($this->testCases);
-        shuffle($tcKeys);
-        foreach ($tcKeys as $tcKey) {
-            $tc = $this->testCases[$tcKey];
-            if ($path === $tc->getFile()) {
-                $tc->run();
-            }
-        }
+        $this->registry->runRegisteredTests();
+        // $tcKeys = array_keys($this->testCases);
+        // shuffle($tcKeys);
+        // foreach ($tcKeys as $tcKey) {
+        //     $tc = $this->testCases[$tcKey];
+        //     if ($path === $tc->getFile()) {
+        //         $tc->run();
+        //     }
+        // }
         return $this;
     }
 }

@@ -12,7 +12,7 @@
             "dist": {
                 "type": "path",
                 "url": "..",
-                "reference": "ee75f4bda758dff91c0e612679b6e8942f20b0d7"
+                "reference": "0ca14d48427d1b3ce0c4fa102939f71fb8eb4082"
             },
             "require": {
                 "php": ">=7.2"
@@ -26,8 +26,8 @@
                     "Probatio\\": "src/"
                 },
                 "files": [
-                    "src/global_helpers.php",
-                    "src/Helpers.php"
+                    "src/GlobalFunctions.php",
+                    "src/Functions.php"
                 ]
             },
             "license": [

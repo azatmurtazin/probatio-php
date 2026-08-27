@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 
-require_once __DIR__."/../tests.php";
-
 test("global test() and expect()", function() {
     $mul = function($a, $b) { return $a * $b; };
     $expected = 15;
@@ -12,6 +10,6 @@ test("global test() and expect()", function() {
 });
 
 test("global assertEq()", function() {
-    assertEq(12, 5 + 7);
-    assertTrue(empty([]));
+    $this->assertEq(12, 5 + 7);
+    $this->assertTrue(empty([]));
 });
