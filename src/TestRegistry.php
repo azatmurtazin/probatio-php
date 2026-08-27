@@ -60,7 +60,22 @@ class TestRegistry
         shuffle($keys);
 
         foreach ($keys as $key) {
-            $this->testFiles[$key]->runWithTc();
+            $testFile = $this->testFiles[$key];
+            $this->currentTestFile = $testFile;
+            $testFile->runWithTc();
+            $this->currentTestFile = null;
         }
+    }
+
+    public function getOkTests(): int
+    {
+        $fun = function(TestFile $tf) { return $tf->getOkTests(); };
+        return \array_sum(\array_map($fun, $this->testFiles));
+    }
+
+    public function getErrTests(): int
+    {
+        $fun = function(TestFile $tf) { return $tf->getErrTests(); };
+        return \array_sum(\array_map($fun, $this->testFiles));
     }
 }

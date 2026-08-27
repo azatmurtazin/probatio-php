@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+require_once __DIR__ . "/../tests.php";
+
 use ExampleApp\Calculator;
 
 describe("tests of add and sub", function() {

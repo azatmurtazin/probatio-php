@@ -18,6 +18,12 @@ class TestFile
     /** @var ?TestCase */
     protected $tc;
 
+    /** @var int */
+    protected $okTests = 0;
+
+    /** @var int */
+    protected $errTests = 0;
+
     public function __construct(string $path)
     {
         $this->path = $path;
@@ -67,7 +73,33 @@ class TestFile
     {
         if ($this->rootGroup === null) return;
 
+        echo "run {$this->path}\n";
+
         $this->tc = new TestCase(null, $this->rootGroup->getCaller());
         $this->rootGroup->run($this->tc);
+
+        echo "\n";
+    }
+
+    public function incrOkTests(): self
+    {
+        $this->okTests++;
+        return $this;
+    }
+
+    public function incrErrTests(): self
+    {
+        $this->errTests++;
+        return $this;
+    }
+
+    public function getOkTests(): int
+    {
+        return $this->okTests;
+    }
+
+    public function getErrTests(): int
+    {
+        return $this->okTests;
     }
 }

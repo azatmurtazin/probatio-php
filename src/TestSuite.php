@@ -58,18 +58,13 @@ class TestSuite
         return $this;
     }
 
-    public function isOk()
-    {
-        return $this->ok;
-    }
-
     public function registerTestFiles(): self
     {
         if (empty($this->tcFiles)) {
             echo "run all tests\n\n";
             $this->registerAllTestFiles();
         } else {
-            echo "run test cases: ".implode(", ", $this->tcFiles)."\n\n";
+            echo "run test files: ".implode(", ", $this->tcFiles)."\n\n";
             foreach ($this->tcFiles as $tcFile) {
                 $this->registerTestFile($tcFile);
             };
@@ -80,8 +75,8 @@ class TestSuite
 
     public function run()
     {
-        $this->runRegisteredTests()->printSummary();
-        if (!$this->isOk()) {
+        $isOk = $this->runRegisteredTests()->printSummary();
+        if (!$isOk) {
             exit(1);
         }
     }
@@ -128,26 +123,25 @@ class TestSuite
         return $this;
     }
 
-    public function printSummary(): self
+    /**
+     * printSummary
+     * @return bool is ok or not
+     */
+    public function printSummary(): bool
     {
-        $okCntFun = function (TestCase $tc) {
-            return $tc->getOkCounter();
-        };
-        $cntFun = function (TestCase $tc) {
-            return $tc->getCounter();
-        };
+        $okTests = $this->registry->getOkTests();
+        $errTests = $this->registry->getErrTests();
+        $allTests = $okTests + $errTests;
+        $isOk = $errTests === 0;
 
-        $oks = 0; // array_sum(array_map($okCntFun, $this->testCases));
-        $all = 0; // array_sum(array_map($cntFun, $this->testCases));
-
-        if ($oks === $all) {
-            echo "✅ summary: [$oks / $all] - all tests are ok\n";
+        if ($isOk) {
+            echo "✅ summary: [$okTests / $allTests] - all tests are ok\n";
         } else {
             $this->ok = false;
-            echo "❌ summary: [ $oks / $all ] - some tests failed \n";
+            echo "❌ summary: [$okTests / $allTests] - tests failed: $errTests\n";
         }
 
-        return $this;
+        return $isOk;
     }
 
     public function getFilesRecursive(string $path): array
@@ -166,18 +160,15 @@ class TestSuite
         return $fileList;
     }
 
-    public function runIndividualTest(string $path): self
+    public function incrOkTests(): self
     {
-        echo "run test file: $path\n";
-        $this->registry->runRegisteredTests();
-        // $tcKeys = array_keys($this->testCases);
-        // shuffle($tcKeys);
-        // foreach ($tcKeys as $tcKey) {
-        //     $tc = $this->testCases[$tcKey];
-        //     if ($path === $tc->getFile()) {
-        //         $tc->run();
-        //     }
-        // }
+        $this->registry->getCurrentFile()->incrOkTests();
+        return $this;
+    }
+
+    public function incrErrTests(): self
+    {
+        $this->registry->getCurrentFile()->incrErrTests();
         return $this;
     }
 }

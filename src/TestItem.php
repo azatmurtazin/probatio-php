@@ -29,15 +29,17 @@ class TestItem implements ITestNode
         echo "  * $title\n";
 
         $fun = $this->fun->bindTo($tc, $tc);
-        $tc->counterInc();
+        // $tc->counterInc();
 
         try {
             $fun();
             echo "  ✅ ok\n";
-            $tc->okCounterInc();
-        } catch (\Exception $e) {
+            TestSuite::getInstance()->incrOkTests();
+            // $tc->okCounterInc();
+        } catch (\Throwable $e) {
             $this->error = $e;
-            $tc->registerFailure($this);
+            // $tc->registerFailure($this);
+            TestSuite::getInstance()->incrErrTests();
             echo "  ❌ error: " . $e->getMessage() . "\n";
         }
     }

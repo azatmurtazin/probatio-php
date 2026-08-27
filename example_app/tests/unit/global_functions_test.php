@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+require_once __DIR__ . "/../tests.php";
+
 test("global test() and expect()", function() {
     $mul = function($a, $b) { return $a * $b; };
     $expected = 15;

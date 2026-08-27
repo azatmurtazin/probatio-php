@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+require_once __DIR__ . "/../tests.php";
+
 use ExampleApp\Calculator;
 use function Probatio\Functions\test;
 
