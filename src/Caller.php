@@ -8,41 +8,41 @@ class Caller
 {
     public const GLOBAL_FUNCTIONS_FILE = "src/GlobalFunctions.php";
 
-    protected $lvl;
+    protected $level;
     protected $file;
     protected $line;
 
-    public function __construct($lvl = 1, $file = null, $line = null)
+    public function __construct($level = 1, $file = null, $line = null)
     {
         if ($file === null && $line === null) {
-            $trace = \debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, $lvl + 2);
-            if (isset($trace[$lvl])) {
-                $file = $trace[$lvl]["file"] ?? null;
+            $trace = \debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, $level + 2);
+            if (isset($trace[$level])) {
+                $file = $trace[$level]["file"] ?? null;
                 $file = Utils::maybeRemoveCwd($file);
-                $line = $trace[$lvl]["line"] ?? null;
+                $line = $trace[$level]["line"] ?? null;
 
                 if (Utils::endsWith($file, self::GLOBAL_FUNCTIONS_FILE)) {
-                    $lvl++;
-                    if (isset($trace[$lvl])) {
-                        $file = $trace[$lvl]["file"] ?? null;
+                    $level++;
+                    if (isset($trace[$level])) {
+                        $file = $trace[$level]["file"] ?? null;
                         $file = Utils::maybeRemoveCwd($file);
-                        $line = $trace[$lvl]["line"] ?? null;
+                        $line = $trace[$level]["line"] ?? null;
                     }
                 }
             }
         }
 
-        $this->lvl = $lvl;
+        $this->level = $level;
         $this->file = $file;
         $this->line = $line;
     }
 
     /**
-     * fl
-     * @return array{string|null, int|null, int}
+     * toArray() - converts caller object to array [$file, $line, $level]
+     * @return array{?string, ?int, int}
      */
-    public function fl(): array
+    public function toArray(): array
     {
-        return [$this->file, $this->line, $this->lvl];
+        return [$this->file, $this->line, $this->level];
     }
 }

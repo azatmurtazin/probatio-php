@@ -79,15 +79,15 @@ class TestSuite
         }
     }
 
-    public function registerGroup(?string $name, \Closure $fun, Caller $caller): self
+    public function registerGroup(?string $name, \Closure $fun): self
     {
-        $this->registry->registerGroup($name, $fun, $caller);
+        $this->registry->registerGroup($name, $fun);
         return $this;
     }
 
-    public function registerTestItem(?string $name, \Closure $fun, Caller $caller): self
+    public function registerTestItem(?string $name, \Closure $fun): self
     {
-        $this->registry->registerTestItem($name, $fun, $caller);
+        $this->registry->registerTestItem($name, $fun);
         return $this;
     }
 

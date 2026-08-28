@@ -11,26 +11,17 @@ class TestCase
     /** @var ?TestCase */
     protected $parent = null;
 
-    /** @var ?string */
-    protected $name = null;
-
-    /** @var Caller */
-    protected $caller;
-
     /** @var array<string, mixed> */
     protected $assigns = [];
 
-    public function __construct(?string $name, Caller $caller, ?TestCase $parent = null)
+    public function __construct(?TestCase $parent = null)
     {
-        $this->name = $name;
-        $this->caller = $caller;
         $this->parent = $parent;
     }
 
-    public function getFile(): ?string
+    public function getParent(): ?TestCase
     {
-        [$file] = $this->caller->fl();
-        return $file;
+        return $this->parent;
     }
 
     public function get(string $key)

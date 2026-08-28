@@ -19,11 +19,16 @@ class TestHook implements ITestNode
         self::AFTER_EACH,
     ];
 
+    /** @var string */
     protected $type;
-    protected $fun;
-    protected $caller;
 
-    public function __construct(string $type, \Closure $fun, Caller $caller)
+    /** @var \Closure */
+    protected $fun;
+
+    /** @var CodeLoc */
+    protected $loc;
+
+    public function __construct(string $type, \Closure $fun)
     {
         if (!\in_array($type, self::ALLOWED_TYPES)) {
             throw new RuntimeException("Not allowed hook type: $type");
@@ -31,7 +36,7 @@ class TestHook implements ITestNode
 
         $this->type = $type;
         $this->fun = $fun;
-        $this->caller = $caller;
+        $this->loc = CodeLoc::fromFun($fun);
     }
 
     public function getType(): string

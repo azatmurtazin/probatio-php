@@ -36,15 +36,15 @@ class TestRegistry
     }
 
 
-    public function registerGroup(?string $name, \Closure $fun, Caller $caller): self
+    public function registerGroup(?string $name, \Closure $fun): self
     {
-        $this->getCurrentFile()->registerGroup($name, $fun, $caller);
+        $this->getCurrentFile()->registerGroup($name, $fun);
         return $this;
     }
 
-    public function registerTestItem(?string $name, \Closure $fun, Caller $caller): self
+    public function registerTestItem(?string $name, \Closure $fun): self
     {
-        $this->getCurrentFile()->registerTestItem($name, $fun, $caller);
+        $this->getCurrentFile()->registerTestItem($name, $fun);
         return $this;
     }
 

@@ -8,25 +8,28 @@ class TestItem implements ITestNode
 {
     /** @var ?string */
     protected $name = null;
+
     /** @var \Closure */
     protected $fun;
-    /** @var Caller */
-    protected $caller;
+
+    /** @var CodeLoc */
+    protected $loc;
+
     /** @var \Exception|null */
     protected $error = null;
 
-    public function __construct(?string $name, \Closure $fun, Caller $caller)
+    public function __construct(?string $name, \Closure $fun)
     {
         $this->name = $name;
-        $this->caller = $caller;
         $this->fun = $fun;
+        $this->loc = CodeLoc::fromFun($fun);
     }
 
     public function run(TestCase $tc)
     {
-        [$file, $line] = $this->caller->fl();
-        $title = Utils::getTitle($this->name, $file, $line);
-        echo "  * $title\n";
+        [$file, $start, $end] = $this->loc->toArray();
+        $title = Utils::getTitle($this->name, $file, $start, $end);
+        echo "  🔹 test $title\n";
 
         $fun = $this->fun->bindTo($tc, $tc);
 
@@ -37,7 +40,8 @@ class TestItem implements ITestNode
         } catch (\Throwable $e) {
             $this->error = $e;
             TestSuite::getInstance()->incrErrTests();
-            echo "  ❌ error: " . $e->getMessage() . "\n";
+            $errClass = \get_class($e);
+            echo "    ❌ $errClass: " . $e->getMessage() . "\n";
         }
     }
 }

@@ -51,9 +51,10 @@ class Utils
         return $path;
     }
 
-    public static function getTitle($name, $file, $line): string
+    public static function getTitle(?string $name, string $file, int $start, ?int $end = null): string
     {
-        return $name !== null ? "$name ($file:$line)" : "$file:$line";
+        $lines = $end !== null ? "$start-$end" : (string)$start;
+        return $name !== null ? "$name ($file:$lines)" : "$file:$lines";
     }
 
     public static function isTestCaseFile(string $path): bool

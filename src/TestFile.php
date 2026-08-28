@@ -32,7 +32,7 @@ class TestFile
     public function getCurrentGroup(): TestGroup
     {
         if ($this->currentGroup === null) {
-            $this->rootGroup = new TestGroup(null, null, new Caller());
+            $this->rootGroup = new TestGroup();
             $this->currentGroup = $this->rootGroup;
         }
 
@@ -44,10 +44,10 @@ class TestFile
         // do something useful
     }
 
-    public function registerGroup(?string $name, \Closure $fun, Caller $caller): self
+    public function registerGroup(?string $name, \Closure $fun): self
     {
         $oldCurrentGroup = $this->getCurrentGroup();
-        $newGroup = $oldCurrentGroup->addNestedGroup($name, $fun, $caller);
+        $newGroup = $oldCurrentGroup->addNestedGroup($name, $fun);
         $this->currentGroup = $newGroup;
         (function() use($fun) {
             $fun();
@@ -63,9 +63,9 @@ class TestFile
         return $this;
     }
 
-    public function registerTestItem(?string $name, \Closure $fun, Caller $caller): self
+    public function registerTestItem(?string $name, \Closure $fun): self
     {
-        $this->getCurrentGroup()->addTestItem($name, $fun, $caller);
+        $this->getCurrentGroup()->addTestItem($name, $fun);
         return $this;
     }
 
@@ -73,9 +73,9 @@ class TestFile
     {
         if ($this->rootGroup === null) return;
 
-        echo "run {$this->path}\n";
+        echo "📄 run {$this->path}\n";
 
-        $this->tc = new TestCase(null, $this->rootGroup->getCaller());
+        $this->tc = new TestCase();
         $this->rootGroup->run($this->tc);
 
         echo "\n";

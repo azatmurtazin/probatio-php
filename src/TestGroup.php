@@ -23,23 +23,14 @@ class TestGroup implements ITestNode
     /** @var \Closure */
     protected $fun;
 
-    /** @var Caller */
-    protected $caller;
+    /** @var ?CodeLoc */
+    protected $loc;
 
-    public function __construct(?string $name, ?\Closure $fun, Caller $caller)
+    public function __construct(?string $name = null, ?\Closure $fun = null)
     {
         $this->name = $name;
         $this->fun = $fun;
-        $this->caller = $caller;
-    }
-
-    /**
-     * getCaller
-     * @return Caller
-     */
-    public function getCaller()
-    {
-        return $this->caller;
+        $this->loc = CodeLoc::fromFun($fun);
     }
 
     public function addHook(TestHook $hook)
@@ -47,9 +38,9 @@ class TestGroup implements ITestNode
         $this->hooks[$hook->getType()][] = $hook;
     }
 
-    public function addTestItem(?string $name, \Closure $fun, Caller $caller)
+    public function addTestItem(?string $name, \Closure $fun)
     {
-        $testItem = new TestItem($name, $fun, $caller);
+        $testItem = new TestItem($name, $fun);
         $this->nodes[] = $testItem;
     }
 
@@ -57,12 +48,11 @@ class TestGroup implements ITestNode
      * addNestedGroup
      * @param ?string $name
      * @param \Closure $fun
-     * @param Caller $caller
      * @return TestGroup new nested group
      */
-    public function addNestedGroup(?string $name, \Closure $fun, Caller $caller)
+    public function addNestedGroup(?string $name, \Closure $fun)
     {
-        $group = new TestGroup($name, $fun, $caller);
+        $group = new TestGroup($name, $fun);
         $this->nodes[] = $group;
         return $group;
     }
@@ -70,13 +60,28 @@ class TestGroup implements ITestNode
     public function run(TestCase $tc)
     {
         // run hooks and nested nodes (other groups or test items)
+        if ($this->loc) {
+            [$file, $start, $end] = $this->loc->toArray();
+            $title = Utils::getTitle($this->name, $file, $start, $end);
+            echo "📦 test group: $title\n";
+        }
+
         $this->runHooks(TestHook::BEFORE_ALL, $tc);
         foreach ($this->nodes as $node) {
             $this->runHooks(TestHook::BEFORE_EACH, $tc);
-            $node->run($tc);
+            if ($node instanceof TestGroup) {
+                $newTc = new TestCase($tc);
+                $node->run($newTc);
+            } else {
+                $node->run($tc);
+            }
             $this->runHooks(TestHook::AFTER_EACH, $tc);
         }
         $this->runHooks(TestHook::AFTER_ALL, $tc);
+
+        if ($this->loc) {
+            echo "\n";
+        }
     }
 
     protected function runHooks(string $type, TestCase $tc)
