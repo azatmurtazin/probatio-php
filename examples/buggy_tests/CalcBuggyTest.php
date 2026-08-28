@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use Probatio\Examples\Calculator;
 
 test("floating-point rounding error", function() {

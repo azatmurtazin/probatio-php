@@ -1,0 +1,3 @@
+<?php
+
+// configs for buggy tests will be here...

@@ -1,16 +1,20 @@
 list:
   @just --list
 
-probatio_bin := "./bin/probatio"
+PROBATIO_BIN := "./bin/probatio"
+export PROBATIO_MAIN_FILE := "examples/tests/tests.php"
 
 # Examples: all tests
 examples-all-tests:
-  PROBATIO_MAIN_FILE="examples/tests/tests.php" {{probatio_bin}}
+   {{PROBATIO_BIN}}
 
 # Examples: greeter test
 examples-greeter-test:
-  {{probatio_bin}} examples/tests/Unit/GreeterTest.php
+  {{PROBATIO_BIN}} examples/tests/Unit/GreeterTest.php
 
 # Examples: calculator test
 examples-calc-test:
-  {{probatio_bin}} examples/tests/Unit/CalculatorTest.php
+  {{PROBATIO_BIN}} examples/tests/Unit/CalculatorTest.php
+
+examples-buggy-tests:
+  ./scripts/run-buggy-tests.sh
