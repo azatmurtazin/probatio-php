@@ -1,20 +1,16 @@
-# List available commands
 list:
-  just --list
+  @just --list
 
-example_app_dir := "example_app"
+probatio_bin := "./bin/probatio"
 
-# Example app: install deps
-[working-directory(example_app_dir)]
-example-app-install:
-  composer install
+# Examples: all tests
+examples-all-tests:
+  {{probatio_bin}} --tests-dir=examples/tests
 
-# Example app: run tests
-[working-directory(example_app_dir)]
-example-app-tests:
-  ./run_all_tests.sh
+# Examples: greeter test
+examples-greeter-test:
+  {{probatio_bin}} examples/tests/Unit/GreeterTest.php
 
-# Example app: calculator tests
-[working-directory(example_app_dir)]
-example-app-calc-tests:
-  ./vendor/bin/probatio tests/services/calculator_test.php
+# Examples: calculator test
+examples-calc-test:
+  {{probatio_bin}} examples/tests/Unit/CalculatorTest.php

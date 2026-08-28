@@ -6,8 +6,6 @@ namespace Probatio;
 
 class TestSuite
 {
-    public const BIN_PATH = "vendor/bin/probatio";
-
     /** @var self|null */
     protected static $instance = null;
 
@@ -146,6 +144,11 @@ class TestSuite
 
     public function getFilesRecursive(string $path): array
     {
+        if (!is_dir($path)) {
+            echo "warning: '$path' is not a directory\n";
+            return [];
+        }
+
         $fileList = [];
         $directory = new \RecursiveDirectoryIterator($path);
         $iterator = new \RecursiveIteratorIterator($directory);

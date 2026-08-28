@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace ExampleApp;
+namespace Probatio\Examples;
 
 class Calculator
 {

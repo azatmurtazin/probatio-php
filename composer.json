@@ -10,7 +10,8 @@
     ],
     "autoload": {
         "psr-4": {
-            "Probatio\\": "src/"
+            "Probatio\\": "src/",
+            "Probatio\\Examples\\": "examples/src/"
         },
         "files": [
             "src/GlobalFunctions.php",

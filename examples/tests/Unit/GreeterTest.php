@@ -2,9 +2,7 @@
 
 declare(strict_types=1);
 
-require_once __DIR__ . "/../tests.php";
-
-use ExampleApp\Greeter;
+use Probatio\Examples\Greeter;
 
 describe("tests of Greeter", function() {
     beforeAll(function() {
@@ -15,7 +13,7 @@ describe("tests of Greeter", function() {
         $this->unset("greeter");
     });
 
-    test("test John", function() {
+    test("with John", function() {
         /** @var Greeter */
         $service = $this->get("greeter");
 
@@ -24,28 +22,16 @@ describe("tests of Greeter", function() {
         $expected = "Hello, John!";
         $actual = $service->greet($name);
 
-        $this->assertEq($expected, $actual);
+        expect($actual)->toBe($expected);
     });
 
-    test("test anon", function() {
+    test("with anon", function() {
         /** @var Greeter */
         $service = $this->get("greeter");
 
         $expected = "Hello, world!";
         $actual = $service->greet();
 
-        $this->assertEq($expected, $actual);
-    });
-
-    test("test Sam", function() {
-        /** @var Greeter */
-        $service = $this->get("greeter");
-
-        $name = "Sam";
-
-        $expected = "Hi, Sam";
-        $actual = $service->greet($name);
-
-        $this->assertEq($expected, $actual);
+        expect($actual)->toBe($expected);
     });
 });
