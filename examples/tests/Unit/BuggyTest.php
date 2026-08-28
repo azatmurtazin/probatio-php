@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use Probatio\Examples\Calculator;
 
-test("", function() {
+test("floating-point rounding error", function() {
     $a = 0.1;
     $b = 0.2;
     $c = 0.3;

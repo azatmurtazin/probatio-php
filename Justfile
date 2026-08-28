@@ -5,7 +5,7 @@ probatio_bin := "./bin/probatio"
 
 # Examples: all tests
 examples-all-tests:
-  {{probatio_bin}} --tests-dir=examples/tests
+  PROBATIO_MAIN_FILE="examples/tests/tests.php" {{probatio_bin}}
 
 # Examples: greeter test
 examples-greeter-test:

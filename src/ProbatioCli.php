@@ -8,8 +8,15 @@ class ProbatioCli
 {
     public function run()
     {
-        $cwd = getcwd();
-        $mainFile = "$cwd/tests/tests.php";
+        try {
+            $version = \Composer\InstalledVersions::getPrettyVersion('azatmurtazin/probatio-php');
+            echo "Probatio: $version\n";
+        } catch (\OutOfBoundsException $e) {
+            echo "Probatio: unreleased";
+        }
+
+        $mainFile = Env::getStr("PROBATIO_MAIN_FILE", "tests/tests.php");
+
         TestSuite::getInstance()
             ->setMainFile($mainFile)
             ->registerTestFiles()
