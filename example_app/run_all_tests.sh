@@ -3,7 +3,7 @@
 output=$(./vendor/bin/probatio)
 exit_code=$?
 last_line=$(echo "$output" | tail -n 1)
-search_string="some tests failed"
+search_string="tests failed:"
 
 echo "$output"
 echo ""

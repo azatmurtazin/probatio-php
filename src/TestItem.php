@@ -29,16 +29,13 @@ class TestItem implements ITestNode
         echo "  * $title\n";
 
         $fun = $this->fun->bindTo($tc, $tc);
-        // $tc->counterInc();
 
         try {
             $fun();
             echo "  ✅ ok\n";
             TestSuite::getInstance()->incrOkTests();
-            // $tc->okCounterInc();
         } catch (\Throwable $e) {
             $this->error = $e;
-            // $tc->registerFailure($this);
             TestSuite::getInstance()->incrErrTests();
             echo "  ❌ error: " . $e->getMessage() . "\n";
         }

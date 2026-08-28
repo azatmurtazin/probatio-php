@@ -100,6 +100,6 @@ class TestFile
 
     public function getErrTests(): int
     {
-        return $this->okTests;
+        return $this->errTests;
     }
 }
