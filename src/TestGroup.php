@@ -79,9 +79,7 @@ class TestGroup implements ITestNode
         }
         $this->runHooks(TestHook::AFTER_ALL, $tc);
 
-        if ($this->loc) {
-            echo "\n";
-        }
+        echo "\n";
     }
 
     protected function runHooks(string $type, TestCase $tc)

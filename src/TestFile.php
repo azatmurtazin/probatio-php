@@ -73,12 +73,10 @@ class TestFile
     {
         if ($this->rootGroup === null) return;
 
-        echo "📄 run {$this->path}\n";
+        echo "📄 run {$this->path}\n\n";
 
         $this->tc = new TestCase();
         $this->rootGroup->run($this->tc);
-
-        echo "\n";
     }
 
     public function incrOkTests(): self
