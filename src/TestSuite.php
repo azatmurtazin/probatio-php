@@ -56,13 +56,18 @@ class TestSuite
         return $this;
     }
 
+    public function getRegistry(): TestRegistry
+    {
+        return $this->registry;
+    }
+
     public function registerTestFiles(): self
     {
         if (empty($this->tcFiles)) {
-            echo "run all tests\n\n";
+            Printer::info("run all tests\n");
             $this->registerAllTestFiles();
         } else {
-            echo "run test files: ".implode(", ", $this->tcFiles)."\n\n";
+            Printer::info("run test files: ".implode(", ", $this->tcFiles)."\n");
             foreach ($this->tcFiles as $tcFile) {
                 $this->registerTestFile($tcFile);
             };
@@ -133,10 +138,10 @@ class TestSuite
         $isOk = $errTests === 0;
 
         if ($isOk) {
-            echo "✅ summary: [$okTests / $allTests] - all tests are ok\n";
+            Printer::success("summary: [$okTests / $allTests] - all tests are ok");
         } else {
             $this->ok = false;
-            echo "❌ summary: [$okTests / $allTests] - tests failed: $errTests\n";
+            Printer::error("summary: [$okTests / $allTests] - tests failed: $errTests");
         }
 
         return $isOk;
@@ -145,7 +150,7 @@ class TestSuite
     public function getFilesRecursive(string $path): array
     {
         if (!is_dir($path)) {
-            echo "warning: '$path' is not a directory\n";
+            Printer::warn("'$path' is not a directory");
             return [];
         }
 

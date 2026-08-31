@@ -8,28 +8,36 @@ trait Assertions
 {
     public function assertEq($expected, $actual)
     {
-        if ($actual === $expected) {
-            echo "    ✅ assertion is ok\n";
-            return;
-        }
-
-        $ac = var_export($actual, true);
-        $ex = var_export($expected, true);
-        $caller = new Caller();
-        [$file, $line] = $caller->toArray();
-        throw new AssertionError("$ac is not equal to $ex ($file:$line)");
+        return $expected === $actual
+            ? $this->ok()
+            : $this->fail("{$this->vd($actual)} is not equals to {$this->vd($expected)}");
     }
 
     public function assertTrue($value)
     {
-        if ($value === true) {
-            echo "    ✅ assertion is ok\n";
-            return;
-        }
+        return $value === true
+            ? $this->ok()
+            : $this->fail("{$this->vd($value)} is not true");
+    }
 
-        $val = var_export($value, true);
-        $caller = new Caller();
-        [$file, $line] = $caller->toArray();
-        throw new AssertionError("$val is not true ($file:$line)");
+    protected function vd($x, $max = 100): string
+    {
+        $s = var_export($x, true);
+        if (mb_strlen($s) > $max) {
+            return mb_substr($s, 0, $max) . '...';
+        } else {
+            return $s;
+        }
+    }
+
+    protected function ok()
+    {
+        Printer::noticeOk("assertion is ok");
+        return true;
+    }
+
+    protected function fail($msg)
+    {
+        throw new AssertionError($msg);
     }
 }

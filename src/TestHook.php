@@ -6,7 +6,7 @@ namespace Probatio;
 
 use RuntimeException;
 
-class TestHook implements ITestNode
+class TestHook implements Runnable
 {
     public const BEFORE_ALL  = "before_all";
     public const AFTER_ALL   = "after_all";
@@ -46,7 +46,11 @@ class TestHook implements ITestNode
 
     public function run(TestCase $tc)
     {
-        $fun = $this->fun->bindTo($tc, $tc);
-        $fun();
+        try {
+            $fun = $this->fun->bindTo($tc, $tc);
+            $fun();
+        } catch (\Throwable $e) {
+            Printer::noticeErr("failed to run {$this->type} hook");
+        }
     }
 }

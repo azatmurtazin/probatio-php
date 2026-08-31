@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Probatio;
 
-class TestGroup implements ITestNode
+class TestGroup implements Runnable
 {
     /** @var array<string, array<TestHook>> */
     protected $hooks = [
@@ -14,7 +14,7 @@ class TestGroup implements ITestNode
         TestHook::AFTER_EACH  => [],
     ];
 
-    /** @var ITestNode[] */
+    /** @var Runnable[] */
     protected $nodes = [];
 
     /** @var ?string */
@@ -59,11 +59,12 @@ class TestGroup implements ITestNode
 
     public function run(TestCase $tc)
     {
-        // run hooks and nested nodes (other groups or test items)
         if ($this->loc) {
+            TestRunner::getInstance()->incLevel();
+
             [$file, $start, $end] = $this->loc->toArray();
             $title = Utils::getTitle($this->name, $file, $start, $end);
-            echo "📦 test group: $title\n";
+            Printer::noticeGroup("test group: $title");
         }
 
         $this->runHooks(TestHook::BEFORE_ALL, $tc);
@@ -79,7 +80,9 @@ class TestGroup implements ITestNode
         }
         $this->runHooks(TestHook::AFTER_ALL, $tc);
 
-        echo "\n";
+        if ($this->loc) {
+            TestRunner::getInstance()->decLevel();
+        }
     }
 
     protected function runHooks(string $type, TestCase $tc)

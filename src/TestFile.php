@@ -73,10 +73,13 @@ class TestFile
     {
         if ($this->rootGroup === null) return;
 
-        echo "📄 run {$this->path}\n\n";
-
+        TestRunner::getInstance()->resetLevel();
+        $this->currentGroup = $this->rootGroup;
+        Printer::noticeFile("run file {$this->path}\n");
         $this->tc = new TestCase();
         $this->rootGroup->run($this->tc);
+        $this->currentGroup = null;
+        TestRunner::getInstance()->resetLevel();
     }
 
     public function incrOkTests(): self

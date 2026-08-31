@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Probatio;
 
-class TestItem implements ITestNode
+class TestItem implements Runnable
 {
     /** @var ?string */
     protected $name = null;
@@ -27,21 +27,36 @@ class TestItem implements ITestNode
 
     public function run(TestCase $tc)
     {
+        TestRunner::getInstance()->incLevel();
         [$file, $start, $end] = $this->loc->toArray();
         $title = Utils::getTitle($this->name, $file, $start, $end);
-        echo "  🔹 test $title\n";
+        Printer::noticeItem("test $title");
 
         $fun = $this->fun->bindTo($tc, $tc);
 
+        TestRunner::getInstance()->incLevel();
+        $result = "ok";
+
         try {
             $fun();
-            echo "  ✅ ok\n";
+            // Printer::noticeOk("test '{$this->name}' is ok");
             TestSuite::getInstance()->incrOkTests();
         } catch (\Throwable $e) {
             $this->error = $e;
-            TestSuite::getInstance()->incrErrTests();
             $errClass = \get_class($e);
-            echo "    ❌ $errClass: " . $e->getMessage() . "\n";
+            Printer::noticeErr("$errClass: " . $e->getMessage());
+            TestSuite::getInstance()->incrErrTests();
+            $result = "err";
         }
+
+        TestRunner::getInstance()->decLevel();
+
+        if ($result === "ok") {
+            Printer::noticeOk("test '{$this->name}' is ok\n");
+        } else {
+            Printer::noticeErr("test '{$this->name}' failed\n");
+        }
+
+        TestRunner::getInstance()->decLevel();
     }
 }
