@@ -35,17 +35,6 @@ class TestRegistry
         return $this->currentTestFile;
     }
 
-    public function getCurrentCase(): TestCase
-    {
-        return $this->getCurrentFile()->getCurrentCase();
-    }
-
-    public function setCurrentCase(?TestCase $tc): self
-    {
-        $this->getCurrentFile()->setCurrentCase($tc);
-        return $this;
-    }
-
     public function registerGroup(?string $name, \Closure $fun): self
     {
         $this->getCurrentFile()->registerGroup($name, $fun);
@@ -75,21 +64,5 @@ class TestRegistry
             $testFile->runWithTc();
             $this->currentTestFile = null;
         }
-    }
-
-    public function getOkTests(): int
-    {
-        $fun = function (TestFile $tf) {
-            return $tf->getOkTests();
-        };
-        return \array_sum(\array_map($fun, $this->testFiles));
-    }
-
-    public function getErrTests(): int
-    {
-        $fun = function (TestFile $tf) {
-            return $tf->getErrTests();
-        };
-        return \array_sum(\array_map($fun, $this->testFiles));
     }
 }

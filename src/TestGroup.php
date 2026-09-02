@@ -67,17 +67,17 @@ class TestGroup implements Runnable
             Printer::noticeGroup("test group: $title");
         }
 
-        $registry = TestSuite::getInstance()->getRegistry();
+        $runner = TestRunner::getInstance();
 
         $this->runHooks(TestHook::BEFORE_ALL, $tc);
         foreach ($this->nodes as $node) {
             $this->runHooks(TestHook::BEFORE_EACH, $tc);
             if ($node instanceof TestGroup) {
-                $oldTc = $registry->getCurrentCase();
+                $oldTc = $runner->getCurrentCase();
                 $newTc = new TestCase($tc);
-                $registry->setCurrentCase($tc);
+                $runner->setCurrentCase($tc);
                 $node->run($newTc);
-                $registry->setCurrentCase($oldTc);
+                $runner->setCurrentCase($oldTc);
             } else {
                 $node->run($tc);
             }

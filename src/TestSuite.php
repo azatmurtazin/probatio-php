@@ -132,16 +132,32 @@ class TestSuite
      */
     public function printSummary(): bool
     {
-        $okTests = $this->registry->getOkTests();
-        $errTests = $this->registry->getErrTests();
+        $stats = TestStats::getInstance();
+
+        $okTests = $stats->getOkTests();
+        $errTests = $stats->getErrTests();
         $allTests = $okTests + $errTests;
         $isOk = $errTests === 0;
 
+        $okAsserts = $stats->getOkAsserts();
+        $errAsserts = $stats->getErrAsserts();
+        $allAsserts = $okAsserts + $errAsserts;
+
         if ($isOk) {
-            Printer::success("summary: [$okTests / $allTests] - all tests are ok");
+            Printer::success("Summary:");
+            $summary = [
+                "  tests: [$okTests / $allTests] - ok;",
+                "asserts: [$okAsserts / $allAsserts] - ok"
+            ];
+            Printer::success(implode(' ', $summary));
         } else {
             $this->ok = false;
-            Printer::error("summary: [$okTests / $allTests] - tests failed: $errTests");
+            Printer::error("Summary:");
+            $summary = [
+                "  tests: [$okTests / $allTests] - $errTests failed;",
+                "asserts: [$okAsserts / $allAsserts] - $errAsserts failed",
+            ];
+            Printer::error(implode(' ', $summary));
         }
 
         return $isOk;
@@ -166,17 +182,5 @@ class TestSuite
             }
         }
         return $fileList;
-    }
-
-    public function incrOkTests(): self
-    {
-        $this->registry->getCurrentFile()->incrOkTests();
-        return $this;
-    }
-
-    public function incrErrTests(): self
-    {
-        $this->registry->getCurrentFile()->incrErrTests();
-        return $this;
     }
 }

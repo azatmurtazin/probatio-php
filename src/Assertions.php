@@ -35,11 +35,13 @@ trait Assertions
         $loc = CodeLoc::fromCaller();
         [$file, $line] = $loc->toArray();
         Printer::noticeOk("assertion is ok ($file:$line)");
+        TestStats::getInstance()->incOkAsserts();
         return true;
     }
 
     protected function fail($msg)
     {
+        TestStats::getInstance()->incErrAsserts();
         throw new AssertionError($msg);
     }
 }

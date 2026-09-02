@@ -15,8 +15,8 @@ class Expectation
 
     public function toBe($expected): self
     {
-        $registry = TestSuite::getInstance()->getRegistry();
-        $tc = $registry->getCurrentCase();
+        $runner = TestRunner::getInstance();
+        $tc = $runner->getCurrentCase() ?? new TestCase();
         $tc->assertEq($expected, $this->value);
         return $this;
     }

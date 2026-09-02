@@ -18,15 +18,6 @@ class TestFile
     /** @var ?TestCase */
     protected $rootCase;
 
-    /** @var ?TestCase */
-    protected $currentCase;
-
-    /** @var int */
-    protected $okTests = 0;
-
-    /** @var int */
-    protected $errTests = 0;
-
     public function __construct(string $path)
     {
         $this->path = $path;
@@ -40,20 +31,6 @@ class TestFile
         }
 
         return $this->currentGroup;
-    }
-
-    public function getCurrentCase(): TestCase
-    {
-        if ($this->currentCase === null) {
-            throw new \RuntimeException('Current test case not found');
-        }
-        return $this->currentCase;
-    }
-
-    public function setCurrentCase(?TestCase $tc): self
-    {
-        $this->currentCase = $tc;
-        return $this;
     }
 
     public function finalize()
@@ -92,36 +69,17 @@ class TestFile
             return;
         }
 
-        TestRunner::getInstance()->resetLevel();
+        $runner = TestRunner::getInstance();
+        $runner->resetLevel();
         $this->currentGroup = $this->rootGroup;
         Printer::noticeFile("run file {$this->path}\n");
         $this->rootCase = new TestCase();
-        $this->setCurrentCase($this->rootCase);
+        $runner->setCurrentCase($this->rootCase);
+
         $this->rootGroup->run($this->rootCase);
+
         $this->currentGroup = null;
-        $this->setCurrentCase(null);
-        TestRunner::getInstance()->resetLevel();
-    }
-
-    public function incrOkTests(): self
-    {
-        $this->okTests++;
-        return $this;
-    }
-
-    public function incrErrTests(): self
-    {
-        $this->errTests++;
-        return $this;
-    }
-
-    public function getOkTests(): int
-    {
-        return $this->okTests;
-    }
-
-    public function getErrTests(): int
-    {
-        return $this->errTests;
+        $runner->setCurrentCase(null);
+        $runner->resetLevel();
     }
 }

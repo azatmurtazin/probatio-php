@@ -27,31 +27,33 @@ class TestItem implements Runnable
 
     public function run(TestCase $tc)
     {
-        TestRunner::getInstance()->incLevel();
+        $runner = TestRunner::getInstance();
+        $stats = TestStats::getInstance();
+
+        $runner->incLevel();
         [$file, $start, $end] = $this->loc->toArray();
         $title = Utils::getTitle($this->name, $file, $start, $end);
         Printer::noticeItem("test $title");
 
         $fun = $this->fun->bindTo($tc, $tc);
 
-        TestRunner::getInstance()->incLevel();
+        $runner->incLevel();
         $result = 'ok';
 
         try {
             $fun();
-            // Printer::noticeOk("test '{$this->name}' is ok");
-            TestSuite::getInstance()->incrOkTests();
+            $stats->incOkTests();
         } catch (\Throwable $e) {
             $this->error = $e;
             $errClass = \get_class($e);
             $msg = $e->getMessage();
             [$f, $l] = CodeLoc::fromException($e)->toArray();
             Printer::noticeErr("$errClass: $msg ($f:$l)");
-            TestSuite::getInstance()->incrErrTests();
+            $stats->incErrTests();
             $result = 'err';
         }
 
-        TestRunner::getInstance()->decLevel();
+        $runner->decLevel();
 
         if ($result === 'ok') {
             Printer::noticeOk("test '{$this->name}' is ok\n");
@@ -59,6 +61,6 @@ class TestItem implements Runnable
             Printer::noticeErr("test '{$this->name}' failed\n");
         }
 
-        TestRunner::getInstance()->decLevel();
+        $runner->decLevel();
     }
 }
