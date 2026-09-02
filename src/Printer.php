@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Probatio;
 
+use Probatio\Runners\SuiteRunner;
+
 class Printer
 {
     public static function success(string $msg = '')
@@ -63,6 +65,6 @@ class Printer
 
     public static function getPadding(): string
     {
-        return \str_repeat('  ', TestRunner::getInstance()->getLevel());
+        return \str_repeat('  ', SuiteRunner::getInstance()->getLevel());
     }
 }

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Probatio;
 
+use Probatio\Runners\SuiteRunner;
+
 class TestFile
 {
     /** @var string */
@@ -69,7 +71,7 @@ class TestFile
             return;
         }
 
-        $runner = TestRunner::getInstance();
+        $runner = SuiteRunner::getInstance();
         $runner->resetLevel();
         $this->currentGroup = $this->rootGroup;
         Printer::noticeFile("run file {$this->path}\n");

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Probatio;
 
+use Probatio\Utils\Path;
+
 class TestSuite
 {
     /** @var self|null */
@@ -21,12 +23,6 @@ class TestSuite
     /** @var TestRegistry */
     protected $registry;
 
-    /** @var array */
-    protected $oks = [];
-
-    /** @var array */
-    protected $errors = [];
-
     protected $ok = true;
 
     public static function getInstance(): self
@@ -43,7 +39,7 @@ class TestSuite
         $this->cliArgs = $argv;
         \array_shift($this->cliArgs);
         foreach ($this->cliArgs as $cliArg) {
-            if (Utils::isTestCaseFile($cliArg)) {
+            if (Path::isTestCaseFile($cliArg)) {
                 $this->tcFiles[] = $cliArg;
             }
         }
@@ -52,7 +48,7 @@ class TestSuite
 
     public function setMainFile(string $mainFile): self
     {
-        $this->mainFile = Utils::maybeRemoveCwd($mainFile);
+        $this->mainFile = Path::maybeRemoveCwd($mainFile);
         return $this;
     }
 
@@ -137,11 +133,12 @@ class TestSuite
         $okTests = $stats->getOkTests();
         $errTests = $stats->getErrTests();
         $allTests = $okTests + $errTests;
-        $isOk = $errTests === 0;
 
         $okAsserts = $stats->getOkAsserts();
         $errAsserts = $stats->getErrAsserts();
         $allAsserts = $okAsserts + $errAsserts;
+
+        $isOk = $errTests === 0 && $errAsserts === 0;
 
         if ($isOk) {
             Printer::success("Summary:");
@@ -151,7 +148,6 @@ class TestSuite
             ];
             Printer::success(implode(' ', $summary));
         } else {
-            $this->ok = false;
             Printer::error("Summary:");
             $summary = [
                 "  tests: [$okTests / $allTests] - $errTests failed;",
@@ -176,7 +172,7 @@ class TestSuite
         foreach ($iterator as $file) {
             if (!$file->isDir()) {
                 $filePath = $file->getPathname();
-                if (Utils::isTestCaseFile($filePath)) {
+                if (Path::isTestCaseFile($filePath)) {
                     $fileList[] = $file->getPathname();
                 }
             }

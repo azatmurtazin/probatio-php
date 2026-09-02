@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Probatio;
 
+use Probatio\Utils\Env;
+
 class ProbatioCli
 {
     public function run()

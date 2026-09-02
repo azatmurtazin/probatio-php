@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Probatio;
 
+use Probatio\Runners\SuiteRunner;
+
 class TestGroup implements Runnable
 {
     /** @var array<string, array<TestHook>> */
@@ -59,15 +61,13 @@ class TestGroup implements Runnable
 
     public function run(TestCase $tc)
     {
-        if ($this->loc) {
-            TestRunner::getInstance()->incLevel();
+        $runner = SuiteRunner::getInstance();
 
-            [$file, $start, $end] = $this->loc->toArray();
-            $title = Utils::getTitle($this->name, $file, $start, $end);
+        if ($this->loc) {
+            $runner->incLevel();
+            $title = (string) $this->loc->withName($this->name);
             Printer::noticeGroup("test group: $title");
         }
-
-        $runner = TestRunner::getInstance();
 
         $this->runHooks(TestHook::BEFORE_ALL, $tc);
         foreach ($this->nodes as $node) {
@@ -86,7 +86,7 @@ class TestGroup implements Runnable
         $this->runHooks(TestHook::AFTER_ALL, $tc);
 
         if ($this->loc) {
-            TestRunner::getInstance()->decLevel();
+            $runner->decLevel();
         }
     }
 

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Probatio;
 
+use Probatio\Runners\SuiteRunner;
+
 class TestItem implements Runnable
 {
     /** @var ?string */
@@ -27,12 +29,11 @@ class TestItem implements Runnable
 
     public function run(TestCase $tc)
     {
-        $runner = TestRunner::getInstance();
+        $runner = SuiteRunner::getInstance();
         $stats = TestStats::getInstance();
 
         $runner->incLevel();
-        [$file, $start, $end] = $this->loc->toArray();
-        $title = Utils::getTitle($this->name, $file, $start, $end);
+        $title = (string) $this->loc->withName($this->name);
         Printer::noticeItem("test $title");
 
         $fun = $this->fun->bindTo($tc, $tc);

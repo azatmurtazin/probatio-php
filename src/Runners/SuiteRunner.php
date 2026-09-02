@@ -2,9 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Probatio;
+namespace Probatio\Runners;
 
-class TestRunner
+use Probatio\TestCase;
+use Probatio\TestFile;
+
+class SuiteRunner
 {
     /** @var ?self */
     protected static $instance;

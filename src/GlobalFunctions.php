@@ -3,8 +3,9 @@
 declare(strict_types=1);
 
 use Probatio\Functions;
+use Probatio\Utils\Env;
 
-$enabledGlobalFun = filter_var($_ENV['PROBATIO_REGISTER_GLOBALS'] ?? true, FILTER_VALIDATE_BOOLEAN);
+$enabledGlobalFun = Env::getBool('PROBATIO_REGISTER_GLOBALS', true);
 $errorMsgTpl = 'Cannot register global function %s(), use the namespaced one';
 
 if ($enabledGlobalFun) {

@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Probatio;
 
+use Probatio\Utils\Path;
+use Probatio\Utils\Str;
+
 class Caller
 {
     public const EXCLUDE_FILES = [
@@ -27,7 +30,7 @@ class Caller
 
         foreach ($trace as $idx => $row) {
             [$file, $line] = $this->traceToFl($row);
-            if (!Utils::endsWithIn($file, self::EXCLUDE_FILES)) {
+            if (!Str::endsWithIn($file, self::EXCLUDE_FILES)) {
                 $this->file = $file;
                 $this->line = $line;
                 $this->level = $idx;
@@ -53,7 +56,7 @@ class Caller
     protected function traceToFl(array $row): array
     {
         $file = $row['file'] ?? null;
-        $file = Utils::maybeRemoveCwd($file);
+        $file = Path::maybeRemoveCwd($file);
         $line = $row['line'] ?? null;
         return [$file, $line];
     }

@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Probatio;
 
+use Probatio\Utils\Path;
+use Probatio\Utils\Str;
+
 class CodeLoc
 {
     /** @var ?string */
@@ -14,6 +17,9 @@ class CodeLoc
 
     /** @var ?int */
     protected $end;
+
+    /** @var ?string */
+    protected $name = null;
 
     /**
      * fromFun() - builds location object from $fun or returns null
@@ -53,7 +59,7 @@ class CodeLoc
         foreach ($trace as $row) {
             $file = $row['file'] ?? null;
             $line = $row['line'] ?? null;
-            if ($file && !Utils::endsWithIn($file, Caller::EXCLUDE_FILES)) {
+            if ($file && !Str::endsWithIn($file, Caller::EXCLUDE_FILES)) {
                 return new self($file, $line);
             }
         }
@@ -63,7 +69,7 @@ class CodeLoc
 
     public function __construct(?string $file = null, ?int $start = null, ?int $end = null)
     {
-        $this->file = Utils::maybeRemoveCwd($file);
+        $this->file = Path::maybeRemoveCwd($file);
         $this->start = $start;
         $this->end = $end;
     }
@@ -75,5 +81,22 @@ class CodeLoc
     public function toArray(): array
     {
         return [$this->file, $this->start, $this->end];
+    }
+
+    public function withName(?string $name): self
+    {
+        $this->name = $name;
+        return $this;
+    }
+
+    public function __toString(): string
+    {
+        $name = $this->name;
+        $file = $this->file;
+        $start = $this->start;
+        $end = $this->end;
+
+        $lines = $end !== null ? "$start-$end" : (string) $start;
+        return $name !== null ? "$name ($file:$lines)" : "$file:$lines";
     }
 }
