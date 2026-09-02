@@ -6,7 +6,7 @@ namespace Probatio;
 
 class Env
 {
-    public static function getStr(string $name, string $default = ""): string
+    public static function getStr(string $name, string $default = ''): string
     {
         $value = \getenv($name);
         $value = ($value !== false) ? $value : $default;

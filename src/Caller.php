@@ -6,7 +6,7 @@ namespace Probatio;
 
 class Caller
 {
-    public const GLOBAL_FUNCTIONS_FILE = "src/GlobalFunctions.php";
+    public const GLOBAL_FUNCTIONS_FILE = 'src/GlobalFunctions.php';
 
     protected $level;
     protected $file;
@@ -17,16 +17,16 @@ class Caller
         if ($file === null && $line === null) {
             $trace = \debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, $level + 2);
             if (isset($trace[$level])) {
-                $file = $trace[$level]["file"] ?? null;
+                $file = $trace[$level]['file'] ?? null;
                 $file = Utils::maybeRemoveCwd($file);
-                $line = $trace[$level]["line"] ?? null;
+                $line = $trace[$level]['line'] ?? null;
 
                 if (Utils::endsWith($file, self::GLOBAL_FUNCTIONS_FILE)) {
                     $level++;
                     if (isset($trace[$level])) {
-                        $file = $trace[$level]["file"] ?? null;
+                        $file = $trace[$level]['file'] ?? null;
                         $file = Utils::maybeRemoveCwd($file);
-                        $line = $trace[$level]["line"] ?? null;
+                        $line = $trace[$level]['line'] ?? null;
                     }
                 }
             }

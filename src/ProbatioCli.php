@@ -12,10 +12,12 @@ class ProbatioCli
             $version = \Composer\InstalledVersions::getPrettyVersion('azatmurtazin/probatio-php');
             Printer::info("Probatio: $version");
         } catch (\OutOfBoundsException $e) {
-            Printer::info("Probatio: unreleased");
+            Printer::info('Probatio: unreleased');
         }
 
-        $mainFile = Env::getStr("PROBATIO_MAIN_FILE", "tests/tests.php");
+        Printer::info('PHP version: ' . PHP_VERSION);
+
+        $mainFile = Env::getStr('PROBATIO_MAIN_FILE', 'tests/tests.php');
 
         TestSuite::getInstance()
             ->setMainFile($mainFile)

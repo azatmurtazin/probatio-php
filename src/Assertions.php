@@ -32,7 +32,7 @@ trait Assertions
 
     protected function ok()
     {
-        Printer::noticeOk("assertion is ok");
+        Printer::noticeOk('assertion is ok');
         return true;
     }
 

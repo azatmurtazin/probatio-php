@@ -10,7 +10,7 @@ class TestSuite
     protected static $instance = null;
 
     /** @var string */
-    protected $mainFile = "";
+    protected $mainFile = '';
 
     /** @var string[] */
     protected $cliArgs = [];
@@ -67,7 +67,7 @@ class TestSuite
             Printer::info("run all tests\n");
             $this->registerAllTestFiles();
         } else {
-            Printer::info("run test files: ".implode(", ", $this->tcFiles)."\n");
+            Printer::info('run test files: ' . implode(', ', $this->tcFiles) . "\n");
             foreach ($this->tcFiles as $tcFile) {
                 $this->registerTestFile($tcFile);
             };

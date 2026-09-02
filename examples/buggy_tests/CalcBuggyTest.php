@@ -3,7 +3,7 @@
 use Probatio\Examples\Calculator;
 use Probatio\TestCase;
 
-test("floating-point rounding error", function() {
+test('floating-point rounding error', function () {
     $a = 0.1;
     $b = 0.2;
     $c = 0.3;
@@ -16,7 +16,7 @@ test("floating-point rounding error", function() {
     $that->assertEq($c, $result);
 });
 
-test("valid floating-point", function() {
+test('valid floating-point', function () {
 
     $a = 0.1;
     $b = 0.2;

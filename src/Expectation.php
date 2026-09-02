@@ -16,7 +16,7 @@ class Expectation
     public function toBe($expected): self
     {
         if ($this->value === $expected) {
-            Printer::noticeOk("assertion is ok");
+            Printer::noticeOk('assertion is ok');
             return $this;
         }
 

@@ -6,12 +6,12 @@ namespace Probatio\Examples;
 
 class Greeter
 {
-    public function greet(string $name = "world"): string
+    public function greet(string $name = 'world'): string
     {
         return "Hello, $name!";
     }
 
-    public function printGreeting(string $name = "world")
+    public function printGreeting(string $name = 'world')
     {
         echo $this->greet($name) . "\n";
     }

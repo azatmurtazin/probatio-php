@@ -30,7 +30,7 @@ class TestRegistry
     public function getCurrentFile(): TestFile
     {
         if ($this->currentTestFile === null) {
-            throw new \RuntimeException("Current test file not found");
+            throw new \RuntimeException('Current test file not found');
         }
         return $this->currentTestFile;
     }
@@ -69,13 +69,17 @@ class TestRegistry
 
     public function getOkTests(): int
     {
-        $fun = function(TestFile $tf) { return $tf->getOkTests(); };
+        $fun = function (TestFile $tf) {
+            return $tf->getOkTests();
+        };
         return \array_sum(\array_map($fun, $this->testFiles));
     }
 
     public function getErrTests(): int
     {
-        $fun = function(TestFile $tf) { return $tf->getErrTests(); };
+        $fun = function (TestFile $tf) {
+            return $tf->getErrTests();
+        };
         return \array_sum(\array_map($fun, $this->testFiles));
     }
 }

@@ -53,7 +53,7 @@ class Utils
 
     public static function getTitle(?string $name, string $file, int $start, ?int $end = null): string
     {
-        $lines = $end !== null ? "$start-$end" : (string)$start;
+        $lines = $end !== null ? "$start-$end" : (string) $start;
         return $name !== null ? "$name ($file:$lines)" : "$file:$lines";
     }
 

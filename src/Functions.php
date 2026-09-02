@@ -25,7 +25,7 @@ function test(?string $name, \Closure $fun)
 
 function it(?string $name, \Closure $fun)
 {
-    $name = \sprintf("it %s", $name);
+    $name = \sprintf('it %s', $name);
     TestSuite::getInstance()->registerTestItem($name, $fun);
 }
 

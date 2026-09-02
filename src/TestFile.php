@@ -49,7 +49,7 @@ class TestFile
         $oldCurrentGroup = $this->getCurrentGroup();
         $newGroup = $oldCurrentGroup->addNestedGroup($name, $fun);
         $this->currentGroup = $newGroup;
-        (function() use($fun) {
+        (function () use ($fun) {
             $fun();
         })();
         $this->currentGroup = $oldCurrentGroup;
@@ -71,7 +71,9 @@ class TestFile
 
     public function runWithTc()
     {
-        if ($this->rootGroup === null) return;
+        if ($this->rootGroup === null) {
+            return;
+        }
 
         TestRunner::getInstance()->resetLevel();
         $this->currentGroup = $this->rootGroup;

@@ -8,10 +8,10 @@ use RuntimeException;
 
 class TestHook implements Runnable
 {
-    public const BEFORE_ALL  = "before_all";
-    public const AFTER_ALL   = "after_all";
-    public const BEFORE_EACH = "before_each";
-    public const AFTER_EACH  = "after_each";
+    public const BEFORE_ALL  = 'before_all';
+    public const AFTER_ALL   = 'after_all';
+    public const BEFORE_EACH = 'before_each';
+    public const AFTER_EACH  = 'after_each';
     public const ALLOWED_TYPES = [
         self::BEFORE_ALL,
         self::AFTER_ALL,

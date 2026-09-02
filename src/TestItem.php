@@ -35,7 +35,7 @@ class TestItem implements Runnable
         $fun = $this->fun->bindTo($tc, $tc);
 
         TestRunner::getInstance()->incLevel();
-        $result = "ok";
+        $result = 'ok';
 
         try {
             $fun();
@@ -46,12 +46,12 @@ class TestItem implements Runnable
             $errClass = \get_class($e);
             Printer::noticeErr("$errClass: " . $e->getMessage());
             TestSuite::getInstance()->incrErrTests();
-            $result = "err";
+            $result = 'err';
         }
 
         TestRunner::getInstance()->decLevel();
 
-        if ($result === "ok") {
+        if ($result === 'ok') {
             Printer::noticeOk("test '{$this->name}' is ok\n");
         } else {
             Printer::noticeErr("test '{$this->name}' failed\n");
