@@ -9,7 +9,7 @@ test('floating-point rounding error', function () {
     $c = 0.3;
     $result = Calculator::add($a, $b);
 
-    expect(true)->toBe(true);
+    expect($c)->toBe($c);
 
     /** @var TestCase */
     $that = $this;

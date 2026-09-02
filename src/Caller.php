@@ -6,43 +6,55 @@ namespace Probatio;
 
 class Caller
 {
-    public const GLOBAL_FUNCTIONS_FILE = 'src/GlobalFunctions.php';
+    public const EXCLUDE_FILES = [
+        'src/GlobalFunctions.php',
+        'src/Expectation.php',
+        'src/Assertions.php',
+        'src/CodeLoc.php',
+    ];
 
     protected $level;
     protected $file;
     protected $line;
 
-    public function __construct($level = 1, $file = null, $line = null)
+    public function __construct($level = 1)
     {
-        if ($file === null && $line === null) {
-            $trace = \debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, $level + 2);
-            if (isset($trace[$level])) {
-                $file = $trace[$level]['file'] ?? null;
-                $file = Utils::maybeRemoveCwd($file);
-                $line = $trace[$level]['line'] ?? null;
+        $this->level = $level;
+        $this->file = null;
+        $this->line = null;
 
-                if (Utils::endsWith($file, self::GLOBAL_FUNCTIONS_FILE)) {
-                    $level++;
-                    if (isset($trace[$level])) {
-                        $file = $trace[$level]['file'] ?? null;
-                        $file = Utils::maybeRemoveCwd($file);
-                        $line = $trace[$level]['line'] ?? null;
-                    }
-                }
+        $trace = \debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, $level + \count(self::EXCLUDE_FILES));
+
+        foreach ($trace as $idx => $row) {
+            [$file, $line] = $this->traceToFl($row);
+            if (!Utils::endsWithIn($file, self::EXCLUDE_FILES)) {
+                $this->file = $file;
+                $this->line = $line;
+                $this->level = $idx;
+                return;
             }
         }
-
-        $this->level = $level;
-        $this->file = $file;
-        $this->line = $line;
     }
 
     /**
      * toArray() - converts caller object to array [$file, $line, $level]
-     * @return array{?string, ?int, int}
+     * @return array{?string, ?int, ?int}
      */
     public function toArray(): array
     {
         return [$this->file, $this->line, $this->level];
+    }
+
+    /**
+     * traceToFl()
+     * @param array $row
+     * @return array{?string, ?int}
+     */
+    protected function traceToFl(array $row): array
+    {
+        $file = $row['file'] ?? null;
+        $file = Utils::maybeRemoveCwd($file);
+        $line = $row['line'] ?? null;
+        return [$file, $line];
     }
 }

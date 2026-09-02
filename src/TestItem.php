@@ -44,7 +44,9 @@ class TestItem implements Runnable
         } catch (\Throwable $e) {
             $this->error = $e;
             $errClass = \get_class($e);
-            Printer::noticeErr("$errClass: " . $e->getMessage());
+            $msg = $e->getMessage();
+            [$f, $l] = CodeLoc::fromException($e)->toArray();
+            Printer::noticeErr("$errClass: $msg ($f:$l)");
             TestSuite::getInstance()->incrErrTests();
             $result = 'err';
         }

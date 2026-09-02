@@ -20,31 +20,57 @@ class CodeLoc
      * @param ?\Closure $fun
      * @return CodeLoc|null
      */
-    public static function fromFun(?\Closure $fun)
+    public static function fromFun(?\Closure $fun): self
     {
         if ($fun === null) {
-            return null;
+            return new self();
         }
 
         $ref = new \ReflectionFunction($fun);
         $file = $ref->getFileName();
-        $file = Utils::maybeRemoveCwd($file);
         $start = $ref->getStartLine();
         $end = $ref->getEndLine();
 
         return new self($file, $start, $end);
     }
 
-    public function __construct(string $file, int $start, int $end)
+    /**
+     * fromCaller() - builds location from the stack trace
+     * @param int $level
+     * @return CodeLoc
+     */
+    public static function fromCaller(int $level = 1): self
     {
-        $this->file = $file;
+        $caller = new Caller($level);
+        [$file, $line] = $caller->toArray();
+        return new self($file, $line);
+    }
+
+    public static function fromException(\Throwable $ex): self
+    {
+        $trace = $ex->getTrace();
+
+        foreach ($trace as $row) {
+            $file = $row['file'] ?? null;
+            $line = $row['line'] ?? null;
+            if ($file && !Utils::endsWithIn($file, Caller::EXCLUDE_FILES)) {
+                return new self($file, $line);
+            }
+        }
+
+        return new self();
+    }
+
+    public function __construct(?string $file = null, ?int $start = null, ?int $end = null)
+    {
+        $this->file = Utils::maybeRemoveCwd($file);
         $this->start = $start;
         $this->end = $end;
     }
 
     /**
      * toArray() - converts location object to array [$file, $start, $end]
-     * @return array{string, int, int}
+     * @return array{?string, ?int, ?int}
      */
     public function toArray(): array
     {

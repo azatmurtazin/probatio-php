@@ -2,7 +2,7 @@
 
 ![logo](/images/probatio-logo.png)
 
-It's a simple testing framework. Compatible with PHP >= 7.2. Zero additional dependencies.
+It's a simple testing framework. Compatible with PHP >= 7.2 & 8. Zero additional dependencies.
 
 ## Installation
 

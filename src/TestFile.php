@@ -16,7 +16,10 @@ class TestFile
     protected $currentGroup;
 
     /** @var ?TestCase */
-    protected $tc;
+    protected $rootCase;
+
+    /** @var ?TestCase */
+    protected $currentCase;
 
     /** @var int */
     protected $okTests = 0;
@@ -37,6 +40,20 @@ class TestFile
         }
 
         return $this->currentGroup;
+    }
+
+    public function getCurrentCase(): TestCase
+    {
+        if ($this->currentCase === null) {
+            throw new \RuntimeException('Current test case not found');
+        }
+        return $this->currentCase;
+    }
+
+    public function setCurrentCase(?TestCase $tc): self
+    {
+        $this->currentCase = $tc;
+        return $this;
     }
 
     public function finalize()
@@ -78,9 +95,11 @@ class TestFile
         TestRunner::getInstance()->resetLevel();
         $this->currentGroup = $this->rootGroup;
         Printer::noticeFile("run file {$this->path}\n");
-        $this->tc = new TestCase();
-        $this->rootGroup->run($this->tc);
+        $this->rootCase = new TestCase();
+        $this->setCurrentCase($this->rootCase);
+        $this->rootGroup->run($this->rootCase);
         $this->currentGroup = null;
+        $this->setCurrentCase(null);
         TestRunner::getInstance()->resetLevel();
     }
 

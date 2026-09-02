@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Probatio\Examples\Greeter;
+use Probatio\TestCase;
 
 describe('tests of Greeter', function () {
     beforeAll(function () {
@@ -32,6 +33,8 @@ describe('tests of Greeter', function () {
         $expected = 'Hello, world!';
         $actual = $service->greet();
 
-        expect($actual)->toBe($expected);
+        /** @var TestCase */
+        $tc = $this;
+        $tc->assertEq($expected, $actual);
     });
 });

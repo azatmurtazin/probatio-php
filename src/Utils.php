@@ -21,6 +21,17 @@ class Utils
         return \strncmp($haystack, $needle, \strlen($needle)) === 0;
     }
 
+    public static function endsWithIn(?string $haystack, array $needles): bool
+    {
+        foreach ($needles as $needle) {
+            $res = self::endsWith($haystack, $needle);
+            if ($res) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static function endsWith(?string $haystack, ?string $needle): bool
     {
         if (function_exists('str_ends_with')) {
@@ -51,7 +62,7 @@ class Utils
         return $path;
     }
 
-    public static function getTitle(?string $name, string $file, int $start, ?int $end = null): string
+    public static function getTitle(?string $name, ?string $file, ?int $start, ?int $end = null): string
     {
         $lines = $end !== null ? "$start-$end" : (string) $start;
         return $name !== null ? "$name ($file:$lines)" : "$file:$lines";

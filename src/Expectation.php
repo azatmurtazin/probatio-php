@@ -15,13 +15,9 @@ class Expectation
 
     public function toBe($expected): self
     {
-        if ($this->value === $expected) {
-            Printer::noticeOk('assertion is ok');
-            return $this;
-        }
-
-        $ac = var_export($this->value, true);
-        $ex = var_export($expected, true);
-        throw new AssertionError("$ac is not equal to $ex");
+        $registry = TestSuite::getInstance()->getRegistry();
+        $tc = $registry->getCurrentCase();
+        $tc->assertEq($expected, $this->value);
+        return $this;
     }
 }

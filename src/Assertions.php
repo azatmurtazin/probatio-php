@@ -32,7 +32,9 @@ trait Assertions
 
     protected function ok()
     {
-        Printer::noticeOk('assertion is ok');
+        $loc = CodeLoc::fromCaller();
+        [$file, $line] = $loc->toArray();
+        Printer::noticeOk("assertion is ok ($file:$line)");
         return true;
     }
 

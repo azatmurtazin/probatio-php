@@ -35,6 +35,16 @@ class TestRegistry
         return $this->currentTestFile;
     }
 
+    public function getCurrentCase(): TestCase
+    {
+        return $this->getCurrentFile()->getCurrentCase();
+    }
+
+    public function setCurrentCase(?TestCase $tc): self
+    {
+        $this->getCurrentFile()->setCurrentCase($tc);
+        return $this;
+    }
 
     public function registerGroup(?string $name, \Closure $fun): self
     {
