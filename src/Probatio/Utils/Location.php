@@ -71,6 +71,11 @@ class Location
         $this->end = $end;
     }
 
+    public function empty(): bool
+    {
+        return empty($this->name) && empty($this->file);
+    }
+
     /**
      * toArray() - converts location object to array [$file, $start, $end]
      * @return array{?string, ?int, ?int}

@@ -65,10 +65,10 @@ class TestGroup implements Runnable
     {
         $runner = SuiteRunner::getInstance();
 
-        if ($this->loc) {
+        if ($this->loc && !$this->loc->empty()) {
             Printer::incLevel();
             $title = (string) $this->loc->withName($this->name);
-            Printer::noticeGroup("test group: $title");
+            Printer::noticeGroup("test group '$title'");
         }
 
         $this->runHooks(TestHook::BEFORE_ALL, $tc);
@@ -87,7 +87,7 @@ class TestGroup implements Runnable
         }
         $this->runHooks(TestHook::AFTER_ALL, $tc);
 
-        if ($this->loc) {
+        if ($this->loc && !$this->loc->empty()) {
             Printer::decLevel();
         }
     }

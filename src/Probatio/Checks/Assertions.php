@@ -10,18 +10,14 @@ use Probatio\Utils\Printer;
 
 trait Assertions
 {
-    public function assertEq($expected, $actual)
+    public function assertEq($expected, $actual, string $tpl = '%s is not equals to %s')
     {
-        return $expected === $actual
-            ? $this->ok()
-            : $this->fail("{$this->vd($actual)} is not equals to {$this->vd($expected)}");
+        $this->process($expected === $actual, $tpl, [$actual, $expected]);
     }
 
-    public function assertTrue($value)
+    public function assertTrue($value, string $tpl = '%s is not true')
     {
-        return $value === true
-            ? $this->ok()
-            : $this->fail("{$this->vd($value)} is not true");
+        $this->process($value === true, $tpl, [$value]);
     }
 
     protected function vd($x, $max = 100): string
@@ -34,18 +30,27 @@ trait Assertions
         }
     }
 
-    protected function ok()
+    /**
+     * process()
+     * @param bool $cond
+     * @param string $tpl
+     * @param mixed[] $values
+     * @return void
+     */
+    protected function process(bool $cond, string $tpl, array $values)
     {
-        $loc = Location::fromCaller();
-        [$file, $line] = $loc->toArray();
-        Printer::noticeOk("assertion is ok ($file:$line)");
-        TestStats::getInstance()->incOkAsserts();
-        return true;
-    }
-
-    protected function fail($msg)
-    {
-        TestStats::getInstance()->incErrAsserts();
-        throw new AssertionError($msg);
+        $stats = TestStats::getInstance();
+        if ($cond) {
+            [$file, $line] = Location::fromCaller()->toArray();
+            Printer::noticeOk("assertion is ok ($file:$line)");
+            $stats->incOkAsserts();
+        } else {
+            $stats->incErrAsserts();
+            $strValues = array_map(function ($v) {
+                return $this->vd($v);
+            }, $values);
+            $msg = \sprintf($tpl, ...$strValues);
+            throw new AssertionError($msg);
+        }
     }
 }
