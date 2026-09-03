@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace Probatio\Checks;
 
 use Probatio\Definitions\TestCase;
+
+use function Probatio\Functions\probatio;
+
 use Probatio\Runners\SuiteRunner;
 
 class Expectation
@@ -18,8 +21,7 @@ class Expectation
 
     public function toBe($expected): self
     {
-        $runner = SuiteRunner::getInstance();
-        $tc = $runner->getCurrentCase() ?? new TestCase();
+        $tc = probatio()->runner()->getCurrentCase() ?? new TestCase();
         $tc->assertEq($expected, $this->value);
         return $this;
     }

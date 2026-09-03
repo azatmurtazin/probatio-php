@@ -2,7 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Probatio\Definitions;
+namespace Probatio\Runners;
+
+use Probatio\Definitions\TestCase;
 
 interface Runnable
 {

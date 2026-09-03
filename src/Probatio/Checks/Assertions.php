@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Probatio\Checks;
 
-use Probatio\Suite\TestStats;
+use function Probatio\Functions\probatio;
+
 use Probatio\Utils\Location;
 use Probatio\Utils\Printer;
 
@@ -39,7 +40,7 @@ trait Assertions
      */
     protected function process(bool $cond, string $tpl, array $values)
     {
-        $stats = TestStats::getInstance();
+        $stats = probatio()->stats();
         if ($cond) {
             [$file, $line] = Location::fromCaller()->toArray();
             Printer::noticeOk("assertion is ok ($file:$line)");

@@ -1,7 +1,7 @@
 <?php
 
+use Probatio\Definitions\TestCase;
 use Probatio\Examples\Calculator;
-use Probatio\TestCase;
 
 test('floating-point rounding error', function () {
     $a = 0.1;

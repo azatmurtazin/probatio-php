@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Probatio\Suite;
 
 use Probatio\Definitions\TestHook;
+use Probatio\Runners\SuiteRunner;
 use Probatio\Utils\Path;
 use Probatio\Utils\Printer;
 
@@ -25,7 +26,11 @@ class TestSuite
     /** @var TestRegistry */
     protected $registry;
 
-    protected $ok = true;
+    /** @var TestStats */
+    protected $stats;
+
+    /** @var SuiteRunner */
+    protected $runner;
 
     public static function getInstance(): self
     {
@@ -46,6 +51,26 @@ class TestSuite
             }
         }
         $this->registry = new TestRegistry();
+        $this->stats = new TestStats();
+        $this->runner = new SuiteRunner();
+    }
+
+    /**
+     * stats()
+     * @return TestStats
+     */
+    public function stats(): TestStats
+    {
+        return $this->stats;
+    }
+
+    /**
+     * runner()
+     * @return SuiteRunner
+     */
+    public function runner(): SuiteRunner
+    {
+        return $this->runner;
     }
 
     public function setMainFile(string $mainFile): self
@@ -120,7 +145,9 @@ class TestSuite
 
     public function runRegisteredTests(): self
     {
-        $this->registry->runRegisteredTests();
+        $this->runner
+             ->setFiles($this->registry->getTestFiles())
+             ->run();
         return $this;
     }
 
@@ -130,7 +157,7 @@ class TestSuite
      */
     public function printSummary(): bool
     {
-        $stats = TestStats::getInstance();
+        $stats = $this->stats;
 
         $okTests = $stats->getOkTests();
         $errTests = $stats->getErrTests();

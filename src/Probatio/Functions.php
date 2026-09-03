@@ -8,51 +8,109 @@ use Probatio\Checks\Expectation;
 use Probatio\Definitions\TestHook;
 use Probatio\Suite\TestSuite;
 
+/**
+ * probatio()
+ * @return TestSuite
+ */
+function probatio(): TestSuite
+{
+    return TestSuite::getInstance();
+}
+
+/**
+ * describe()
+ * @param ?string $name
+ * @param \Closure $fun
+ * @return void
+ */
 function describe(?string $name, \Closure $fun)
 {
-    TestSuite::getInstance()->registerGroup($name, $fun);
+    probatio()->registerGroup($name, $fun);
 }
 
+/**
+ * context()
+ * @param ?string $name
+ * @param \Closure $fun
+ * @return void
+ */
 function context(?string $name, \Closure $fun)
 {
-    TestSuite::getInstance()->registerGroup($name, $fun);
+    probatio()->registerGroup($name, $fun);
 }
 
+/**
+ * test()
+ * @param ?string $name
+ * @param \Closure $fun
+ * @return void
+ */
 function test(?string $name, \Closure $fun)
 {
-    TestSuite::getInstance()->registerTestItem($name, $fun);
+    probatio()->registerTestItem($name, $fun);
 }
 
+/**
+ * it()
+ * @param ?string $name
+ * @param \Closure $fun
+ * @return void
+ */
 function it(?string $name, \Closure $fun)
 {
     $name = \sprintf('it %s', $name);
-    TestSuite::getInstance()->registerTestItem($name, $fun);
+    probatio()->registerTestItem($name, $fun);
 }
 
+/**
+ * beforeAll()
+ * @param \Closure $fun
+ * @return void
+ */
 function beforeAll(\Closure $fun)
 {
     $hook = new TestHook(TestHook::BEFORE_ALL, $fun);
-    TestSuite::getInstance()->registerHook($hook);
+    probatio()->registerHook($hook);
 }
 
+/**
+ * beforeAll()
+ * @param \Closure $fun
+ * @return void
+ */
 function afterAll(\Closure $fun)
 {
     $hook = new TestHook(TestHook::AFTER_ALL, $fun);
-    TestSuite::getInstance()->registerHook($hook);
+    probatio()->registerHook($hook);
 }
 
+/**
+ * beforeEach()
+ * @param \Closure $fun
+ * @return void
+ */
 function beforeEach(\Closure $fun)
 {
     $hook = new TestHook(TestHook::BEFORE_EACH, $fun);
-    TestSuite::getInstance()->registerHook($hook);
+    probatio()->registerHook($hook);
 }
 
+/**
+ * afterEach()
+ * @param \Closure $fun
+ * @return void
+ */
 function afterEach(\Closure $fun)
 {
     $hook = new TestHook(TestHook::AFTER_EACH, $fun);
-    TestSuite::getInstance()->registerHook($hook);
+    probatio()->registerHook($hook);
 }
 
+/**
+ * expect()
+ * @param mixed $value
+ * @return Expectation
+ */
 function expect($value): Expectation
 {
     return new Expectation($value);

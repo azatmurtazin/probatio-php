@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Probatio;
 
 use Composer\InstalledVersions;
-use Probatio\Suite\TestSuite;
+
+use function Probatio\Functions\probatio;
+
 use Probatio\Utils\Env;
 use Probatio\Utils\Printer;
 
@@ -20,11 +22,11 @@ class Cli
             Printer::info('Probatio: unreleased');
         }
 
-        Printer::info('PHP version: ' . PHP_VERSION);
+        Printer::info('PHP version: ' . PHP_VERSION . "\n");
 
         $mainFile = Env::getStr('PROBATIO_MAIN_FILE', 'tests/tests.php');
 
-        TestSuite::getInstance()
+        probatio()
             ->setMainFile($mainFile)
             ->registerTestFiles()
             ->run();

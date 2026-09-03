@@ -9,8 +9,8 @@ use Probatio\Definitions\TestFile;
 
 class SuiteRunner
 {
-    /** @var ?self */
-    protected static $instance;
+    /** @var TestFile[] */
+    protected $testFiles;
 
     /** @var ?TestFile */
     protected $currentFile = null;
@@ -18,13 +18,10 @@ class SuiteRunner
     /** @var ?TestCase */
     protected $currentCase = null;
 
-    public static function getInstance(): self
+    public function setFiles(array $testFiles): self
     {
-        if (self::$instance === null) {
-            self::$instance = new self();
-        }
-
-        return self::$instance;
+        $this->testFiles = $testFiles;
+        return $this;
     }
 
     public function getCurrentFile(): TestFile
@@ -41,5 +38,18 @@ class SuiteRunner
     {
         $this->currentCase = $tc;
         return $this;
+    }
+
+    public function run()
+    {
+        $keys = array_keys($this->testFiles);
+        shuffle($keys);
+
+        foreach ($keys as $key) {
+            $testFile = $this->testFiles[$key];
+            $this->currentFile = $testFile;
+            (new FileRunner($testFile))->run(new TestCase());
+            $this->currentFile = null;
+        }
     }
 }

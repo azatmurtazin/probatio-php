@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace Probatio\Definitions;
 
-use Probatio\Suite\TestStats;
 use Probatio\Utils\Location;
-use Probatio\Utils\Printer;
 
-class TestItem implements Runnable
+class TestItem implements Definition
 {
     /** @var ?string */
     protected $name = null;
@@ -19,9 +17,6 @@ class TestItem implements Runnable
     /** @var Location */
     protected $loc;
 
-    /** @var \Exception|null */
-    protected $error = null;
-
     public function __construct(?string $name, \Closure $fun)
     {
         $this->name = $name;
@@ -29,40 +24,18 @@ class TestItem implements Runnable
         $this->loc = Location::fromFun($fun);
     }
 
-    public function run(TestCase $tc)
+    public function getName(): ?string
     {
-        $stats = TestStats::getInstance();
+        return $this->name;
+    }
 
-        Printer::incLevel();
-        $title = (string) $this->loc->withName($this->name);
-        Printer::noticeItem("test $title");
+    public function getLoc(): Location
+    {
+        return $this->loc;
+    }
 
-        $fun = $this->fun->bindTo($tc, $tc);
-
-        Printer::incLevel();
-        $result = 'ok';
-
-        try {
-            $fun();
-            $stats->incOkTests();
-        } catch (\Throwable $e) {
-            $this->error = $e;
-            $errClass = \get_class($e);
-            $msg = $e->getMessage();
-            [$f, $l] = Location::fromException($e)->toArray();
-            Printer::noticeErr("$errClass: $msg ($f:$l)");
-            $stats->incErrTests();
-            $result = 'err';
-        }
-
-        Printer::decLevel();
-
-        if ($result === 'ok') {
-            Printer::noticeOk("test '{$this->name}' is ok\n");
-        } else {
-            Printer::noticeErr("test '{$this->name}' failed\n");
-        }
-
-        Printer::decLevel();
+    public function getFun(): \Closure
+    {
+        return $this->fun;
     }
 }

@@ -13,29 +13,37 @@ class TestRegistry
     protected $testFiles = [];
 
     /** @var ?TestFile */
-    protected $currentTestFile;
+    protected $currentFile;
+
+    /**
+     * getTestFiles()
+     * @return array<string, TestFile>
+     */
+    public function getTestFiles(): array
+    {
+        return $this->testFiles;
+    }
 
     public function registerTestFile(string $path): self
     {
-        $this->currentTestFile = new TestFile($path);
+        $this->currentFile = new TestFile($path);
 
         (function () use ($path) {
             require_once $path;
         })();
 
-        $this->currentTestFile->finalize();
-        $this->testFiles[$path] = $this->currentTestFile;
-        $this->currentTestFile = null;
+        $this->testFiles[$path] = $this->currentFile;
+        $this->currentFile = null;
 
         return $this;
     }
 
     public function getCurrentFile(): TestFile
     {
-        if ($this->currentTestFile === null) {
+        if ($this->currentFile === null) {
             throw new \RuntimeException('Current test file not found');
         }
-        return $this->currentTestFile;
+        return $this->currentFile;
     }
 
     public function registerGroup(?string $name, \Closure $fun): self
@@ -54,18 +62,5 @@ class TestRegistry
     {
         $this->getCurrentFile()->registerHook($hook);
         return $this;
-    }
-
-    public function runRegisteredTests()
-    {
-        $keys = array_keys($this->testFiles);
-        shuffle($keys);
-
-        foreach ($keys as $key) {
-            $testFile = $this->testFiles[$key];
-            $this->currentTestFile = $testFile;
-            $testFile->runWithTc();
-            $this->currentTestFile = null;
-        }
     }
 }

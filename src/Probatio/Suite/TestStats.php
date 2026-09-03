@@ -6,9 +6,6 @@ namespace Probatio\Suite;
 
 class TestStats
 {
-    /** @var ?self */
-    protected static $instance;
-
     /** @var int */
     protected $okTests = 0;
 
@@ -20,15 +17,6 @@ class TestStats
 
     /** @var int */
     protected $errAsserts = 0;
-
-    public static function getInstance(): self
-    {
-        if (self::$instance === null) {
-            self::$instance = new self();
-        }
-
-        return self::$instance;
-    }
 
     public function getOkTests(): int
     {

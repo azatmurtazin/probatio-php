@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace Probatio\Definitions;
 
-use Probatio\Runners\SuiteRunner;
 use Probatio\Utils\Location;
-use Probatio\Utils\Printer;
 
-class TestGroup implements Runnable
+class TestGroup implements Definition
 {
-    /** @var array<string, array<TestHook>> */
+    /** @var array<string, TestHook[]> */
     protected $hooks = [
         TestHook::BEFORE_ALL  => [],
         TestHook::AFTER_ALL   => [],
@@ -18,7 +16,7 @@ class TestGroup implements Runnable
         TestHook::AFTER_EACH  => [],
     ];
 
-    /** @var Runnable[] */
+    /** @var array<TestGroup|TestItem> */
     protected $nodes = [];
 
     /** @var ?string */
@@ -49,7 +47,7 @@ class TestGroup implements Runnable
     }
 
     /**
-     * addNestedGroup
+     * addNestedGroup()
      * @param ?string $name
      * @param \Closure $fun
      * @return TestGroup new nested group
@@ -61,41 +59,35 @@ class TestGroup implements Runnable
         return $group;
     }
 
-    public function run(TestCase $tc)
+    public function getName(): ?string
     {
-        $runner = SuiteRunner::getInstance();
-
-        if ($this->loc && !$this->loc->empty()) {
-            Printer::incLevel();
-            $title = (string) $this->loc->withName($this->name);
-            Printer::noticeGroup("test group '$title'");
-        }
-
-        $this->runHooks(TestHook::BEFORE_ALL, $tc);
-        foreach ($this->nodes as $node) {
-            $this->runHooks(TestHook::BEFORE_EACH, $tc);
-            if ($node instanceof TestGroup) {
-                $oldTc = $runner->getCurrentCase();
-                $newTc = new TestCase($tc);
-                $runner->setCurrentCase($tc);
-                $node->run($newTc);
-                $runner->setCurrentCase($oldTc);
-            } else {
-                $node->run($tc);
-            }
-            $this->runHooks(TestHook::AFTER_EACH, $tc);
-        }
-        $this->runHooks(TestHook::AFTER_ALL, $tc);
-
-        if ($this->loc && !$this->loc->empty()) {
-            Printer::decLevel();
-        }
+        return $this->name;
     }
 
-    protected function runHooks(string $type, TestCase $tc)
+    public function getLoc(): ?Location
     {
-        foreach ($this->hooks[$type] as $hook) {
-            $hook->run($tc);
-        }
+        return $this->loc;
+    }
+    public function getFun(): ?\Closure
+    {
+        return $this->fun;
+    }
+
+    /**
+     * getHooks()
+     * @return array<string, TestHook[]>
+     */
+    public function getHooks(): array
+    {
+        return $this->hooks;
+    }
+
+    /**
+     * getNodes()
+     * @return array<TestGroup|TestItem>
+     */
+    public function getNodes(): array
+    {
+        return $this->nodes;
     }
 }

@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace Probatio\Definitions;
 
+use Probatio\Runners\RunnerException;
 use Probatio\Utils\Location;
 use Probatio\Utils\Printer;
 
-class TestHook implements Runnable
+class TestHook
 {
     public const BEFORE_ALL  = 'before_all';
     public const AFTER_ALL   = 'after_all';
@@ -45,13 +46,13 @@ class TestHook implements Runnable
         return $this->type;
     }
 
-    public function run(TestCase $tc)
+    public function getFun(): \Closure
     {
-        try {
-            $fun = $this->fun->bindTo($tc, $tc);
-            $fun();
-        } catch (\Throwable $e) {
-            Printer::noticeErr("failed to run {$this->type} hook");
-        }
+        return $this->fun;
+    }
+
+    public function getLoc(): Location
+    {
+        return $this->loc;
     }
 }
