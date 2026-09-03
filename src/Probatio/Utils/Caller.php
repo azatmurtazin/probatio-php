@@ -2,10 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Probatio\Tools;
-
-use Probatio\Utils\Path;
-use Probatio\Utils\Str;
+namespace Probatio\Utils;
 
 class Caller
 {
@@ -13,7 +10,7 @@ class Caller
         'src/Probatio/GlobalFunctions.php',
         'src/Probatio/Checks/Expectation.php',
         'src/Probatio/Checks/Assertions.php',
-        'src/Probatio/Tools/Location.php',
+        'src/Probatio/Utils/Location.php',
     ];
 
     protected $level;

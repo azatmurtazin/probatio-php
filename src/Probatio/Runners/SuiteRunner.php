@@ -12,9 +12,6 @@ class SuiteRunner
     /** @var ?self */
     protected static $instance;
 
-    /** @var int */
-    protected $level = 0;
-
     /** @var ?TestFile */
     protected $currentFile = null;
 
@@ -28,26 +25,6 @@ class SuiteRunner
         }
 
         return self::$instance;
-    }
-
-    public function getLevel(): int
-    {
-        return $this->level;
-    }
-
-    public function resetLevel()
-    {
-        $this->level = 0;
-    }
-
-    public function incLevel()
-    {
-        $this->level++;
-    }
-
-    public function decLevel()
-    {
-        $this->level--;
     }
 
     public function getCurrentFile(): TestFile

@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Probatio\Checks;
 
 use Probatio\Suite\TestStats;
-use Probatio\Tools\Location;
-use Probatio\Tools\Printer;
+use Probatio\Utils\Location;
+use Probatio\Utils\Printer;
 
 trait Assertions
 {

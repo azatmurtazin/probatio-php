@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Probatio\Definitions;
 
 use Probatio\Runners\SuiteRunner;
-use Probatio\Tools\Location;
-use Probatio\Tools\Printer;
+use Probatio\Utils\Location;
+use Probatio\Utils\Printer;
 
 class TestGroup implements Runnable
 {
@@ -66,7 +66,7 @@ class TestGroup implements Runnable
         $runner = SuiteRunner::getInstance();
 
         if ($this->loc) {
-            $runner->incLevel();
+            Printer::incLevel();
             $title = (string) $this->loc->withName($this->name);
             Printer::noticeGroup("test group: $title");
         }
@@ -88,7 +88,7 @@ class TestGroup implements Runnable
         $this->runHooks(TestHook::AFTER_ALL, $tc);
 
         if ($this->loc) {
-            $runner->decLevel();
+            Printer::decLevel();
         }
     }
 

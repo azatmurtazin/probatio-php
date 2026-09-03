@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Probatio\Definitions;
 
-use Probatio\Tools\Location;
-use Probatio\Tools\Printer;
+use Probatio\Utils\Location;
+use Probatio\Utils\Printer;
 
 class TestHook implements Runnable
 {

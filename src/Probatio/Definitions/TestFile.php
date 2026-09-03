@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Probatio\Definitions;
 
 use Probatio\Runners\SuiteRunner;
-use Probatio\Tools\Printer;
+use Probatio\Utils\Printer;
 
 class TestFile
 {
@@ -73,7 +73,7 @@ class TestFile
         }
 
         $runner = SuiteRunner::getInstance();
-        $runner->resetLevel();
+        Printer::resetLevel();
         $this->currentGroup = $this->rootGroup;
         Printer::noticeFile("run file {$this->path}\n");
         $this->rootCase = new TestCase();
@@ -83,6 +83,6 @@ class TestFile
 
         $this->currentGroup = null;
         $runner->setCurrentCase(null);
-        $runner->resetLevel();
+        Printer::resetLevel();
     }
 }

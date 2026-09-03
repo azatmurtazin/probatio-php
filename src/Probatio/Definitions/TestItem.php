@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace Probatio\Definitions;
 
-use Probatio\Runners\SuiteRunner;
 use Probatio\Suite\TestStats;
-use Probatio\Tools\Location;
-use Probatio\Tools\Printer;
+use Probatio\Utils\Location;
+use Probatio\Utils\Printer;
 
 class TestItem implements Runnable
 {
@@ -32,16 +31,15 @@ class TestItem implements Runnable
 
     public function run(TestCase $tc)
     {
-        $runner = SuiteRunner::getInstance();
         $stats = TestStats::getInstance();
 
-        $runner->incLevel();
+        Printer::incLevel();
         $title = (string) $this->loc->withName($this->name);
         Printer::noticeItem("test $title");
 
         $fun = $this->fun->bindTo($tc, $tc);
 
-        $runner->incLevel();
+        Printer::incLevel();
         $result = 'ok';
 
         try {
@@ -57,7 +55,7 @@ class TestItem implements Runnable
             $result = 'err';
         }
 
-        $runner->decLevel();
+        Printer::decLevel();
 
         if ($result === 'ok') {
             Printer::noticeOk("test '{$this->name}' is ok\n");
@@ -65,6 +63,6 @@ class TestItem implements Runnable
             Printer::noticeErr("test '{$this->name}' failed\n");
         }
 
-        $runner->decLevel();
+        Printer::decLevel();
     }
 }

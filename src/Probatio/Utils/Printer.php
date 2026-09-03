@@ -2,12 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Probatio\Tools;
-
-use Probatio\Runners\SuiteRunner;
+namespace Probatio\Utils;
 
 class Printer
 {
+    /** @var int */
+    protected static $level = 0;
+
     public static function success(string $msg = '')
     {
         self::println("✅ $msg");
@@ -65,6 +66,26 @@ class Printer
 
     public static function getPadding(): string
     {
-        return \str_repeat('  ', SuiteRunner::getInstance()->getLevel());
+        return \str_repeat('  ', self::getLevel());
+    }
+
+    public static function getLevel(): int
+    {
+        return self::$level;
+    }
+
+    public static function resetLevel()
+    {
+        self::$level = 0;
+    }
+
+    public static function incLevel()
+    {
+        self::$level++;
+    }
+
+    public static function decLevel()
+    {
+        self::$level--;
     }
 }

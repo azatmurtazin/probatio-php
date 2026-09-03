@@ -2,10 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Probatio\Tools;
-
-use Probatio\Utils\Path;
-use Probatio\Utils\Str;
+namespace Probatio\Utils;
 
 class Location
 {

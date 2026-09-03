@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Probatio;
 
-use Probatio\Suite\TestSuite;
-use Probatio\Tools\Printer;
-use Probatio\Utils\Env;
 use Composer\InstalledVersions;
+use Probatio\Suite\TestSuite;
+use Probatio\Utils\Env;
+use Probatio\Utils\Printer;
 
 class Cli
 {

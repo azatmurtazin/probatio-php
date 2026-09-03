@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Probatio\Suite;
 
 use Probatio\Definitions\TestHook;
-use Probatio\Tools\Printer;
 use Probatio\Utils\Path;
+use Probatio\Utils\Printer;
 
 class TestSuite
 {
@@ -143,14 +143,14 @@ class TestSuite
         $isOk = $errTests === 0 && $errAsserts === 0;
 
         if ($isOk) {
-            Printer::success("Summary:");
+            Printer::success('Summary:');
             $summary = [
                 "  tests: [$okTests / $allTests] - ok;",
                 "asserts: [$okAsserts / $allAsserts] - ok"
             ];
             Printer::success(implode(' ', $summary));
         } else {
-            Printer::error("Summary:");
+            Printer::error('Summary:');
             $summary = [
                 "  tests: [$okTests / $allTests] - $errTests failed;",
                 "asserts: [$okAsserts / $allAsserts] - $errAsserts failed",
