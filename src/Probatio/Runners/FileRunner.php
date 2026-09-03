@@ -7,8 +7,10 @@ namespace Probatio\Runners;
 use Probatio\Definitions\TestCase;
 use Probatio\Definitions\TestFile;
 use Probatio\Definitions\TestGroup;
-use Probatio\Utils\Printer;
+
 use function Probatio\Functions\probatio;
+
+use Probatio\Utils\Printer;
 
 class FileRunner implements Runnable
 {

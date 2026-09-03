@@ -21,4 +21,26 @@ class Path
         }
         return $path;
     }
+
+    public static function getFilesRecursive(string $dir, ?\Closure $fun = null): array
+    {
+        if (!is_dir($dir)) {
+            Printer::warn("'$dir' is not a directory");
+            return [];
+        }
+
+        $fileList = [];
+        $directory = new \RecursiveDirectoryIterator($dir);
+        $iterator = new \RecursiveIteratorIterator($directory);
+        foreach ($iterator as $file) {
+            if (!$file->isDir()) {
+                $filePath = $file->getPathname();
+                $ok = ($fun === null) || ($fun instanceof \Closure && $fun($filePath));
+                if ($ok) {
+                    $fileList[] = $filePath;
+                }
+            }
+        }
+        return $fileList;
+    }
 }

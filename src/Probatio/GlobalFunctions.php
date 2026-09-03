@@ -3,12 +3,12 @@
 declare(strict_types=1);
 
 use Probatio\Functions;
-use Probatio\Utils\Env;
+use Probatio\Suite\TestSuite;
 
-$enabledGlobalFun = Env::getBool('PROBATIO_REGISTER_GLOBALS', true);
+$enabledGlobals = TestSuite::getInstance()->config()->enableGlobals();
 $errorMsgTpl = 'Cannot register global function %s(), use the namespaced one';
 
-if ($enabledGlobalFun) {
+if ($enabledGlobals) {
     if (!function_exists('describe')) {
         function describe(?string $name, \Closure $fun)
         {
@@ -19,7 +19,7 @@ if ($enabledGlobalFun) {
     }
 }
 
-if ($enabledGlobalFun) {
+if ($enabledGlobals) {
     if (!function_exists('context')) {
         function context(?string $name, \Closure $fun)
         {
@@ -30,7 +30,7 @@ if ($enabledGlobalFun) {
     }
 }
 
-if ($enabledGlobalFun) {
+if ($enabledGlobals) {
     if (!function_exists('test')) {
         function test(?string $name, \Closure $fun)
         {
@@ -41,7 +41,7 @@ if ($enabledGlobalFun) {
     }
 }
 
-if ($enabledGlobalFun) {
+if ($enabledGlobals) {
     if (!function_exists('it')) {
         function it(?string $name, \Closure $fun)
         {
@@ -52,7 +52,7 @@ if ($enabledGlobalFun) {
     }
 }
 
-if ($enabledGlobalFun) {
+if ($enabledGlobals) {
     if (!function_exists('expect')) {
         function expect($value)
         {
@@ -63,7 +63,7 @@ if ($enabledGlobalFun) {
     }
 }
 
-if ($enabledGlobalFun) {
+if ($enabledGlobals) {
     if (!function_exists('beforeAll')) {
         function beforeAll(\Closure $fun)
         {
@@ -74,7 +74,7 @@ if ($enabledGlobalFun) {
     }
 }
 
-if ($enabledGlobalFun) {
+if ($enabledGlobals) {
     if (!function_exists('afterAll')) {
         function afterAll(\Closure $fun)
         {
@@ -85,7 +85,7 @@ if ($enabledGlobalFun) {
     }
 }
 
-if ($enabledGlobalFun) {
+if ($enabledGlobals) {
     if (!function_exists('beforeEach')) {
         function beforeEach(\Closure $fun)
         {
@@ -96,7 +96,7 @@ if ($enabledGlobalFun) {
     }
 }
 
-if ($enabledGlobalFun) {
+if ($enabledGlobals) {
     if (!function_exists('afterEach')) {
         function afterEach(\Closure $fun)
         {

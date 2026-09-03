@@ -9,8 +9,10 @@ use Probatio\Definitions\TestCase;
 use Probatio\Definitions\TestGroup;
 use Probatio\Definitions\TestHook;
 use Probatio\Definitions\TestItem;
-use Probatio\Utils\Printer;
+
 use function Probatio\Functions\probatio;
+
+use Probatio\Utils\Printer;
 
 class GroupRunner implements Runnable
 {

@@ -8,7 +8,7 @@ PHP_VERSION := PHP_VERSION_7_2
 CS_FIXER_VERSION := "3.95.24"
 CS_FIXER_LINK := "https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/releases/download/v"+CS_FIXER_VERSION+"/php-cs-fixer.phar"
 
-export PROBATIO_MAIN_FILE := "examples/tests/tests.php"
+export PROBATIO_TESTS_DIR := "examples/tests"
 
 PROBATIO_BIN := "./bin/probatio"
 PHP_BIN := "ASDF_PHP_VERSION="+PHP_VERSION+" php"

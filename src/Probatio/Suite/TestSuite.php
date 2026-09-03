@@ -14,8 +14,8 @@ class TestSuite
     /** @var self|null */
     protected static $instance = null;
 
-    /** @var string */
-    protected $mainFile = '';
+    /** @var Config */
+    protected $config;
 
     /** @var string[] */
     protected $cliArgs = [];
@@ -50,9 +50,15 @@ class TestSuite
                 $this->tcFiles[] = $cliArg;
             }
         }
+        $this->config = new Config();
         $this->registry = new TestRegistry();
         $this->stats = new TestStats();
         $this->runner = new SuiteRunner();
+    }
+
+    public function config(): Config
+    {
+        return $this->config;
     }
 
     /**
@@ -71,12 +77,6 @@ class TestSuite
     public function runner(): SuiteRunner
     {
         return $this->runner;
-    }
-
-    public function setMainFile(string $mainFile): self
-    {
-        $this->mainFile = Path::maybeRemoveCwd($mainFile);
-        return $this;
     }
 
     public function getRegistry(): TestRegistry
@@ -127,8 +127,18 @@ class TestSuite
 
     public function registerAllTestFiles(): self
     {
-        $dir = \dirname($this->mainFile);
-        $testFiles = $this->getFilesRecursive($dir);
+        $mainFile = $this->config->mainFile();
+        if (\file_exists($mainFile)) {
+            require_once $mainFile;
+        }
+
+        $testsDir = $this->config->testsDir();
+        $testFiles = Path::getFilesRecursive(
+            $testsDir,
+            function ($path) {
+                return Path::isTestCaseFile($path);
+            }
+        );
 
         foreach ($testFiles as $testFile) {
             $this->registerTestFile($testFile);
@@ -186,26 +196,5 @@ class TestSuite
         }
 
         return $isOk;
-    }
-
-    public function getFilesRecursive(string $path): array
-    {
-        if (!is_dir($path)) {
-            Printer::warn("'$path' is not a directory");
-            return [];
-        }
-
-        $fileList = [];
-        $directory = new \RecursiveDirectoryIterator($path);
-        $iterator = new \RecursiveIteratorIterator($directory);
-        foreach ($iterator as $file) {
-            if (!$file->isDir()) {
-                $filePath = $file->getPathname();
-                if (Path::isTestCaseFile($filePath)) {
-                    $fileList[] = $file->getPathname();
-                }
-            }
-        }
-        return $fileList;
     }
 }

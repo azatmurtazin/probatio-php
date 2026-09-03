@@ -24,10 +24,7 @@ class Cli
 
         Printer::info('PHP version: ' . PHP_VERSION . "\n");
 
-        $mainFile = Env::getStr('PROBATIO_MAIN_FILE', 'tests/tests.php');
-
         probatio()
-            ->setMainFile($mainFile)
             ->registerTestFiles()
             ->run();
     }

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-output=$(PROBATIO_MAIN_FILE="./examples/buggy_tests/tests.php" ./bin/probatio)
+output=$(PROBATIO_TESTS_DIR="./examples/buggy_tests" ./bin/probatio)
 exit_code=$?
 last_line=$(echo "$output" | tail -n 1)
 search_string="failed"
