@@ -2,7 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Probatio;
+namespace Probatio\Checks;
+
+use Probatio\Suite\TestStats;
+use Probatio\Tools\Location;
+use Probatio\Tools\Printer;
 
 trait Assertions
 {
@@ -32,7 +36,7 @@ trait Assertions
 
     protected function ok()
     {
-        $loc = CodeLoc::fromCaller();
+        $loc = Location::fromCaller();
         [$file, $line] = $loc->toArray();
         Printer::noticeOk("assertion is ok ($file:$line)");
         TestStats::getInstance()->incOkAsserts();

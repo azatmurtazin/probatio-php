@@ -2,8 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Probatio;
+namespace Probatio\Suite;
 
+use Probatio\Definitions\TestHook;
+use Probatio\Tools\Printer;
 use Probatio\Utils\Path;
 
 class TestSuite

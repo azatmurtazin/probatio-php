@@ -2,6 +2,6 @@
 
 declare(strict_types=1);
 
-namespace Probatio;
+namespace Probatio\Checks;
 
 class AssertionError extends \RuntimeException {}

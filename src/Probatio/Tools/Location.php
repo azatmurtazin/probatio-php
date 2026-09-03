@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Probatio;
+namespace Probatio\Tools;
 
 use Probatio\Utils\Path;
 use Probatio\Utils\Str;
 
-class CodeLoc
+class Location
 {
     /** @var ?string */
     protected $file;
@@ -24,7 +24,7 @@ class CodeLoc
     /**
      * fromFun() - builds location object from $fun or returns null
      * @param ?\Closure $fun
-     * @return CodeLoc|null
+     * @return self|null
      */
     public static function fromFun(?\Closure $fun): self
     {
@@ -43,7 +43,7 @@ class CodeLoc
     /**
      * fromCaller() - builds location from the stack trace
      * @param int $level
-     * @return CodeLoc
+     * @return self
      */
     public static function fromCaller(int $level = 1): self
     {

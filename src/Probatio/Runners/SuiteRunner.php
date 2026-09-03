@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Probatio\Runners;
 
-use Probatio\TestCase;
-use Probatio\TestFile;
+use Probatio\Definitions\TestCase;
+use Probatio\Definitions\TestFile;
 
 class SuiteRunner
 {

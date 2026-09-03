@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Probatio;
+namespace Probatio\Checks;
 
+use Probatio\Definitions\TestCase;
 use Probatio\Runners\SuiteRunner;
 
 class Expectation

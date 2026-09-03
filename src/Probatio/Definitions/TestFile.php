@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Probatio;
+namespace Probatio\Definitions;
 
 use Probatio\Runners\SuiteRunner;
+use Probatio\Tools\Printer;
 
 class TestFile
 {

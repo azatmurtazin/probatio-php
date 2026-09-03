@@ -2,9 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Probatio;
+namespace Probatio\Definitions;
 
 use Probatio\Runners\SuiteRunner;
+use Probatio\Suite\TestStats;
+use Probatio\Tools\Location;
+use Probatio\Tools\Printer;
 
 class TestItem implements Runnable
 {
@@ -14,7 +17,7 @@ class TestItem implements Runnable
     /** @var \Closure */
     protected $fun;
 
-    /** @var CodeLoc */
+    /** @var Location */
     protected $loc;
 
     /** @var \Exception|null */
@@ -24,7 +27,7 @@ class TestItem implements Runnable
     {
         $this->name = $name;
         $this->fun = $fun;
-        $this->loc = CodeLoc::fromFun($fun);
+        $this->loc = Location::fromFun($fun);
     }
 
     public function run(TestCase $tc)
@@ -48,7 +51,7 @@ class TestItem implements Runnable
             $this->error = $e;
             $errClass = \get_class($e);
             $msg = $e->getMessage();
-            [$f, $l] = CodeLoc::fromException($e)->toArray();
+            [$f, $l] = Location::fromException($e)->toArray();
             Printer::noticeErr("$errClass: $msg ($f:$l)");
             $stats->incErrTests();
             $result = 'err';

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Probatio\Functions;
 
-use Probatio\Expectation;
-use Probatio\TestHook;
-use Probatio\TestSuite;
+use Probatio\Checks\Expectation;
+use Probatio\Definitions\TestHook;
+use Probatio\Suite\TestSuite;
 
 function describe(?string $name, \Closure $fun)
 {

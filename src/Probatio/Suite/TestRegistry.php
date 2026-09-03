@@ -2,7 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Probatio;
+namespace Probatio\Suite;
+
+use Probatio\Definitions\TestFile;
+use Probatio\Definitions\TestHook;
 
 class TestRegistry
 {

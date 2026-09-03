@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Probatio;
+namespace Probatio\Definitions;
 
-use RuntimeException;
+use Probatio\Tools\Location;
+use Probatio\Tools\Printer;
 
 class TestHook implements Runnable
 {
@@ -25,18 +26,18 @@ class TestHook implements Runnable
     /** @var \Closure */
     protected $fun;
 
-    /** @var CodeLoc */
+    /** @var Location */
     protected $loc;
 
     public function __construct(string $type, \Closure $fun)
     {
         if (!\in_array($type, self::ALLOWED_TYPES)) {
-            throw new RuntimeException("Not allowed hook type: $type");
+            throw new \RuntimeException("Not allowed hook type: $type");
         }
 
         $this->type = $type;
         $this->fun = $fun;
-        $this->loc = CodeLoc::fromFun($fun);
+        $this->loc = Location::fromFun($fun);
     }
 
     public function getType(): string

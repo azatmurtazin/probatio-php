@@ -4,14 +4,17 @@ declare(strict_types=1);
 
 namespace Probatio;
 
+use Probatio\Suite\TestSuite;
+use Probatio\Tools\Printer;
 use Probatio\Utils\Env;
+use Composer\InstalledVersions;
 
-class ProbatioCli
+class Cli
 {
     public function run()
     {
         try {
-            $version = \Composer\InstalledVersions::getPrettyVersion('azatmurtazin/probatio-php');
+            $version = InstalledVersions::getPrettyVersion('azatmurtazin/probatio-php');
             Printer::info("Probatio: $version");
         } catch (\OutOfBoundsException $e) {
             Printer::info('Probatio: unreleased');

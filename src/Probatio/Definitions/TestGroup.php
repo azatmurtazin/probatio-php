@@ -2,9 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Probatio;
+namespace Probatio\Definitions;
 
 use Probatio\Runners\SuiteRunner;
+use Probatio\Tools\Location;
+use Probatio\Tools\Printer;
 
 class TestGroup implements Runnable
 {
@@ -25,14 +27,14 @@ class TestGroup implements Runnable
     /** @var \Closure */
     protected $fun;
 
-    /** @var ?CodeLoc */
+    /** @var ?Location */
     protected $loc;
 
     public function __construct(?string $name = null, ?\Closure $fun = null)
     {
         $this->name = $name;
         $this->fun = $fun;
-        $this->loc = CodeLoc::fromFun($fun);
+        $this->loc = Location::fromFun($fun);
     }
 
     public function addHook(TestHook $hook)

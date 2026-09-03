@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Probatio;
+namespace Probatio\Tools;
 
 use Probatio\Utils\Path;
 use Probatio\Utils\Str;
@@ -10,10 +10,10 @@ use Probatio\Utils\Str;
 class Caller
 {
     public const EXCLUDE_FILES = [
-        'src/GlobalFunctions.php',
-        'src/Expectation.php',
-        'src/Assertions.php',
-        'src/CodeLoc.php',
+        'src/Probatio/GlobalFunctions.php',
+        'src/Probatio/Checks/Expectation.php',
+        'src/Probatio/Checks/Assertions.php',
+        'src/Probatio/Tools/Location.php',
     ];
 
     protected $level;

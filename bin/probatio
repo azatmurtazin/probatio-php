@@ -13,4 +13,4 @@ foreach ($autoloadPaths as $path) {
     }
 }
 
-(new Probatio\ProbatioCli())->run();
+(new Probatio\Cli())->run();

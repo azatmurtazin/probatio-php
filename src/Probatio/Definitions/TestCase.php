@@ -2,7 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Probatio;
+namespace Probatio\Definitions;
+
+use Probatio\Checks\Assertions;
 
 class TestCase
 {
