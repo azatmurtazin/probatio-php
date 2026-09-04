@@ -53,8 +53,10 @@ See `examples` directory for more usage examples.
 * ✅ Pre-commit hooks
 * ✅ Publish to the Packagist
 * ✅ Github actions
+* 🛠️ Pest compatibility
+  * 🛠️ Expectation
+  * ⏳ Other features
 * ⏳ More examples and docs
-* ⏳ Pest compatibility
 * ⏳ PHPUnit compatibility
 * ⏳ Code coverage reports
 
