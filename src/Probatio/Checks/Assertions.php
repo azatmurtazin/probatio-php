@@ -16,6 +16,11 @@ trait Assertions
         $this->process($expected === $actual, $tpl, [$actual, $expected]);
     }
 
+    public function assertNotSame($expected, $actual, string $tpl = '%s is identical to %s')
+    {
+        $this->process($expected !== $actual, $tpl, [$actual, $expected]);
+    }
+
     public function assertEquals($expected, $actual, string $tpl = '%s is not equals to %s')
     {
         $this->process($expected == $actual, $tpl, [$actual, $expected]);
