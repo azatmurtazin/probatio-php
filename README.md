@@ -48,7 +48,7 @@ See `examples` directory for more usage examples.
 * ✅ Basic functionality
 * ✅ Pre-commit hooks
 * ✅ Publish to the Packagist
-* 🛠️ Github hooks
+* ✅ Github actions
 * ⏳ More examples and docs
 * ⏳ Pest compatibility
 * ⏳ PHPUnit compatibility
