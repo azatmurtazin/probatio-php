@@ -9,7 +9,7 @@ composer require --dev azatmurtazin/probatio-php
 ```
 
 Or add dependency manually to the `composer.json`,
-see the latest release on the [Packagist.org](https://packagist.org/)
+see the latest release on the [Packagist.org](https://packagist.org/packages/azatmurtazin/probatio-php)
 
 ```json
 {
@@ -48,7 +48,7 @@ See `examples` directory for more usage examples.
 * ✅ Basic functionality
 * ✅ Pre-commit hooks
 * ✅ Publish to the Packagist
-* ⏳ Github hooks
+* 🛠️ Github hooks
 * ⏳ More examples and docs
 * ⏳ Pest compatibility
 * ⏳ PHPUnit compatibility
