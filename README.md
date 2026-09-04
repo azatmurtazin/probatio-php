@@ -45,8 +45,10 @@ See `examples` directory for more usage examples.
 
 ## TODO
 
-* [✓] Basic functionality
-* [ ] Pre-commit and Github hooks
+* [x] Basic functionality
+* [x] Pre-commit hooks
+* [ ] Github hooks
+* [ ] Publish to the Packagist
 * [ ] More examples and docs
 * [ ] Pest compatibility
 * [ ] PHPUnit compatibility

@@ -49,5 +49,9 @@ examples-greeter-test:
 examples-calc-test:
   {{PROBATIO_BIN}} examples/tests/Unit/CalculatorTest.php
 
+# Examples: run buggy tests
 examples-buggy-tests:
   ./scripts/run-buggy-tests.sh
+
+# Run all tests
+tests: examples-all-tests examples-buggy-tests

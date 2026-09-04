@@ -1,0 +1,25 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+    - id: check-yaml
+    - id: end-of-file-fixer
+    - id: trailing-whitespace
+
+  - repo: local
+    hooks:
+      - id: just-format
+        name: Run Format
+        entry: just format
+        language: system
+        pass_filenames: false
+        always_run: true
+
+  - repo: local
+    hooks:
+      - id: just-tests
+        name: Run Tests
+        entry: just tests
+        language: system
+        pass_filenames: false
+        always_run: true
