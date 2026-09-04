@@ -1,6 +1,12 @@
 {
     "name": "azatmurtazin/probatio-php",
     "description": "Probatio-php is a simple testing framework",
+    "keywords": [
+        "php",
+        "unit",
+        "test",
+        "testing"
+    ],
     "license": "MIT",
     "authors": [
         {
@@ -22,6 +28,7 @@
         "bin/probatio"
     ],
     "minimum-stability": "dev",
+    "prefer-stable": true,
     "require": {
         "php": ">=7.2"
     }
