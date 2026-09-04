@@ -1,8 +1,6 @@
-# Probatio-php
-
 ![logo](/images/probatio-logo.png)
 
-It's a simple testing framework. Compatible with PHP >= 7.2 & 8. Zero additional dependencies.
+**Probatio-php** is a simple testing framework. Compatible with PHP >= 7.2 / 8. Zero additional dependencies.
 
 ## Installation
 
@@ -10,12 +8,13 @@ It's a simple testing framework. Compatible with PHP >= 7.2 & 8. Zero additional
 composer require --dev azatmurtazin/probatio-php
 ```
 
-Or add to the `composer.json`
+Or add dependency manually to the `composer.json`,
+see the latest release on the [Packagist.org](https://packagist.org/)
 
 ```json
 {
     "require-dev": {
-        "azatmurtazin/probatio-php": "^0.1"
+        "azatmurtazin/probatio-php": "^X.Y"
     }
 }
 ```
@@ -44,6 +43,15 @@ And run:
 
 See `examples` directory for more usage examples.
 
+## TODO
+
+* [✓] Basic functionality
+* [ ] Pre-commit and Github hooks
+* [ ] More examples and docs
+* [ ] Pest compatibility
+* [ ] PHPUnit compatibility
+* [ ] Code coverage reports
+
 ## License
 
-[MIT](/LICENSE)
+It's open-sourced software licensed under the [MIT license](/LICENSE).
