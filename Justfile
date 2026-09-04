@@ -55,3 +55,4 @@ examples-buggy-tests:
 
 # Run all tests
 tests: examples-all-tests examples-buggy-tests
+  @echo "\n✅ All tests are ok!"

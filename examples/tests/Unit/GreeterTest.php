@@ -35,6 +35,6 @@ describe('tests of Greeter', function () {
 
         /** @var TestCase */
         $tc = $this;
-        $tc->assertEq($expected, $actual);
+        $tc->assertSame($expected, $actual);
     });
 });

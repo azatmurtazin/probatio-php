@@ -11,9 +11,14 @@ use Probatio\Utils\Printer;
 
 trait Assertions
 {
-    public function assertEq($expected, $actual, string $tpl = '%s is not equals to %s')
+    public function assertSame($expected, $actual, string $tpl = '%s is not identical to %s')
     {
         $this->process($expected === $actual, $tpl, [$actual, $expected]);
+    }
+
+    public function assertEquals($expected, $actual, string $tpl = '%s is not equals to %s')
+    {
+        $this->process($expected == $actual, $tpl, [$actual, $expected]);
     }
 
     public function assertTrue($value, string $tpl = '%s is not true')

@@ -6,7 +6,7 @@ namespace Probatio\Examples;
 
 class Calculator
 {
-    public static function add($x, $y)
+    public static function sum($x, $y)
     {
         return $x + $y;
     }

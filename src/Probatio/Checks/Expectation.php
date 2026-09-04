@@ -22,7 +22,7 @@ class Expectation
     public function toBe($expected): self
     {
         $tc = probatio()->runner()->getCurrentCase() ?? new TestCase();
-        $tc->assertEq($expected, $this->value);
+        $tc->assertSame($expected, $this->value);
         return $this;
     }
 }

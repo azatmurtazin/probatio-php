@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 use Probatio\Examples\Calculator;
 
-describe('tests of add and sub', function () {
-    test('add', function () {
+describe('tests of sum and sub', function () {
+    test('sum', function () {
         $expected = 12;
-        $actual = Calculator::add(5, 7);
+        $actual = Calculator::sum(5, 7);
         expect($actual)->toBe($expected);
     });
 
