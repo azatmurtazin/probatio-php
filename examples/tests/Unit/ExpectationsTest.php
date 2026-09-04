@@ -21,3 +21,10 @@ test('toBeBetween', function () {
 
     expect($expectationDate)->toBeBetween($oldestDate, $latestDate);
 });
+
+// This expectation ensures that $value is empty:
+test('toBeEmpty', function () {
+    expect('')->toBeEmpty();
+    expect([])->toBeEmpty();
+    expect(null)->toBeEmpty();
+});

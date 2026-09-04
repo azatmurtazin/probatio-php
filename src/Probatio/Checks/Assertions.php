@@ -48,6 +48,16 @@ trait Assertions
         $this->process(!$res, $tpl, [$actual, $min, $max]);
     }
 
+    public function assertEmpty($actual, string $tpl = '%s is not empty')
+    {
+        $this->process(empty($actual), $tpl, [$actual]);
+    }
+
+    public function assertNotEmpty($actual, string $tpl = '%s is empty')
+    {
+        $this->process(!empty($actual), $tpl, [$actual]);
+    }
+
     protected function vd($x, $max = 100): string
     {
         $s = var_export($x, true);

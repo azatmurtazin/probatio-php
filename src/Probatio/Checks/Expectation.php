@@ -46,6 +46,15 @@ class Expectation
         return $this;
     }
 
+    public function toBeEmpty(): self
+    {
+        $tc = $this->getTc();
+        $this->inverted
+            ? $tc->assertNotEmpty($this->value)
+            : $tc->assertEmpty($this->value);
+        return $this;
+    }
+
     protected function getTc(): TestCase
     {
         return probatio()->runner()->getCurrentCase() ?? new TestCase();
