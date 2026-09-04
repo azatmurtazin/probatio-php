@@ -45,14 +45,14 @@ See `examples` directory for more usage examples.
 
 ## TODO
 
-* [x] Basic functionality
-* [x] Pre-commit hooks
-* [ ] Github hooks
-* [ ] Publish to the Packagist
-* [ ] More examples and docs
-* [ ] Pest compatibility
-* [ ] PHPUnit compatibility
-* [ ] Code coverage reports
+* ✅ Basic functionality
+* ✅ Pre-commit hooks
+* ✅ Publish to the Packagist
+* ⏳ Github hooks
+* ⏳ More examples and docs
+* ⏳ Pest compatibility
+* ⏳ PHPUnit compatibility
+* ⏳ Code coverage reports
 
 ## License
 
