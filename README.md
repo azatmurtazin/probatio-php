@@ -1,5 +1,9 @@
 ![logo](/images/probatio-logo.png)
 
+[![Tests](https://github.com/azatmurtazin/probatio-php/actions/workflows/tests.yml/badge.svg)](https://github.com/azatmurtazin/probatio-php)
+
+---
+
 **Probatio-php** is a simple testing framework. Compatible with PHP >= 7.2 / 8. Zero additional dependencies.
 
 ## Installation
