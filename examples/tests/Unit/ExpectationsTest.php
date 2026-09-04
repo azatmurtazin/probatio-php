@@ -9,3 +9,15 @@ test('toBe', function () {
     expect('1')->not->toBe(1);
     expect(new StdClass())->not->toBe(new StdClass());
 });
+
+// This expectation ensures that $value is between two values. It works with int, float, and DateTime:
+test('toBeBetween', function () {
+    expect(2)->toBeBetween(1, 3);
+    expect(1.5)->toBeBetween(1, 2);
+
+    $expectationDate = new DateTime('2026-08-22');
+    $oldestDate = new DateTime('2026-08-21');
+    $latestDate = new DateTime('2026-08-23');
+
+    expect($expectationDate)->toBeBetween($oldestDate, $latestDate);
+});

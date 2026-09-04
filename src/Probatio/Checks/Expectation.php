@@ -30,10 +30,24 @@ class Expectation
 
     public function toBe($expected): self
     {
-        $tc = probatio()->runner()->getCurrentCase() ?? new TestCase();
+        $tc = $this->getTc();
         $this->inverted
             ? $tc->assertNotSame($expected, $this->value)
             : $tc->assertSame($expected, $this->value);
         return $this;
+    }
+
+    public function toBeBetween($min, $max): self
+    {
+        $tc = $this->getTc();
+        $this->inverted
+            ? $tc->assertNotBetween($this->value, $min, $max)
+            : $tc->assertBetween($this->value, $min, $max);
+        return $this;
+    }
+
+    protected function getTc(): TestCase
+    {
+        return probatio()->runner()->getCurrentCase() ?? new TestCase();
     }
 }

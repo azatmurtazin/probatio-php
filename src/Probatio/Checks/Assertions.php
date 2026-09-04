@@ -31,6 +31,23 @@ trait Assertions
         $this->process($value === true, $tpl, [$value]);
     }
 
+    public function assertNotTrue($value, string $tpl = '%s is true')
+    {
+        $this->process($value !== true, $tpl, [$value]);
+    }
+
+    public function assertBetween($actual, $min, $max, string $tpl = '%s is not between %s:%s')
+    {
+        $res = ($min <= $actual) && ($actual <= $max);
+        $this->process($res, $tpl, [$actual, $min, $max]);
+    }
+
+    public function assertNotBetween($actual, $min, $max, string $tpl = '%s is between %s:%s')
+    {
+        $res = ($min <= $actual) && ($actual <= $max);
+        $this->process(!$res, $tpl, [$actual, $min, $max]);
+    }
+
     protected function vd($x, $max = 100): string
     {
         $s = var_export($x, true);
