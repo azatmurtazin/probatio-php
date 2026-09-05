@@ -43,22 +43,13 @@ And run:
 ./vendor/bin/probatio tests/Unit/MagicTest.php
 ```
 
-## Examples
+## See also
 
-See `examples` directory for more usage examples.
-
-## TODO
-
-* ✅ Basic functionality
-* ✅ Pre-commit hooks
-* ✅ Publish to the Packagist
-* ✅ Github actions
-* 🛠️ Pest compatibility
-  * 🛠️ Expectation
-  * ⏳ Other features
-* ⏳ More examples and docs
-* ⏳ PHPUnit compatibility
-* ⏳ Code coverage reports
+* [Code examples](/examples/)
+* [Detailed usage](/docs/usage.md)
+* [Architecture](/docs/architecture.md)
+* [Changelog](/docs/changelog.md)
+* [TODO](/docs/todo.md)
 
 ## License
 
