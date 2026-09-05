@@ -22,10 +22,16 @@ class Expectation
     {
         if ($name === 'not') {
             $this->inverted = !$this->inverted;
-            return $this;
+            return (new static($this->value))->invert();
         }
 
         throw new \RuntimeException('Undefined property: ' . __CLASS__ . "::${$name}");
+    }
+
+    public function invert(): self
+    {
+        $this->inverted = !$this->inverted;
+        return $this;
     }
 
     public function toBe($expected): self

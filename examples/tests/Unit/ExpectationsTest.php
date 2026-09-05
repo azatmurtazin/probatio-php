@@ -14,6 +14,7 @@ test('toBe', function () {
 test('toBeBetween', function () {
     expect(2)->toBeBetween(1, 3);
     expect(1.5)->toBeBetween(1, 2);
+    expect(10)->not->toBeBetween(18, INF);
 
     $expectationDate = new DateTime('2026-08-22');
     $oldestDate = new DateTime('2026-08-21');
@@ -27,4 +28,8 @@ test('toBeEmpty', function () {
     expect('')->toBeEmpty();
     expect([])->toBeEmpty();
     expect(null)->toBeEmpty();
+    expect(0)->toBeEmpty();
+    expect(0.0)->toBeEmpty();
+    expect(false)->toBeEmpty();
+    expect('false')->not->toBeEmpty();
 });
