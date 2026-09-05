@@ -36,6 +36,36 @@ trait Assertions
         $this->process($value !== true, $tpl, [$value]);
     }
 
+    public function assertFalse($value, string $tpl = '%s is not false')
+    {
+        $this->process($value === false, $tpl, [$value]);
+    }
+
+    public function assertNotFalse($value, string $tpl = '%s is false')
+    {
+        $this->process($value !== false, $tpl, [$value]);
+    }
+
+    public function assertTruthy($value, string $tpl = '%s is not truthy')
+    {
+        $this->process(!!$value, $tpl, [$value]);
+    }
+
+    public function assertNotTruthy($value, string $tpl = '%s is truthy')
+    {
+        $this->process(!$value, $tpl, [$value]);
+    }
+
+    public function assertFalsy($value, string $tpl = '%s is not falsy')
+    {
+        $this->process(!$value, $tpl, [$value]);
+    }
+
+    public function assertNotFalsy($value, string $tpl = '%s is falsy')
+    {
+        $this->process(!!$value, $tpl, [$value]);
+    }
+
     public function assertBetween($actual, $min, $max, string $tpl = '%s is not between %s:%s')
     {
         $res = ($min <= $actual) && ($actual <= $max);

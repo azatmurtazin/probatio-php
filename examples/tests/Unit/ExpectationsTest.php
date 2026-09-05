@@ -33,3 +33,36 @@ test('toBeEmpty', function () {
     expect(false)->toBeEmpty();
     expect('false')->not->toBeEmpty();
 });
+
+// This expectation ensures that $value is true:
+test('toBeTrue', function () {
+    $isActive = true;
+    expect($isActive)->toBeTrue();
+
+    $isHidden = false;
+    expect($isHidden)->not->toBeTrue();
+});
+
+// This expectation ensures that $value is truthy:
+test('toBeTruthy', function () {
+    expect(0)->not->toBeTruthy();
+    expect(1)->toBeTruthy();
+    expect('1')->toBeTruthy();
+});
+
+// This expectation ensures that $value is false:
+test('toBeFalse', function () {
+    $isDraft = false;
+    expect($isDraft)->toBeFalse();
+
+    $isSent = true;
+    expect($isSent)->not->toBeFalse();
+});
+
+// This expectation ensures that $value is falsy:
+test('toBeFalsy', function () {
+    expect(0)->toBeFalsy();
+    expect('')->toBeFalsy();
+    expect('false')->not->toBeFalsy();
+    expect('null')->not->toBeFalsy();
+});

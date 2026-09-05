@@ -36,7 +36,7 @@ class Expectation
 
     public function toBe($expected): self
     {
-        $tc = $this->getTc();
+        $tc = $this->tc();
         $this->inverted
             ? $tc->assertNotSame($expected, $this->value)
             : $tc->assertSame($expected, $this->value);
@@ -45,7 +45,7 @@ class Expectation
 
     public function toBeBetween($min, $max): self
     {
-        $tc = $this->getTc();
+        $tc = $this->tc();
         $this->inverted
             ? $tc->assertNotBetween($this->value, $min, $max)
             : $tc->assertBetween($this->value, $min, $max);
@@ -54,14 +54,50 @@ class Expectation
 
     public function toBeEmpty(): self
     {
-        $tc = $this->getTc();
+        $tc = $this->tc();
         $this->inverted
             ? $tc->assertNotEmpty($this->value)
             : $tc->assertEmpty($this->value);
         return $this;
     }
 
-    protected function getTc(): TestCase
+    public function toBeTrue(): self
+    {
+        $tc = $this->tc();
+        $this->inverted
+            ? $tc->assertNotTrue($this->value)
+            : $tc->assertTrue($this->value);
+        return $this;
+    }
+
+    public function toBeTruthy(): self
+    {
+        $tc = $this->tc();
+        $this->inverted
+            ? $tc->assertNotTruthy($this->value)
+            : $tc->assertTruthy($this->value);
+        return $this;
+    }
+
+    public function toBeFalse(): self
+    {
+        $tc = $this->tc();
+        $this->inverted
+            ? $tc->assertNotFalse($this->value)
+            : $tc->assertFalse($this->value);
+        return $this;
+    }
+
+    public function toBeFalsy(): self
+    {
+        $tc = $this->tc();
+        $this->inverted
+            ? $tc->assertNotFalsy($this->value)
+            : $tc->assertFalsy($this->value);
+        return $this;
+    }
+
+    protected function tc(): TestCase
     {
         return probatio()->runner()->getCurrentCase() ?? new TestCase();
     }
