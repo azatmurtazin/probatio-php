@@ -87,9 +87,6 @@ PHPUnit or Pest.
 
 ### 8. Documentation gaps
 
-- `docs/todo.md` and `docs/changelog.md` are stale after the recent docs commits
-- The `afterAll` docblock in `src/Probatio/Functions.php:77` incorrectly says
-  `@return beforeAll()` instead of `@return void`
 - `docs/architecture.md` and `docs/usage.md` should be cross-linked from the
   relevant source file docblocks
 

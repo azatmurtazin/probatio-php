@@ -74,7 +74,7 @@ function beforeAll(\Closure $fun)
 }
 
 /**
- * beforeAll()
+ * afterAll()
  * @param \Closure $fun
  * @return void
  */

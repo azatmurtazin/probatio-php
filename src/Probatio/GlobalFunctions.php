@@ -6,103 +6,80 @@ use Probatio\Functions;
 use Probatio\Suite\TestSuite;
 
 $enabledGlobals = TestSuite::getInstance()->config()->enableGlobals();
-$errorMsgTpl = 'Cannot register global function %s(), use the namespaced one';
 
-if ($enabledGlobals) {
-    if (!function_exists('describe')) {
-        function describe(?string $name, \Closure $fun)
-        {
-            return Functions\describe($name, $fun);
-        }
-    } else {
-        throw new \RuntimeException(sprintf($errorMsgTpl, 'describe'));
+$canRegisterFunction = function (string $name) use ($enabledGlobals) {
+    if ($enabledGlobals && function_exists($name)) {
+        throw new \RuntimeException("Cannot register global function `{$name}`, use the namespaced one");
+    }
+    return $enabledGlobals;
+};
+
+if ($canRegisterFunction('probatio')) {
+    function probatio(?string $name, \Closure $fun)
+    {
+        return Functions\probatio();
     }
 }
 
-if ($enabledGlobals) {
-    if (!function_exists('context')) {
-        function context(?string $name, \Closure $fun)
-        {
-            return Functions\context($name, $fun);
-        }
-    } else {
-        throw new \RuntimeException(sprintf($errorMsgTpl, 'context'));
+if ($canRegisterFunction('describe')) {
+    function describe(?string $name, \Closure $fun)
+    {
+        return Functions\describe($name, $fun);
     }
 }
 
-if ($enabledGlobals) {
-    if (!function_exists('test')) {
-        function test(?string $name, \Closure $fun)
-        {
-            return Functions\test($name, $fun);
-        }
-    } else {
-        throw new \RuntimeException(sprintf($errorMsgTpl, 'test'));
+if ($canRegisterFunction('context')) {
+    function context(?string $name, \Closure $fun)
+    {
+        return Functions\context($name, $fun);
     }
 }
 
-if ($enabledGlobals) {
-    if (!function_exists('it')) {
-        function it(?string $name, \Closure $fun)
-        {
-            return Functions\it($name, $fun);
-        }
-    } else {
-        throw new \RuntimeException(sprintf($errorMsgTpl, 'it'));
+if ($canRegisterFunction('test')) {
+    function test(?string $name, \Closure $fun)
+    {
+        return Functions\test($name, $fun);
     }
 }
 
-if ($enabledGlobals) {
-    if (!function_exists('expect')) {
-        function expect($value)
-        {
-            return Functions\expect($value);
-        }
-    } else {
-        throw new \RuntimeException(sprintf($errorMsgTpl, 'expect'));
+if ($canRegisterFunction('it')) {
+    function it(?string $name, \Closure $fun)
+    {
+        return Functions\it($name, $fun);
     }
 }
 
-if ($enabledGlobals) {
-    if (!function_exists('beforeAll')) {
-        function beforeAll(\Closure $fun)
-        {
-            return Functions\beforeAll($fun);
-        }
-    } else {
-        throw new \RuntimeException(sprintf($errorMsgTpl, 'beforeAll'));
+if ($canRegisterFunction('expect')) {
+    function expect($value)
+    {
+        return Functions\expect($value);
     }
 }
 
-if ($enabledGlobals) {
-    if (!function_exists('afterAll')) {
-        function afterAll(\Closure $fun)
-        {
-            return Functions\afterAll($fun);
-        }
-    } else {
-        throw new \RuntimeException(sprintf($errorMsgTpl, 'afterAll'));
+if ($canRegisterFunction('beforeAll')) {
+    function beforeAll(\Closure $fun)
+    {
+        return Functions\beforeAll($fun);
     }
 }
 
-if ($enabledGlobals) {
-    if (!function_exists('beforeEach')) {
-        function beforeEach(\Closure $fun)
-        {
-            return Functions\beforeEach($fun);
-        }
-    } else {
-        throw new \RuntimeException(sprintf($errorMsgTpl, 'beforeEach'));
+if ($canRegisterFunction('afterAll')) {
+    function afterAll(\Closure $fun)
+    {
+        return Functions\afterAll($fun);
     }
 }
 
-if ($enabledGlobals) {
-    if (!function_exists('afterEach')) {
-        function afterEach(\Closure $fun)
-        {
-            return Functions\afterEach($fun);
-        }
-    } else {
-        throw new \RuntimeException(sprintf($errorMsgTpl, 'afterEach'));
+if ($canRegisterFunction('beforeEach')) {
+    function beforeEach(\Closure $fun)
+    {
+        return Functions\beforeEach($fun);
+    }
+}
+
+if ($canRegisterFunction('afterEach')) {
+    function afterEach(\Closure $fun)
+    {
+        return Functions\afterEach($fun);
     }
 }
