@@ -27,6 +27,9 @@
     "bin": [
         "bin/probatio"
     ],
+    "scripts": {
+        "test": "./bin/probatio tests"
+    },
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
