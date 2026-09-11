@@ -2,7 +2,7 @@ list:
   @just --list
 
 PHP_VERSION_7_2 := "7.2.34"
-PHP_VERSION_8_5 := "8.5.9"
+PHP_VERSION_8_5 := "8.5.10"
 PHP_VERSION := PHP_VERSION_7_2
 
 CS_FIXER_VERSION := "3.95.24"
