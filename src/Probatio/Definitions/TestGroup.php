@@ -50,7 +50,7 @@ class TestGroup implements Definition
 
     public function addSetter(?string $name, \Closure $fun)
     {
-        $hook = new TestHook(TestHook::LET, $fun, $name);
+        $hook = new TestHook(TestHook::SET, $fun, $name);
         $this->hooks[$hook->getType()][] = $hook;
     }
 
