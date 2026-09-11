@@ -10,3 +10,7 @@
 * ⏳ More examples and docs
 * ⏳ PHPUnit compatibility
 * ⏳ Code coverage reports
+
+---
+
+[Future improvements](./future-improvements.md) will be added to this TODO soon.

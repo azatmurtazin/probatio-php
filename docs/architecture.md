@@ -12,7 +12,7 @@ and the design decisions behind each component.
 
 ## 1. High-level flow
 
-```
+```code
 bin/probatio
   └─ autoload (Composer, PSR-4)
       └─ Cli::run()
@@ -41,7 +41,7 @@ The framework is intentionally built on a **two-phase model**:
 
 ## 2. Directory layout
 
-```
+```code
 src/Probatio/
 ├── Cli.php               # CLI bootstrap: prints version, drives the suite
 ├── Functions.php         # Namespaced API: describe, test, it, expect, hooks, probatio()
@@ -112,7 +112,7 @@ with precise `file:line` references.
 Every runner implements `Runnable::run(TestCase $tc)`. The hierarchy mirrors the
 definition tree exactly:
 
-```
+```code
 SuiteRunner   (iterates shuffled TestFile*s)
  └─ FileRunner  (one file → its root group)
      └─ GroupRunner (recursive: hooks + children)
@@ -136,7 +136,7 @@ SuiteRunner   (iterates shuffled TestFile*s)
 Two interchangeable assertion styles are provided:
 
 | Fluent (Pest-style) | Direct (`$this->`) | Semantics |
-|---|---|---|
+| --- | --- | --- |
 | `expect($a)->toBe($b)` | `$this->assertSame($b, $a)` | strict `===` |
 | `expect($a)->toBeBetween($min,$max)` | `$this->assertBetween($a,$min,$max)` | inclusive range |
 | `expect($a)->toBeEmpty()` | `$this->assertEmpty($a)` | PHP `empty()` |
@@ -190,7 +190,7 @@ $this->currentFile = null;
 
 While the file is being required, calls like `describe('calc', fn …)` recurse:
 
-```
+```code
 describe() → TestSuite::registerGroup()
            → TestRegistry::registerGroup()
            → TestFile::registerGroup()
@@ -251,7 +251,7 @@ guaranteed the same instance across groups).
 
 For a group, the effective order is:
 
-```
+```code
 beforeAll
 for each node:
     beforeEach
@@ -261,6 +261,7 @@ afterAll
 ```
 
 Notes:
+
 - `beforeEach`/`afterEach` run even for nested-group nodes, and the nested group
   then runs its own hooks on its own child `TestCase`.
 - There is deliberately **no isolation** between items by default: files are
@@ -287,7 +288,7 @@ Probatio reports precise `file:line` on the terminal:
 All configuration flows through environment variables (`Suite\Config` + `Utils\Env`):
 
 | Variable | Default | Purpose |
-|---|---|---|
+| --- | --- | --- |
 | `PROBATIO_TESTS_DIR` | `tests` | directory scanned recursively for test files |
 | `PROBATIO_MAIN_FILE` | `{tests_dir}/tests.php` | optional bootstrap required first |
 | `PROBATIO_REGISTER_GLOBALS` | `true` | register `describe`/`test`/… globally |

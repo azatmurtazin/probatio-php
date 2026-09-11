@@ -1,7 +1,8 @@
 # Usage
 
-Probatio is a lightweight, zero-dependency testing framework for PHP (>= 7.2).
-It provides a Pest/JS-like BDD API: `describe`, `context`, `test`, `it`, `expect`,
+**Probatio** is a lightweight, zero-dependency testing framework for PHP (>= 7.2).
+
+It provides a Pest/RSpec/JS-like BDD API: `describe`, `context`, `test`, `it`, `expect`,
 and lifecycle hooks (`beforeAll`, `afterAll`, `beforeEach`, `afterEach`).
 
 ---
@@ -17,7 +18,7 @@ Or add it manually to `composer.json`:
 ```json
 {
     "require-dev": {
-        "azatmurtazin/probatio-php": "^0.1"
+        "azatmurtazin/probatio-php": "^X.Y"
     }
 }
 ```
@@ -115,7 +116,7 @@ expect(new StdClass())->not->toBe(new StdClass());   // not the same instance
 Available matchers:
 
 | Matcher | Passes when |
-|---|---|
+| --- | --- |
 | `->toBe($expected)` | value is strictly identical (`===`) to `$expected` |
 | `->toBeBetween($min, $max)` | value is in the inclusive range `[$min, $max]` |
 | `->toBeEmpty()` | value is empty per PHP `empty()` |
@@ -166,7 +167,7 @@ test('sum via assert', function () {
 Available methods:
 
 | Method | Check |
-|---|---|
+| --- | --- |
 | `assertSame($expected, $actual)` / `assertNotSame(...)` | strict equality |
 | `assertEquals($expected, $actual)` | loose equality (`==`) |
 | `assertTrue` / `assertNotTrue` | strict `=== true` |
@@ -184,7 +185,7 @@ Four hooks are available inside a `describe`/`context` block (or at file level,
 which applies to the file's root group):
 
 | Hook | Runs |
-|---|---|
+| --- | --- |
 | `beforeAll` | once, before all tests in the group |
 | `afterAll` | once, after all tests in the group |
 | `beforeEach` | before every test (and nested group) in the group |
@@ -238,7 +239,7 @@ suite scan when it exists. Use it for global setup, auto-imports, or helpers.
 Probatio is configured through environment variables:
 
 | Variable | Default | Purpose |
-|---|---|---|
+| --- | --- | --- |
 | `PROBATIO_TESTS_DIR` | `tests` | directory scanned recursively for test files |
 | `PROBATIO_MAIN_FILE` | `{tests_dir}/tests.php` | optional bootstrap file required first |
 | `PROBATIO_REGISTER_GLOBALS` | `true` | register `describe`/`test`/`expect`/… in the global namespace |
@@ -257,7 +258,7 @@ PROBATIO_TESTS_DIR=tests/Unit ./vendor/bin/probatio
 
 ## Understanding output
 
-```
+```code
 Probatio: 0.1.1
 PHP version: 7.2.34
 
@@ -276,7 +277,7 @@ asserts: [20 / 20] - ok
 A failing run prints the exception class/message/location for each failed test and
 a red `Summary:` line, then the runner exits with code `1`:
 
-```
+```code
   test div to zero
     AssertionError: INF is not identical to 0.2 (examples/tests/Unit/CalcBuggyTest.php:xx)
     test 'div to zero' failed

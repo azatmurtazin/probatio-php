@@ -97,9 +97,3 @@ workflow only tests on PHP 7.2 (`/.github/workflows/tests.yml`). Adding a
 CI matrix covering at least 7.4, 8.0, 8.2, and 8.4 would catch version-specific
 regressions (especially around `ReflectionFunction` behavior and string function
 polyfills).
-
-### 10. Composer scripts shortcut
-
-Add `"scripts": { "test": "./bin/probatio tests" }` to `composer.json` so users
-can run `composer test` without knowing the binary path, which lowers the barrier
-for first-time contributors.

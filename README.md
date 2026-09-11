@@ -4,7 +4,10 @@
 
 ---
 
-**Probatio-php** is a simple testing framework. Compatible with PHP >= 7.2 / 8. Zero additional dependencies.
+**Probatio** is a lightweight, zero-dependency testing framework for PHP (>= 7.2).
+
+It provides a Pest/RSpec/JS-like BDD API: `describe`, `context`, `test`, `it`, `expect`,
+and lifecycle hooks (`beforeAll`, `afterAll`, `beforeEach`, `afterEach`).
 
 ## Installation
 
@@ -12,8 +15,7 @@
 composer require --dev azatmurtazin/probatio-php
 ```
 
-Or add dependency manually to the `composer.json`,
-see the latest release on the [Packagist.org](https://packagist.org/packages/azatmurtazin/probatio-php)
+Or add it manually to `composer.json`:
 
 ```json
 {
@@ -23,7 +25,9 @@ see the latest release on the [Packagist.org](https://packagist.org/packages/aza
 }
 ```
 
-And run `composer update`
+Then run `composer update`.
+
+See the latest release on the [Packagist.org](https://packagist.org/packages/azatmurtazin/probatio-php)
 
 ## Basic usage
 
@@ -37,11 +41,22 @@ test('magic✨', function () {
 });
 ```
 
-And run:
+Run all discovered tests (recursively from the tests directory, `tests/` by default):
+
+```bash
+./vendor/bin/probatio
+```
+
+Run a specific test file:
 
 ```bash
 ./vendor/bin/probatio tests/Unit/MagicTest.php
 ```
+
+### Exit code
+
+The process exits with `0` when every test and assertion passed, and `1` when any
+test failed or any assertion throw. This makes it CI-friendly out of the box.
 
 ## See also
 
