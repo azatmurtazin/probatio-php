@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Probatio\Examples\Animals;
+use ProbatioExamples\Animals;
 
 describe(Animals\Animal::class, function () {
     let('klass', function () {

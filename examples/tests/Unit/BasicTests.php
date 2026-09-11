@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Probatio\Examples\Calculator;
+use ProbatioExamples\Calculator;
 
 test('sum', function () {
     $result = Calculator::sum(1, 2);

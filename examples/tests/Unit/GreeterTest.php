@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use Probatio\Definitions\TestCase;
-use Probatio\Examples\Greeter;
+use ProbatioExamples\Greeter;
 
 describe('tests of Greeter', function () {
     beforeAll(function () {

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Probatio\Examples\Calculator;
+use ProbatioExamples\Calculator;
 
 describe('tests of sum and sub', function () {
     test('sum', function () {
