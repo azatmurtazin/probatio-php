@@ -107,6 +107,28 @@ function afterEach(\Closure $fun)
 }
 
 /**
+ * let() - stores a closure to initialize and memoize the data
+ * @param string $name
+ * @param \Closure $fun
+ * @return void
+ */
+function let(string $name, \Closure $fun)
+{
+    probatio()->registerLetter($name, $fun);
+}
+
+/**
+ * set() - executes the closure and stores the value by $name
+ * @param string $name
+ * @param \Closure $fun
+ * @return void
+ */
+function set(string $name, \Closure $fun)
+{
+    probatio()->registerSetter($name, $fun);
+}
+
+/**
  * expect()
  * @param mixed $value
  * @return Expectation

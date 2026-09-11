@@ -19,8 +19,23 @@ class HookRunner implements Runnable
 
     public function run(TestCase $tc)
     {
+        $type = $this->hook->getType();
+        $fun = $this->hook->getFun();
+        $name = $this->hook->getName();
+
+        if ($type === TestHook::LET) {
+            $fun = function () use ($tc, $fun, $name) {
+                $tc->let($name, $fun);
+            };
+        } elseif ($type === TestHook::SET) {
+            $fun = function () use ($tc, $fun, $name) {
+                $val = $fun();
+                $tc->set($name, $val);
+            };
+        }
+
         try {
-            $fun = $this->hook->getFun()->bindTo($tc, $tc);
+            $fun = $fun->bindTo($tc, $tc);
             $fun();
         } catch (\Throwable $e) {
             $type = $this->hook->getType();

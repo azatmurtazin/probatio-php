@@ -125,6 +125,18 @@ class TestSuite
         return $this;
     }
 
+    public function registerLetter(string $name, \Closure $fun): self
+    {
+        $this->registry->registerLetter($name, $fun);
+        return $this;
+    }
+
+    public function registerSetter(string $name, \Closure $fun): self
+    {
+        $this->registry->registerSetter($name, $fun);
+        return $this;
+    }
+
     public function registerAllTestFiles(): self
     {
         $mainFile = $this->config->mainFile();

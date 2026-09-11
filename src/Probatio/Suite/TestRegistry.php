@@ -63,4 +63,16 @@ class TestRegistry
         $this->getCurrentFile()->registerHook($hook);
         return $this;
     }
+
+    public function registerLetter(string $name, \Closure $fun): self
+    {
+        $this->getCurrentFile()->registerLetter($name, $fun);
+        return $this;
+    }
+
+    public function registerSetter(string $name, \Closure $fun): self
+    {
+        $this->getCurrentFile()->registerSetter($name, $fun);
+        return $this;
+    }
 }

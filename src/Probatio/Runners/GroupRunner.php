@@ -45,8 +45,10 @@ class GroupRunner implements Runnable
             Printer::noticeGroup("test group '$title'");
         }
 
+        $this->runHooks(TestHook::LET, $tc);
         $this->runHooks(TestHook::BEFORE_ALL, $tc);
         foreach ($this->nodes as $node) {
+            $this->runHooks(TestHook::SET, $tc);
             $this->runHooks(TestHook::BEFORE_EACH, $tc);
             if ($node instanceof TestGroup) {
                 $oldTc = $runner->getCurrentCase();

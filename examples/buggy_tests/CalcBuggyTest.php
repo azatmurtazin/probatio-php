@@ -12,8 +12,8 @@ test('floating-point rounding error', function () {
     expect($c)->toBe($c);
 
     /** @var TestCase */
-    $that = $this;
-    $that->assertSame($c, $result);
+    $tc = $this;
+    $tc->assertSame($c, $result);
 });
 
 test('valid floating-point', function () {
@@ -25,6 +25,6 @@ test('valid floating-point', function () {
     $result = abs(Calculator::sum($a, $b) - $c) < $e;
 
     /** @var TestCase */
-    $that = $this;
-    $that->assertTrue($result);
+    $tc = $this;
+    $tc->assertTrue($result);
 });

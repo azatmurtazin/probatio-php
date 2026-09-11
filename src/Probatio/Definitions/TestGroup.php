@@ -14,6 +14,8 @@ class TestGroup implements Definition
         TestHook::AFTER_ALL   => [],
         TestHook::BEFORE_EACH => [],
         TestHook::AFTER_EACH  => [],
+        TestHook::LET         => [],
+        TestHook::SET         => [],
     ];
 
     /** @var array<TestGroup|TestItem> */
@@ -37,6 +39,18 @@ class TestGroup implements Definition
 
     public function addHook(TestHook $hook)
     {
+        $this->hooks[$hook->getType()][] = $hook;
+    }
+
+    public function addLetter(?string $name, \Closure $fun)
+    {
+        $hook = new TestHook(TestHook::LET, $fun, $name);
+        $this->hooks[$hook->getType()][] = $hook;
+    }
+
+    public function addSetter(?string $name, \Closure $fun)
+    {
+        $hook = new TestHook(TestHook::LET, $fun, $name);
         $this->hooks[$hook->getType()][] = $hook;
     }
 

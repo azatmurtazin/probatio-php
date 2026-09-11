@@ -59,6 +59,18 @@ class TestFile
         return $this;
     }
 
+    public function registerLetter(?string $name, \Closure $fun): self
+    {
+        $this->getCurrentGroup()->addLetter($name, $fun);
+        return $this;
+    }
+
+    public function registerSetter(?string $name, \Closure $fun): self
+    {
+        $this->getCurrentGroup()->addSetter($name, $fun);
+        return $this;
+    }
+
     public function registerTestItem(?string $name, \Closure $fun): self
     {
         $this->getCurrentGroup()->addTestItem($name, $fun);

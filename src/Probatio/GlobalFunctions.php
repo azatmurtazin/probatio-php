@@ -83,3 +83,27 @@ if ($canRegisterFunction('afterEach')) {
         return Functions\afterEach($fun);
     }
 }
+
+if ($canRegisterFunction('let')) {
+    /**
+     * let() - stores a closure to initialize and memoize the data
+     * @param string $name
+     * @param Closure $fun
+     */
+    function let(string $name, \Closure $fun)
+    {
+        return Functions\let($name, $fun);
+    }
+}
+
+if ($canRegisterFunction('set')) {
+    /**
+     * set() - executes the closure and stores the value by $name
+     * @param string $name
+     * @param Closure $fun
+     */
+    function set(string $name, \Closure $fun)
+    {
+        return Functions\set($name, $fun);
+    }
+}
