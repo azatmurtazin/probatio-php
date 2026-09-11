@@ -2,7 +2,8 @@
 
 Probatio is a **zero-dependency, self-contained PHP testing framework** (PHP >= 7.2).
 It exposes a Pest/JS-like BDD API — `describe()`, `context()`, `test()`, `it()`,
-`expect()`, and lifecycle hooks — without relying on PHPUnit or any other package.
+`expect()`, `let()`/`set()`, and lifecycle hooks — without relying on PHPUnit or
+any other package.
 
 This document describes the internal architecture: how the framework is bootstrapped,
 how test files are discovered and registered, how suites/group/items are executed,
@@ -44,7 +45,7 @@ The framework is intentionally built on a **two-phase model**:
 ```code
 src/Probatio/
 ├── Cli.php               # CLI bootstrap: prints version, drives the suite
-├── Functions.php         # Namespaced API: describe, test, it, expect, hooks, probatio()
+├── Functions.php         # Namespaced API: describe, test, it, expect, hooks, let/set, probatio()
 ├── GlobalFunctions.php   # conditionally registers global wrappers (Composer "files")
 ├── Checks/
 │   ├── AssertionError.php  # exception thrown by a failed assertion
@@ -93,8 +94,8 @@ state, which is what makes the two-phase design possible.
   `registerGroup()`, `registerTestItem()`, and `registerHook()`, which mutate the
   group that is *currently* being built.
 - **`TestGroup`** — a `describe`/`context` block. Contains:
-  - `hooks`: four buckets keyed by type (`before_all`, `after_all`,
-    `before_each`, `after_each`);
+  - `hooks`: six buckets keyed by type (`before_all`, `after_all`,
+    `before_each`, `after_each`, `let`, `set`);
   - `nodes`: an ordered array of child `TestGroup`s and `TestItem`s.
 - **`TestItem`** — a single test from `test()` or `it()`. Stores the name, the
   closure, and the `Location` where it was declared.
@@ -122,9 +123,10 @@ SuiteRunner   (iterates shuffled TestFile*s)
 
 - **SuiteRunner** shuffles the file keys before running, so order-dependent tests
   surface as flaky failures across runs.
-- **GroupRunner** is the heart of the engine: it runs `beforeAll` once, then for
-  each node runs `beforeEach` → node → `afterEach`, then `afterAll` once. Nested
-  groups receive a freshly-opened child `TestCase` (§5).
+- **GroupRunner** is the heart of the engine: it runs the `let` and `beforeAll`
+  hooks once, then for each node runs `set` → `beforeEach` → node → `afterEach`,
+  then `afterAll` once. Nested groups receive a freshly-opened child `TestCase`
+  (§5).
 - **ItemRunner** binds the test closure to the `TestCase` and executes it inside a
   `try/catch (\Throwable)`. A failed assertion throws `AssertionError`; any other
   exception also counts the test as failed.
@@ -142,6 +144,8 @@ Two interchangeable assertion styles are provided:
 | `expect($a)->toBeEmpty()` | `$this->assertEmpty($a)` | PHP `empty()` |
 | `expect($a)->toBeTrue()` | `$this->assertTrue($a)` | strict `=== true` |
 | `expect($a)->toBeTruthy()` | `$this->assertTruthy($a)` | truthy `!$a` |
+| `expect($a)->toBeFalse()` | `$this->assertFalse($a)` | strict `=== false` |
+| `expect($a)->toBeFalsy()` | `$this->assertFalsy($a)` | falsy `!$a` |
 
 Every assert also has a negated twin (`assertNotSame`, `assertNotTrue`, …), and the
 fluent API supports inversion via `expect($a)->not->toBe($b)`.
@@ -235,25 +239,35 @@ Test and hook closures are rebound to the active `TestCase` via
 ### 5.3 State sharing
 
 `TestCase` is also a tiny key-value store (`assigns` array). Shared setup/teardown
-is expressed with hooks:
+is expressed with hooks — either imperatively with `$this->set()`/`$this->let()`
+or declaratively with the file-level `let()`/`set()` helpers:
 
 ```php
 beforeAll(fn () => $this->set('calc', new Calculator()));
 test('sum', fn () => expect($this->get('calc')->sum(1, 2))->toBe(3));
 ```
 
-Because nested groups get a *child* `TestCase`, values set on a parent are not
-inherited — `get()` reads only `$this->assigns`. State is intentionally scoped to a
-single group + its hooks, and vanishes between groups (each item is also not
-guaranteed the same instance across groups).
+`let($name, fn)` registers a *lazy*, memoized value (the closure runs once, on the
+first `get()` of that key), while `set($name, fn)` registers an *eager* value that
+is computed immediately and stored. Both attach to the current group as `let`/`set`
+hooks.
+
+Nested groups get a *child* `TestCase` linked to its parent, and `get()` resolves
+missing keys by walking up the parent chain, so values set on an enclosing group
+**are** readable inside nested groups (a nested override shadows the parent's).
+Items within the same group share the same `TestCase` instance, so a test that
+mutates shared state via `$this->set()` can affect sibling tests by default
+(see `docs/future-improvements.md` for the per-item isolation proposal).
 
 ### 5.4 Hook ordering
 
 For a group, the effective order is:
 
 ```code
-beforeAll
+let                          # once, before beforeAll
+beforeAll                    # once
 for each node:
+    set
     beforeEach
     node                                   # nested group → recursive GroupRunner
     afterEach

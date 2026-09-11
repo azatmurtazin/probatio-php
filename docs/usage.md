@@ -213,13 +213,28 @@ describe('Greeter', function () {
 `TestCase` (the `$this` of your closures) is also a small key-value store:
 
 - `$this->set($key, $value)`
-- `$this->get($key)`
+- `$this->get($key)` — resolves missing keys through the chain of parent `TestCase`s
 - `$this->unset($key)`
+- `$this->let($key, \Closure $fun)` — lazy value, computed once on the first `get()`
+
+Two file-level helpers declare shared values for the current group:
+
+```php
+let('calc', function () {             // lazy: closure runs once, then memoized
+    return new Calculator();
+});
+
+set('calc', function () {             // eager: closure runs immediately, stored by name
+    return new Calculator();
+});
+```
 
 Use `beforeAll`/`beforeEach` to prepare shared fixtures and `afterAll`/`afterEach`
-to tear them down. State is scoped to the current group: nested `describe` blocks
-receive their own child `TestCase`, so values set on a parent are not visible inside
-a nested group (and vice versa).
+to tear them down. State is scoped per group: nested `describe` blocks receive their
+own child `TestCase` that **inherits values from its parent chain**, so a value set
+on an enclosing group *is* readable inside a nested group (unless the nested group
+overrides it). Note that items within the same group share the same `TestCase`, so a
+test that mutates shared state via `$this->set()` can affect sibling tests.
 
 ---
 
@@ -259,7 +274,7 @@ PROBATIO_TESTS_DIR=tests/Unit ./vendor/bin/probatio
 ## Understanding output
 
 ```code
-Probatio: 0.1.1
+Probatio: 0.1.4
 PHP version: 7.2.34
 
 run all tests

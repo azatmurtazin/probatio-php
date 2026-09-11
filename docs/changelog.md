@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.1.4
+
+* Added `let()`/`set()` declarative helpers and parent-chain value lookup in `TestCase`
+* Refactored `GlobalFunctions.php`: global wrappers throw when a target name is already
+  taken while globals are enabled
+* Renamed the examples namespace to `ProbatioExamples`; added an animals hierarchy and
+  `NestedContextTest` covering nested-group state scoping
+* Added a `tests/` stub for the library itself (`tests/Unit/SomeTest.php`)
+* Bumped the dev PHP version in the Justfile to 8.5
+
 ## 0.1.3
 
 * Fixed `not` property behavior of the expectations

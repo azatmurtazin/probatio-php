@@ -6,9 +6,13 @@ Suggested improvements to Probatio, roughly ordered by impact.
 
 ### 1. Unit tests for the framework itself
 
-Right now the project only validates itself via `examples/tests/` (happy path) and `examples/buggy_tests/` (failure detection). There is no coverage of the API surface itself: `expect()->not->toBeBetween`, hook ordering, nested-group state scoping, `it()` name prefixing, etc.
+Right now the project mostly validates itself via `examples/tests/` (happy path) and
+`examples/buggy_tests/` (failure detection). A minimal `tests/Unit/SomeTest.php` stub
+exists, but there is still no coverage of the API surface itself: `expect()->not->toBeBetween`,
+hook ordering, nested-group state scoping, `it()` name prefixing, parent-chain `get()`, etc.
 
-Consider adding a dedicated `tests/` directory for the `src/` tree, using Probatio as the harness. This catches regressions and documents expected behavior at the same time.
+Consider filling in a dedicated `tests/` tree for the `src/` code, using Probatio as the
+harness. This catches regressions and documents expected behavior at the same time.
 
 ### 2. Empty-suite behavior
 
@@ -28,7 +32,7 @@ In CI, a misconfigured `PROBATIO_TESTS_DIR` or empty test directory silently pas
 discarding the original stack trace:
 
 ```php
-// src/Probatio/Runners/HookRunner.php:28
+// src/Probatio/Runners/HookRunner.php:43
 throw new RunnerException("failed to run {$type} hook ($loc)");
 ```
 
@@ -42,7 +46,7 @@ items in a group. A test that mutates state via `$this->set()` can contaminate
 sibling tests without any visible cause.
 
 ```php
-// src/Probatio/Runners/GroupRunner.php:58
+// src/Probatio/Runners/GroupRunner.php:60
 (new ItemRunner($node))->run($tc);
 ```
 
