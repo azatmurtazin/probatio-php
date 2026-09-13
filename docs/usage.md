@@ -322,7 +322,7 @@ PROBATIO_TESTS_DIR=examples/tests ./bin/probatio
 Or with the project's task runner (`just`):
 
 ```bash
-just examples-all-tests      # all examples
+just examples-tests          # all examples
 just examples-greeter-test   # only Examples/Unit/GreeterTest.php
 just examples-buggy-tests    # intentionally failing fixtures → verifies exit code 1
 just tests                   # everything

@@ -25,8 +25,12 @@ get-cs-fixer:
 format: get-cs-fixer
   @just docker-php ./php-cs-fixer.phar fix
 
+# Run the library tests
+lib-tests:
+  @just docker-php ./bin/probatio
+
 # Examples: all tests
-examples-all-tests:
+examples-tests:
   @PROBATIO_TESTS_DIR=examples/tests just docker-php ./bin/probatio
 
 # Examples: greeter test
@@ -38,8 +42,8 @@ examples-buggy-tests:
   @./scripts/run-buggy-tests.sh
 
 # Run all tests
-tests: examples-all-tests examples-buggy-tests
-  @echo "\n✅ All tests are ok!"
+all-tests:
+  @./scripts/all-tests.sh
 
 docker-php *args="":
-  {{DCR}} --rm {{DOCKER_ENV_VARS}} {{PHP_SERVICE}} php {{args}}
+  @{{DCR}} --rm {{DOCKER_ENV_VARS}} {{PHP_SERVICE}} php {{args}}

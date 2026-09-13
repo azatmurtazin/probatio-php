@@ -17,9 +17,9 @@ repos:
 
   - repo: local
     hooks:
-      - id: just-tests
+      - id: all-tests
         name: Run Tests
-        entry: just tests
+        entry: just all-tests
         language: system
         pass_filenames: false
         always_run: true

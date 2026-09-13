@@ -1,6 +1,6 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-output=$(PROBATIO_TESTS_DIR="./examples/buggy_tests" just docker-php ./bin/probatio)
+output=$(PROBATIO_TESTS_DIR="./examples/buggy_tests" just docker-php ./bin/probatio 2>&1)
 exit_code=$?
 last_line=$(echo "$output" | tail -n 1)
 search_string="failed"
