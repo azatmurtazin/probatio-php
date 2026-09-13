@@ -1,0 +1,40 @@
+services:
+  php72:
+    image: php:7.2-cli-alpine
+    container_name: php72_cli
+    volumes:
+      - .:/var/www/html
+    working_dir: /var/www/html
+    profiles: ["cli"]
+
+  php74:
+    image: php:7.4-cli-alpine
+    container_name: php74_cli
+    volumes:
+      - .:/var/www/html
+    working_dir: /var/www/html
+    profiles: ["cli"]
+
+  php80:
+    image: php:8.0-cli-alpine
+    container_name: php80_cli
+    volumes:
+      - .:/var/www/html
+    working_dir: /var/www/html
+    profiles: ["cli"]
+
+  php82:
+    image: php:8.2-cli-alpine
+    container_name: php82_cli
+    volumes:
+      - .:/var/www/html
+    working_dir: /var/www/html
+    profiles: ["cli"]
+
+  php85:
+    image: php:8.5-rc-cli-alpine
+    container_name: php85_cli
+    volumes:
+      - .:/var/www/html
+    working_dir: /var/www/html
+    profiles: ["cli"]

@@ -1,6 +1,8 @@
 #!/bin/bash
 
-output=$(PROBATIO_TESTS_DIR="./examples/buggy_tests" ./bin/probatio)
+: "${PHP_VERSION:="72"}"
+PROBATIO_CMD="just php${PHP_VERSION} ./bin/probatio"
+output=$(PROBATIO_TESTS_DIR="./examples/buggy_tests" $PROBATIO_CMD)
 exit_code=$?
 last_line=$(echo "$output" | tail -n 1)
 search_string="failed"

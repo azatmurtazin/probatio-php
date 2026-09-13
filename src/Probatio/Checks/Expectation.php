@@ -25,7 +25,7 @@ class Expectation
             return (new static($this->value))->invert();
         }
 
-        throw new \RuntimeException('Undefined property: ' . __CLASS__ . "::${$name}");
+        throw new \RuntimeException('Undefined property: ' . __CLASS__ . "::{$name}");
     }
 
     public function invert(): self
