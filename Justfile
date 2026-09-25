@@ -8,7 +8,7 @@ CS_FIXER_LINK := "https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/releases/download
 PHP_VERSION := env("PHP_VERSION", "85")
 PHP_SERVICE := "php"+PHP_VERSION
 DCR := "docker compose run"
-DOCKER_ENV_VARS := "-e PROBATIO_TESTS_DIR -e PROBATIO_MAIN_FILE -e PROBATIO_REGISTER_GLOBALS"
+DOCKER_ENV_VARS := "-e PROBATIO_TESTS_DIR -e PROBATIO_MAIN_FILE -e PROBATIO_REGISTER_GLOBALS -e PROBATIO_VERBOSITY"
 
 # Ensure php-cs-fixer is downloaded
 get-cs-fixer:

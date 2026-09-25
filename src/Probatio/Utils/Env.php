@@ -6,6 +6,13 @@ namespace Probatio\Utils;
 
 class Env
 {
+    public static function getBool(string $name, $default = false): bool
+    {
+        $val = getenv($name);
+        $val = ($val === false) ? $default : $val;
+        return \filter_var($val, FILTER_VALIDATE_BOOLEAN);
+    }
+
     public static function getStr(string $name, string $default = ''): string
     {
         $value = \getenv($name);
@@ -13,10 +20,10 @@ class Env
         return $value;
     }
 
-    public static function getBool(string $name, $default = false): bool
+    public static function getInt(string $name, int $default = 0): int
     {
-        $val = getenv($name);
-        $val = ($val === false) ? $default : $val;
-        return \filter_var($val, FILTER_VALIDATE_BOOLEAN);
+        $value = \getenv($name);
+        $value = ($value !== false) ? (int) $value : $default;
+        return $value;
     }
 }
