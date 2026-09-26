@@ -326,7 +326,7 @@ succeeds, so "no tests discovered" is not an error by design.
 
 `Printer` renders a hierarchical, indented report:
 
-- level-based indentation (`incLevel`/`decLevel`/`resetLevel`) mirrors the
+- level-based indentation (`incIndentation`/`decIndentation`/`resetIndentation`) mirrors the
   group nesting;
 - colored prefixes / emojis distinguish files, groups, items, pass/fail
   (`noticeFile`, `noticeGroup`, `noticeItem`, `noticeOk`, `noticeErr`);

@@ -41,7 +41,7 @@ class FileRunner implements Runnable
         }
 
         $suiteRunner = probatio()->runner();
-        Printer::resetLevel();
+        Printer::resetIndentation();
         $this->currentGroup = $this->rootGroup;
         $path = $this->testFile->getPath();
         Printer::noticeFile("run file {$path}\n");
@@ -51,6 +51,6 @@ class FileRunner implements Runnable
 
         $this->currentGroup = null;
         $suiteRunner->setCurrentCase(null);
-        Printer::resetLevel();
+        Printer::resetIndentation();
     }
 }

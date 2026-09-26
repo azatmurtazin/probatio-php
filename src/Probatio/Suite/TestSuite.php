@@ -54,8 +54,6 @@ class TestSuite
         $this->registry = new TestRegistry();
         $this->stats = new TestStats();
         $this->runner = new SuiteRunner();
-
-        Printer::setVerbosity($this->config()->verbosity());
     }
 
     public function config(): Config
@@ -193,7 +191,7 @@ class TestSuite
 
         $isOk = $errTests === 0 && $errAsserts === 0;
 
-        Printer::println();
+        Printer::breakLine();
 
         if ($isOk) {
             Printer::success('Summary:');

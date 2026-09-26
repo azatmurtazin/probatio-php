@@ -6,6 +6,12 @@ namespace Probatio\Utils;
 
 class Printer
 {
+    public const LEVEL_ERROR = 'E';
+    public const LEVEL_WARN = 'W';
+    public const LEVEL_INFO = 'I';
+    public const LEVEL_NOTICE = 'N';
+    public const LEVEL_DEBUG = 'D';
+
     public const BULLET_OK = '✅';
     public const BULLET_ERR = '❌';
     public const BULLET_WARN = '⚠️';
@@ -38,10 +44,15 @@ class Printer
     ];
 
     /** @var int */
-    protected static $level = 0;
-
-    /** @var int */
     protected static $verbosity = 0;
+
+    /** @var PrinterBackend[] */
+    protected static $backends = [];
+
+    public static function addBackend(PrinterBackend $backend)
+    {
+        self::$backends[] = $backend;
+    }
 
     public static function bullet(string $b): string
     {
@@ -50,38 +61,32 @@ class Printer
 
     public static function success(string $msg = '')
     {
-        self::println($msg, 'ok');
+        self::print(self::LEVEL_INFO, 'ok', $msg);
     }
 
     public static function error(string $msg = '')
     {
-        self::println($msg, 'err');
+        self::print(self::LEVEL_ERROR, 'err', $msg);
     }
 
     public static function warn(string $msg = '')
     {
-        self::println($msg, 'warn');
+        self::print(self::LEVEL_WARN, 'warn', $msg);
     }
 
     public static function info(string $msg = '')
     {
-        self::println($msg, 'info');
+        self::print(self::LEVEL_INFO, 'info', $msg);
     }
 
     public static function debug(string $msg = '', ?string $b = null)
     {
-        if (self::$verbosity === self::VERBOSITY_VERBOSE) {
-            self::println($msg, $b);
-        }
+        self::print(self::LEVEL_DEBUG, 'debug', $msg);
     }
 
     public static function notice(string $msg = '', ?string $b = null)
     {
-        if (self::$verbosity === self::VERBOSITY_BRIEF) {
-            self::print(self::bullet($b), null, false);
-        } else {
-            self::println($msg, $b);
-        }
+        self::print(self::LEVEL_NOTICE, $b, $msg);
     }
 
     public static function noticeOk(string $msg = '')
@@ -109,48 +114,44 @@ class Printer
         self::notice($msg, 'item');
     }
 
-    public static function println(string $msg = '', ?string $b = null)
+    public static function breakLine()
     {
-        self::print("$msg\n", $b);
+        self::write("\n");
     }
 
-
-    public static function print(string $msg = '', ?string $b = null, bool $hasPadding = true)
+    public static function print(string $level, ?string $bullet, string $msg)
     {
-        $padding = $hasPadding ? self::getPadding() : '';
-        $msg = ($b !== null) ? self::bullet($b) . " $msg" : $msg;
-        \fwrite(STDOUT, "{$padding}{$msg}");
+        $bullet = $bullet ? self::bullet($bullet) : null;
+        foreach (self::$backends as $backend) {
+            $backend->print($level, $bullet, $msg);
+        }
     }
 
-    public static function getPadding(): string
+    public static function write(string $msg)
     {
-        return \str_repeat('  ', self::getLevel());
+        foreach (self::$backends as $backend) {
+            $backend->write($msg);
+        }
     }
 
-    public static function getLevel(): int
+    public static function resetIndentation()
     {
-        return self::$level;
+        foreach (self::$backends as $backend) {
+            $backend->resetIndentation();
+        }
     }
 
-    public static function resetLevel()
+    public static function incIndentation()
     {
-        self::$level = 0;
+        foreach (self::$backends as $backend) {
+            $backend->incIndentation();
+        }
     }
 
-    public static function incLevel()
+    public static function decIndentation()
     {
-        self::$level++;
-    }
-
-    public static function decLevel()
-    {
-        self::$level--;
-    }
-
-    public static function setVerbosity(int $verbosity)
-    {
-        if (\in_array($verbosity, self::VERBOSITY_LEVELS)) {
-            self::$verbosity = $verbosity;
+        foreach (self::$backends as $backend) {
+            $backend->decIndentation();
         }
     }
 }

@@ -2,3 +2,5 @@
 /.tool-versions
 /.php-cs-fixer.cache
 /php-cs-fixer.phar
+/log/*
+!/log/.keep

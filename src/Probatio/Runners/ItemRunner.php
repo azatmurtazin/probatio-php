@@ -31,11 +31,11 @@ class ItemRunner implements Runnable
         $fun = $this->testItem->getFun();
         $fun = $fun->bindTo($tc, $tc);
 
-        Printer::incLevel();
+        Printer::incIndentation();
         $title = (string) $loc->withName($name);
         Printer::noticeItem("test $title");
 
-        Printer::incLevel();
+        Printer::incIndentation();
         $result = 'ok';
 
         try {
@@ -50,7 +50,7 @@ class ItemRunner implements Runnable
             $result = 'err';
         }
 
-        Printer::decLevel();
+        Printer::decIndentation();
 
         if ($result === 'ok') {
             Printer::noticeOk("test '{$name}' is ok\n");
@@ -58,6 +58,6 @@ class ItemRunner implements Runnable
             Printer::noticeErr("test '{$name}' failed\n");
         }
 
-        Printer::decLevel();
+        Printer::decIndentation();
     }
 }

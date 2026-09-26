@@ -40,7 +40,7 @@ class GroupRunner implements Runnable
         $loc = $this->group->getLoc();
 
         if ($loc && !$loc->empty()) {
-            Printer::incLevel();
+            Printer::incIndentation();
             $title = (string) $loc->withName($name);
             Printer::noticeGroup("test group '$title'");
         }
@@ -64,7 +64,7 @@ class GroupRunner implements Runnable
         $this->runHooks(TestHook::AFTER_ALL, $tc);
 
         if ($loc && !$loc->empty()) {
-            Printer::decLevel();
+            Printer::decIndentation();
         }
     }
 
