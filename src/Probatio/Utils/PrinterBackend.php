@@ -15,6 +15,9 @@ class PrinterBackend
     /** @var resource|string */
     protected $res;
 
+    /** @var bool */
+    protected $showTime = false;
+
     public const VERBOSITY_BRIEF = 0;
     public const VERBOSITY_NORMAL = 1;
     public const VERBOSITY_VERBOSE = 2;
@@ -61,10 +64,11 @@ class PrinterBackend
      * Constructor
      * @param resource|string $res
      */
-    public function __construct($res = STDOUT, $verbosity = 0)
+    public function __construct($res = STDOUT, $verbosity = 0, bool $showTime = false)
     {
         $this->res = $res;
         $this->verbosity = $verbosity;
+        $this->showTime = $showTime;
     }
 
     public function print(string $level = self::LEVEL_INFO, ?string $bullet = null, string $msg = '')
@@ -72,9 +76,10 @@ class PrinterBackend
         $outputMode = self::PRINT_MAP[$level][$this->verbosity];
         switch ($outputMode) {
             case self::OUTPUT_FULL:
+                $now = $this->showTime ? self::now() . ' ' : '';
                 $padding = \str_repeat('  ', $this->indentation);
                 $bullet = $bullet ? "$bullet " : '';
-                $msg = "[{$level}] {$padding}{$bullet}{$msg}\n";
+                $msg = "{$now}[{$level}] {$padding}{$bullet}{$msg}\n";
                 self::write($msg);
                 break;
             case self::OUTPUT_SHORT:
@@ -83,6 +88,12 @@ class PrinterBackend
             case self::OUTPUT_NONE:
                 break;
         }
+    }
+
+    public static function now(): string
+    {
+        [$usec, $sec] = explode(' ', microtime());
+        return date('Y-m-d H:i:s', (int) $sec) . '.' . $usec;
     }
 
     public function write(string $msg)

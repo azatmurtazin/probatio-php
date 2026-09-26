@@ -26,7 +26,7 @@ class Cli
         $config = probatio()->config();
 
         Printer::addBackend(new PrinterBackend(STDOUT, $config->verbosity()));
-        Printer::addBackend(new PrinterBackend('log/tests.log', $config->verbosity()));
+        Printer::addBackend(new PrinterBackend('log/tests.log', $config->verbosity(), true));
 
         Printer::info("Probatio: $version; PHP version: $php_version");
         Printer::breakLine();
